@@ -23,7 +23,7 @@ void Entity::Rotate(glm::vec3 rot)
 //	return (float)rows / (float)model.texture.rows;
 //}
 
-Entity::Entity(Mesh * m, glm::vec3 p, glm::vec3 r, float s) : mesh(m), position(p), rotation(r), scale(s), time(0)
+Entity::Entity(Mesh * m, glm::vec3 p, glm::vec3 r, float s, std::string startAnimation, bool loopAnimation) : mesh(m), position(p), rotation(r), scale(s), time(0), currentAnimation(startAnimation), loopAnimation(loopAnimation)/*, anim(m, "Run", true)*/
 {
 }
 
@@ -36,7 +36,7 @@ void Entity::Update(float dt)
 {
 
 	time += dt;
-	mesh->GetTransforms("", transforms, time, true);
+	mesh->GetTransforms(currentAnimation, transforms, time, true);
 	//anim.Update(dt);
 	//anim.BoneTransforms(transforms);
 
@@ -45,6 +45,12 @@ void Entity::Update(float dt)
 std::vector<glm::mat4> Entity::GetTransforms()
 {
 	return transforms;
+}
+void Entity::ChangeAnimation(std::string newAnimation, bool loops)
+{
+	loopAnimation = loops;
+	currentAnimation = newAnimation;
+	time = 0;
 }
 /*
 Entity::Entity(glm::vec3 position, glm::vec3 rotation, float scale, int textureIndex) : position(position), rotation(rotation), scale(scale), textureIndex(textureIndex)
