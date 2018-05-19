@@ -45,7 +45,7 @@ public:
 
 	TestState() {
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture2("res/fire4.png"), 8);
-		ps = new ParticleSystem(*pt, 30, 1.8f, 0.1, 2.0);
+		ps = new ParticleSystem(*pt, 60, 1.8f, 0.1, 2.0);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0, -2, -5), glm::vec3(-90, 0, 0), 5, "", true)));
 		
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture2("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
@@ -54,7 +54,7 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-		ps->Update(dt, vec3(-0.15, -4.5, -19.8));
+		ps->Update(dt, vec3(-0.15, -4.5, -5));
 		
 		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {

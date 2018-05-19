@@ -2,7 +2,6 @@
 #include <glm\glm.hpp>
 #include "TexturedModel.h"
 #include "Mesh.h"
-#include "Animator.h"
 
 using namespace glm;
 
