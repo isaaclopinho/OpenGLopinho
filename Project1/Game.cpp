@@ -116,7 +116,7 @@ void Game::Run() {
 		
 		//Renders GL on SDL window
 		SDL_GL_SwapWindow(window);
-		Debug(1/dt);
+		//Debug(1/dt);
 	}
 		
 

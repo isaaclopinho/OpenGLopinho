@@ -6,18 +6,34 @@
 ParticleSystem::ParticleSystem(ParticleTexture &texture, float pps, float speed, float gravityComplient, float lifeLength)
 	:texture(texture), pps(pps), speed(speed), gravityComplient(gravityComplient), lifeLength(lifeLength)
 {
-
 	Debug2("Psystem", texture.textureID);
 }
 
 void ParticleSystem::Update(float dt, vec3 center)
 {
-	float particlesToCreate = pps * dt;
-	int count = glm::floor(particlesToCreate);
-	//float partialParticle = (int) particlesToCreate % 1;
+	timer += dt;
 	
+
+	float particlesToCreate = pps * dt;
+
+
+	int count = glm::floor(particlesToCreate);
+	float partialParticle = glm::mod(particlesToCreate, 1.0f);
+	
+	pEmitidas += partialParticle;
+
+	if (pEmitidas >= 1) {
+		count++;
+		pEmitidas - 1;
+	}
+
 	for (int i = 0; i < count; i++) {
 		EmitParticle(center);
+	}
+
+	if (timer >= 1) {
+		pEmitidas = 0;
+		timer = 0;
 	}
 }
 

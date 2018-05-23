@@ -10,6 +10,9 @@ public:
 	float gravityComplient;
 	float lifeLength;
 
+	float timer = 0;
+	float pEmitidas = 0;
+
 	ParticleTexture texture;
 
 	ParticleSystem(ParticleTexture &texture, float pps, float speed, float gravityComplient, float lifeLength);

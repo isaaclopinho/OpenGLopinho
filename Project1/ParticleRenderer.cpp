@@ -83,6 +83,7 @@ void ParticleRenderer::render(unordered_map<ParticleTexture, vector<Particle>> p
 		glBindTexture(GL_TEXTURE_2D, it.first.textureID);
 		shader->loadNumberOfRows(it.first.numberOfRows);
 
+		Debug(it.second.size());
 		pointer = 0;
 
 		vector<float> vboData(it.second.size() * INSTANCE_DATA_LENGTH);
