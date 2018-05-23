@@ -103,7 +103,7 @@ void Game::Run() {
 		InputManager::GetInstance().Update();
 
 		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
-			Debug(1 / dt);
+			Debug2("FPS", 1 / dt);
 		}
 
 		states.top()->Update(GetDeltaTime());
