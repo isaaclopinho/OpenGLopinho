@@ -13,6 +13,7 @@ private:
 	float dt;
 	int frameStart;
 	SDL_GLContext context;	
+	const int FPS = 60;
 
 	//aiLogStream logStream;
 	State* newState;

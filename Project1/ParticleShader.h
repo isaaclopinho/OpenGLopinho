@@ -10,18 +10,13 @@ class ParticleShader : public ShaderProgram
 public:
 
 	GLuint location_projectionMatrix;
-	GLuint location_modelViewMatrix;
-	GLuint location_texOffset1;
-	GLuint location_texOffset2;
-	GLuint location_texCoordInfo;
+	GLuint location_texNumberOfRows;
 	
 	ParticleShader();
 	~ParticleShader();
 	void loadProjectionMatrix(mat4 matrix);
-	void loadModelViewMatrix(mat4 matrix);
 	void bindAttributes();
-
-	void loadTextureCoordInfo(vec2 offset1,vec2 offset2, float numRows, float blend);
+	void loadNumberOfRows(float rows);
 	void getAllUniformLocations();
 };
 

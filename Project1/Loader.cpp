@@ -39,6 +39,34 @@ Mesh * Loader::LoadModel(std::string filename)
 	return modelsMap[filename];
 }
 
+void Loader::UpdateVBO(int vbo, vector<float> data) {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.size(), data.data(), GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER,0, sizeof(float)* data.size(), data.data());
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+int Loader::CreateEmptyVBO(int floatCount) {
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	vbos.emplace_back(vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, floatCount * 4, NULL, GL_STREAM_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return vbo;
+}
+
+void Loader::addInstancedAttribute(int vao, int vbo, int attribute, int dataSize, int instancedDataLength,	int offset) {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glVertexAttribPointer(attribute, dataSize, GL_FLOAT, false, instancedDataLength * 4, (void*) (offset * 4));
+	glVertexAttribDivisor(attribute, 1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 
 //
 //RawModel Loader::loadToVAO(vector<vec3> positions, vector<vec2> textureCoords, vector<vec3> normals, vector<int> indices)

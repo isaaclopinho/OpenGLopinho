@@ -31,7 +31,7 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	// seta versao para 3.2 do opengl
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	//dessenha num buffer pra depois desenhar na tela
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -99,7 +99,6 @@ void Game::Run() {
 	states.push(new TestState());
 	
 	while (!states.empty()) {
-
 		CalculateDeltaTime();
 		InputManager::GetInstance().Update();
 
@@ -117,7 +116,7 @@ void Game::Run() {
 		
 		//Renders GL on SDL window
 		SDL_GL_SwapWindow(window);
-		//SDL_Delay(33);
+		Debug(1/dt);
 	}
 		
 

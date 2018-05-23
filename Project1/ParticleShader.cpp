@@ -16,29 +16,22 @@ void ParticleShader::loadProjectionMatrix(mat4 matrix)
 	ShaderProgram::loadMatrix(location_projectionMatrix, matrix);
 }
 
-void ParticleShader::loadModelViewMatrix(mat4 matrix)
-{
-	
-	ShaderProgram::loadMatrix(location_modelViewMatrix, matrix);
-}
-
 void ParticleShader::bindAttributes() {
 	Debug("ParticleShaderBindAttributes");
 	bindAttribute(0, "position");
+	bindAttribute(1, "modelViewMatrix");
+	bindAttribute(5, "texOffsets");
+	bindAttribute(6, "blendFactor");
 }
 
-void ParticleShader::loadTextureCoordInfo(vec2 offset1, vec2 offset2, float numRows, float blend)
+void ParticleShader::loadNumberOfRows(float rows)
 {
-	ShaderProgram::load2DVector(location_texOffset1, offset1);
-	ShaderProgram::load2DVector(location_texOffset2, offset2);
-	ShaderProgram::load2DVector(location_texCoordInfo, vec2(numRows, blend));
+	ShaderProgram::loadFloat(location_texNumberOfRows, rows);
 }
+
 
 void ParticleShader::getAllUniformLocations() {
 	location_projectionMatrix = ShaderProgram::getUniformLocation("projectionMatrix");
-	location_modelViewMatrix = ShaderProgram::getUniformLocation("modelViewMatrix");
-	location_texCoordInfo = ShaderProgram::getUniformLocation("texCoordInfo");
-	location_texOffset1 = ShaderProgram::getUniformLocation("texOffset1");
-	location_texOffset2 = ShaderProgram::getUniformLocation("texOffset2");
+	location_texNumberOfRows = ShaderProgram::getUniformLocation("numberOfRows");
 
 }

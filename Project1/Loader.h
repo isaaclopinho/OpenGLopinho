@@ -25,6 +25,9 @@ class Loader
 public:
 	static const aiScene* LoadScene(string filename, unsigned int flags);
 	static Mesh* LoadModel(string filename);
+	static void UpdateVBO(int vbo, vector<float> data);
+	static int CreateEmptyVBO(int floatCount);
+	static void addInstancedAttribute(int vao, int vbo, int attribute, int dataSize, int instancedDataLength, int offset);
 	static void Clear();
 	static GLuint LoadTexture(string file);
 	static GLuint LoadTexture2(string file);
