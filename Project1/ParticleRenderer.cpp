@@ -33,7 +33,6 @@ ParticleRenderer::~ParticleRenderer()
 void ParticleRenderer::updateModelViewMatrix(vec3 pos, float rotation, float scale, mat4 view, vector<float> &f) {
 	glm::mat4 matrix(1);
 	matrix = glm::translate(matrix, pos);
-
 	matrix[0][0] = view[0][0];
 	matrix[1][0] = view[0][1];
 	matrix[2][0] = view[0][2];
@@ -83,7 +82,6 @@ void ParticleRenderer::render(unordered_map<ParticleTexture, vector<Particle>> p
 		glBindTexture(GL_TEXTURE_2D, it.first.textureID);
 		shader->loadNumberOfRows(it.first.numberOfRows);
 
-		Debug(it.second.size());
 		pointer = 0;
 
 		vector<float> vboData(it.second.size() * INSTANCE_DATA_LENGTH);

@@ -15,8 +15,7 @@ Particle::Particle(ParticleTexture &texture, vec3 pos, vec3 vel, float gravity, 
 bool Particle::Update(float dt, Camera camera)
 {
 	velocity.y += gravity * gravityEffect * dt;
-	vec3 change = vec3(velocity)*dt;
-	position = change + position;
+	position = velocity * dt + position;
 	distance = distance2(camera.position , position);
 	
 	UpdateTextureCoordInfo();
