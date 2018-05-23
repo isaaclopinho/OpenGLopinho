@@ -133,51 +133,14 @@ void Loader::Clear()
 
 
 
-GLuint Loader::LoadTexture(std::string filename)
+GLuint Loader::LoadTexture(std::string file)
 {
-	/*if (textureMap.find(filename) != textureMap.end()) {
-	return &textureMap[filename];
-	}*/
-
-	if (textureMap.find(filename) == textureMap.end()) {
-		ilutRenderer(ILUT_OPENGL);
-        
-//        int textureID = ilutGLLoadImage((char*)filename.c_str()); // não funciona no mac
-        int textureID = LoadTexture2(filename); // funciona no mac
-
-		textureMap[filename] = textureID;
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4F);
-
-
-		textureList.emplace_back(textureID);
-	}
-
-	Debug("Loading texture: " << filename);
-	
-
-
-	return textureMap[filename];
-
-	/*
-	textureMap[filename] = ModelTexture(textureID);
-	Debug(textureMap[filename].textureID);*/
-}
-
-GLuint Loader::LoadTexture2(string file)
-{
-
 	if (textureMap.find(file) != textureMap.end()) {
 		return textureMap[file];
 	}
+
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+	ilEnable(IL_ORIGIN_SET);
 
 	GLuint textureID = NULL;
 	ILuint ImgId;
@@ -194,6 +157,60 @@ GLuint Loader::LoadTexture2(string file)
 		return 0;
 	}
 
+
+	int const width = ilGetInteger(IL_IMAGE_WIDTH);
+	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
+	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
+	int const format = ilGetInteger(IL_IMAGE_FORMAT); // matches OpenGL
+
+	Debug4(width, height, type, format);
+
+	glGenTextures(1, &textureID);
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4F);
+
+	//textureList.emplace_back(textureID);
+
+	textureMap[file] = textureID;
+
+	return textureID;
+}
+
+GLuint Loader::LoadTexture2(string file)
+{
+
+	if (textureMap.find(file) != textureMap.end()) {
+		return textureMap[file];
+	}
+
+	GLuint textureID = NULL;
+	ILuint ImgId;
+
+	ilGenImages(1, &ImgId);
+	ilBindImage(ImgId);
+	ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
+	ilEnable(IL_ORIGIN_SET);
+	
+	ilLoadImage(file.data());
+
+	void * data = ilGetData();
+	if (!data) {
+		ilBindImage(0);
+		ilDeleteImages(1, &ImgId);
+		return 0;
+	}
+	
+	
 	int const width = ilGetInteger(IL_IMAGE_WIDTH);
 	int const height = ilGetInteger(IL_IMAGE_HEIGHT);
 	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
