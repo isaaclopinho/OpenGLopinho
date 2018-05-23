@@ -102,6 +102,10 @@ void Game::Run() {
 		CalculateDeltaTime();
 		InputManager::GetInstance().Update();
 
+		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
+			Debug(1 / dt);
+		}
+
 		states.top()->Update(GetDeltaTime());
 		states.top()->Render();
 
@@ -117,8 +121,9 @@ void Game::Run() {
 		//Renders GL on SDL window
 		SDL_GL_SwapWindow(window);
 				
-		if (dt < 1.0 / (float)FPS)
-			SDL_Delay((1.0 / (float)FPS - dt)*1000);
+		if (dt < 1.0 / (float)FPS) {
+			SDL_Delay((1.0 / (float)FPS - dt) * 1000);
+		}
 
 	}
 		
