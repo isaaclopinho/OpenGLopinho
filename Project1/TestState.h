@@ -45,7 +45,7 @@ public:
 
 	TestState() {
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture2("res/fire4.png"), 8, true);
-		ps = new ParticleSystem(*pt, 600, 6.8f, 0.1, 5.0);
+		ps = new ParticleSystem(*pt, 60, 6.8f, 0.1, 5.0);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0, -2, -5), glm::vec3(-90, 0, 0), 5, "", true)));
 		
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture2("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));

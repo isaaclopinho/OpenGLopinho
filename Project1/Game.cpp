@@ -97,16 +97,18 @@ Game* Game::GetInstance() {
 void Game::Run() {
 	
 	states.push(new TestState());
-	while (!states.empty()) {
 
+
+	while (!states.empty()) {
 		CalculateDeltaTime();
+
 		InputManager::GetInstance().Update();
 
 		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
 			Debug2("FPS", 1 / dt);
 		}
 
-		states.top()->Update(GetDeltaTime());
+		states.top()->Update(dt);
 		states.top()->Render();
 
 		if (newState != NULL) {
@@ -120,11 +122,14 @@ void Game::Run() {
 		
 		//Renders GL on SDL window
 		SDL_GL_SwapWindow(window);
-				
-		if (dt < 1.0 / (float)FPS) {
-			SDL_Delay((1.0 / (float)FPS - dt) * 1000);
-		}
+		
+		
+		double frameTime = 1.0 / FPS;
 
+		if (dt < frameTime) {
+			double tEspera = (frameTime - dt) * 1000;
+			SDL_Delay(tEspera);
+		}
 	}
 		
 
