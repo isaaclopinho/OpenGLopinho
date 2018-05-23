@@ -54,7 +54,7 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-		ps->Update(dt, vec3(-0.15, -4.5, -5));
+		//ps->Update(dt, vec3(-0.15, -4.5, -5));
 		
 		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {

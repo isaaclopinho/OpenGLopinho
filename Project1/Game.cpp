@@ -3,6 +3,8 @@
 
 #include "TestState.h"
 
+#define FRAMETIME 16
+
 Game* Game::instance = NULL;
 
 Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks()) , WIDTH(width), HEIGHT(height) {
@@ -124,11 +126,10 @@ void Game::Run() {
 		SDL_GL_SwapWindow(window);
 		
 		
-		double frameTime = 1.0 / FPS;
-
-		if (dt < frameTime) {
-			double tEspera = (frameTime - dt) * 1000;
-			SDL_Delay(tEspera);
+		int currentFrameTime = (SDL_GetTicks() - frameStart);
+		if (currentFrameTime < FRAMETIME) {
+			//double tEspera = (frameTime - dt) * 1000;
+			SDL_Delay(FRAMETIME - currentFrameTime);
 		}
 	}
 		
