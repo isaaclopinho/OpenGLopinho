@@ -30,8 +30,6 @@ public:
 	static void addInstancedAttribute(int vao, int vbo, int attribute, int dataSize, int instancedDataLength, int offset);
 	static void Clear();
 	static GLuint LoadTexture(string file);
-	static GLuint LoadTexture2(string file);
-
 	static GLuint LoadCubeMap(vector<string> filename);
 
 	static RawModel loadToVAO(vector<vec2> positions);

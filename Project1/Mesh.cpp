@@ -61,7 +61,7 @@ bool Mesh::LoadMesh(const std::string filename)
 
 	bool ret = false;
 	mpScene = Loader::LoadScene(filename, aiProcess_Triangulate 
-		| aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
+		| aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs);
 	/*aiImportFile(filename.c_str(), aiProcess_Triangulate
 	| aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);*/
 
