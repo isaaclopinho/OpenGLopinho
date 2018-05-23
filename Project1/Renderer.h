@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "glm\glm.hpp"
+#include "glm/glm.hpp"
 #include <GL/glew.h>
 #include "Light.h"
 #include "RawModel.h"

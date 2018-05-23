@@ -34,6 +34,10 @@
 
 #define THEORAPLAY_INTERNAL 1
 
+#ifdef __APPLE__
+#define fopen_s(a, b, c) *a = fopen(b,c)
+#endif
+
 typedef THEORAPLAY_VideoFrame VideoFrame;
 typedef THEORAPLAY_AudioPacket AudioPacket;
 

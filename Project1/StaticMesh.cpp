@@ -5,6 +5,9 @@
 #include "StaticMesh.h"
 #include "Loader.h"
 
+#ifdef __APPLE__
+#define memcpy_s(a,b,c,d) memcpy(a,c,d);
+#endif
 #define POSITION_LOCATION    0
 #define TEX_COORD_LOCATION   1
 #define NORMAL_LOCATION      2

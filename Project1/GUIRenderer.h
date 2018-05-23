@@ -2,7 +2,7 @@
 #include "RawModel.h"
 #include "Loader.h"
 #include "GUITexture.h"
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include "GUIShader.h"
 
 using namespace glm;

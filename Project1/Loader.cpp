@@ -141,7 +141,9 @@ GLuint Loader::LoadTexture(std::string filename)
 
 	if (textureMap.find(filename) == textureMap.end()) {
 		ilutRenderer(ILUT_OPENGL);
-		int textureID = ilutGLLoadImage((char*)filename.c_str());
+        
+//        int textureID = ilutGLLoadImage((char*)filename.c_str()); // não funciona no mac
+        int textureID = LoadTexture2(filename); // funciona no mac
 
 		textureMap[filename] = textureID;
 

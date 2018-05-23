@@ -1,7 +1,7 @@
 #pragma once
 // é o debug iniciante
 #include <iostream>
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <string>
 
 #ifndef DEBUGINICIANTE_H

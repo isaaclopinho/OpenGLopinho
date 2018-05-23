@@ -1,7 +1,11 @@
 #pragma once
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include <SDL.h>
-#include <glm\glm.hpp>
+#endif
+#include <glm/glm.hpp>
 #include "Game.h"
 #include "State.h"
 #include "Camera.h"
@@ -17,7 +21,7 @@
 #include "InputManager.h"
 #include "ParticleSystem.h"
 #include "ParticleTexture.h"
-#include <glm\gtx\rotate_vector.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 using namespace glm;
 using namespace std;

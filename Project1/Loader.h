@@ -5,13 +5,13 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <assimp\scene.h>
+#include <assimp/scene.h>
 
-#include <GL\glew.h>
-#include <glm\glm.hpp>
-#include <IL\il.h>
-#include <IL\ilut.h>
-#include <IL\ilu.h>
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <IL/il.h>
+#include <IL/ilut.h>
+#include <IL/ilu.h>
 
 #include "ModelTexture.h"
 

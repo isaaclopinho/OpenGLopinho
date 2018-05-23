@@ -1,9 +1,13 @@
 #pragma once
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include <SDL.h>
+#endif
 #include <string>
 #include <stack>
 #include "State.h"
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 using namespace std;
 

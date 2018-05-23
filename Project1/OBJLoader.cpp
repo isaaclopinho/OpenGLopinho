@@ -1,7 +1,7 @@
 #include "OBJLoader.h"
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include "Debug.h"
-#include <assimp\Importer.hpp>
+#include <assimp/Importer.hpp>
 //
 //RawModel OBJLoader::loadObjModel(string fileName, Loader loader)
 //{

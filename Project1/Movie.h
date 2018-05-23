@@ -2,10 +2,15 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <io.h>
 #include <assert.h>
 #include "theoraplay.h"
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <sys/uio.h>
+#else
 #include <SDL.h>
+#include <io.h>
+#endif
 
 using namespace std;
 

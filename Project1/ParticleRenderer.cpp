@@ -1,7 +1,7 @@
 #include "ParticleRenderer.h"
 #include "Debug.h"
 #include "Loader.h"
-#include <glm\gtc\matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 ParticleRenderer::ParticleRenderer(ParticleShader * shader, mat4 proj): shader(shader)
 {

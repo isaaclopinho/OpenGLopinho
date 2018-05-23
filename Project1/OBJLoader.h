@@ -1,10 +1,10 @@
 #pragma once
 
-#include <assimp\cimport.h>
-#include <assimp\postprocess.h>
-#include <assimp\types.h>
-#include <assimp\scene.h>
-#include <assimp\material.h>
+#include <assimp/cimport.h>
+#include <assimp/postprocess.h>
+#include <assimp/types.h>
+#include <assimp/scene.h>
+#include <assimp/material.h>
 #include "RawModel.h"
 #include "Loader.h"
 #include <string>
