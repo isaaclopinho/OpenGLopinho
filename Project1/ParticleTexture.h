@@ -10,8 +10,9 @@ class ParticleTexture
 public:
 	int textureID;
 	int numberOfRows;
+	bool isAddictive;
 
-	ParticleTexture(int textureID, int numberOfRows);
+	ParticleTexture(int textureID, int numberOfRows, bool isAdd);
 	~ParticleTexture();
 
 
@@ -31,7 +32,7 @@ namespace std
 	{
 		size_t operator()(const ParticleTexture& k) const
 		{
-			return ((hash<int>()(k.textureID) ^ (hash<int>()(k.numberOfRows) << 1)) >> 1);
+			return ((hash<int>()(k.textureID) ^ (hash<int>()(k.numberOfRows)  << 1) ^ (hash<bool>()(k.isAddictive) << 1)) >> 1);
 		}
 	};
 }

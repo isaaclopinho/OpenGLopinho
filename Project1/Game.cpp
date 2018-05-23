@@ -97,8 +97,8 @@ Game* Game::GetInstance() {
 void Game::Run() {
 	
 	states.push(new TestState());
-	
 	while (!states.empty()) {
+
 		CalculateDeltaTime();
 		InputManager::GetInstance().Update();
 
@@ -116,7 +116,10 @@ void Game::Run() {
 		
 		//Renders GL on SDL window
 		SDL_GL_SwapWindow(window);
-		//Debug(1/dt);
+				
+		if (dt < 1.0 / (float)FPS)
+			SDL_Delay((1.0 / (float)FPS - dt)*1000);
+
 	}
 		
 

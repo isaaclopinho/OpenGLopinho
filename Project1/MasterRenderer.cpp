@@ -112,8 +112,6 @@ void MasterRenderer::updateAllParticles(float dt,Camera camera)
 	vector<pair<ParticleTexture, vector<Particle>>> deleteCandidates;
 
 	for (auto&& it : particless) {
-		
-
 
 		for (int i = 0; i < it.second.size(); i++) {
 			bool stillAlive = it.second[i].Update(dt, camera);

@@ -77,14 +77,21 @@ void ParticleRenderer::render(unordered_map<ParticleTexture, vector<Particle>> p
 	mat4 viewMatrix = Maths::createViewMatrix(camera);
 	prepare();
 
+	vector<float> vboData;
+
 	for (auto&& it : particles) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, it.first.textureID);
 		shader->loadNumberOfRows(it.first.numberOfRows);
 
+		if (it.first.isAddictive)
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		else
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		pointer = 0;
 
-		vector<float> vboData(it.second.size() * INSTANCE_DATA_LENGTH);
+		vboData.resize(it.second.size() * INSTANCE_DATA_LENGTH);
 		//Debug(vboData.size());
 
 		for (int i = 0; i < it.second.size(); i++) {
@@ -120,7 +127,7 @@ void ParticleRenderer::prepare()
 	glEnableVertexAttribArray(5);
 	glEnableVertexAttribArray(6);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
 	glDepthMask(false);
 
 

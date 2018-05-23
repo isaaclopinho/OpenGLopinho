@@ -44,8 +44,8 @@ class TestState : public State {
 public:
 
 	TestState() {
-		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture2("res/fire4.png"), 8);
-		ps = new ParticleSystem(*pt, 300, 1.8f, 0.1, 2.0);
+		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture2("res/fire4.png"), 8, true);
+		ps = new ParticleSystem(*pt, 600, 6.8f, 0.1, 5.0);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0, -2, -5), glm::vec3(-90, 0, 0), 5, "", true)));
 		
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture2("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
@@ -88,7 +88,7 @@ public:
 		if (InputManager::GetInstance().IsKeyDown(SDLK_RIGHT)) {
 			camera.position += vec3(50, 0, 0)*delta;
 		}
-
+		
 		/*if (camera.position.z >= -1 && i==0) {
 			Movie::playfile("res/videos/Downloads.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
 			i++;
