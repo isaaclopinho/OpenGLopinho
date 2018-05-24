@@ -3,7 +3,7 @@
 
 #include "TestState.h"
 
-#define FRAMETIME 16
+#define FRAMETIME 1
 
 Game* Game::instance = NULL;
 

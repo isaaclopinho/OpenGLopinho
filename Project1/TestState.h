@@ -48,9 +48,9 @@ class TestState : public State {
 public:
 
 	TestState() {
-		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/fire4.png"), 8, true);
-		ps = new ParticleSystem(*pt, 60, 6.8f, 0.1, 5.0);
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0, -2, -5), glm::vec3(-90, 0, 0), 5, "", true)));
+		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/rain.png"), 1, true);
+		ps = new ParticleSystem(*pt, 400, 60, 1, 1);
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/terrain.dae"), glm::vec3(0, -2, -5), glm::vec3(-90, 0, 0), 1000, "", true)));
 		
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
 	}
@@ -58,7 +58,7 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-		ps->Update(dt, vec3(-0.15, -4.5, -5));
+		ps->Update(dt, vec3(camera.position.x, camera.position.y + 10, camera.position.z));
 		
 		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {

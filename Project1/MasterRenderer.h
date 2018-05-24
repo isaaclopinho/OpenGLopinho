@@ -13,9 +13,9 @@ using namespace std;
 class MasterRenderer
 {	
 public:
-	float FOV = 70;
+	float FOV = 1000;
 	float NEAR_PLANE = 0.1f;
-	float FAR_PLANE = 1000;
+	float FAR_PLANE = 3000;
 
 	vec3 color;
 

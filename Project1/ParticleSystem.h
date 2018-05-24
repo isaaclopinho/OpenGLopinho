@@ -18,6 +18,7 @@ public:
 	ParticleSystem(ParticleTexture &texture, float pps, float speed, float gravityComplient, float lifeLength);
 
 	void Update(float dt, vec3 center);
+	void EmitParticle2(vec3 center);
 	void EmitParticle(vec3 center);
 
 	~ParticleSystem();
