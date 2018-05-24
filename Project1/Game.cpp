@@ -1,9 +1,9 @@
 #include "Game.h"
 #include "Debug.h"
-
+#include "GameSrc\LevelState.h"
 #include "TestState.h"
 
-#define FRAMETIME 16
+#define FRAMETIME 1
 
 Game* Game::instance = NULL;
 
@@ -47,7 +47,7 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 		Debug(SDL_GetError());
 	}
 
-	SDL_GL_SetSwapInterval(1);
+	SDL_GL_SetSwapInterval(0);
 
 	/* Inicializa glew*/
 	glewExperimental = GL_TRUE;
@@ -98,7 +98,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new TestState());
+	states.push(new LevelState());
 
 
 	while (!states.empty()) {

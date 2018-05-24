@@ -28,7 +28,7 @@ void ParticleSystem::Update(float dt, vec3 center)
 	}
 
 	for (int i = 0; i < count; i++) {
-		EmitParticle2(center);
+		EmitParticle(center);
 	}
 
 	if (timer >= 1) {
