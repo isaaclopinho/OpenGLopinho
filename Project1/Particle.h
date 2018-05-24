@@ -2,9 +2,10 @@
 #include <glm/glm.hpp>
 #include "ParticleTexture.h"
 #include "Camera.h"
+#include "PoolObject.h"
 using namespace glm;
 
-class Particle
+class Particle : public PoolObject
 {
 public:
 	vec3 position;
@@ -20,9 +21,12 @@ public:
 	vec2 texOffset1;
 	vec2 texOffset2;
 	float blend;
-
+	Particle();
 	Particle(ParticleTexture &texture, vec3 pos, vec3 vel, float gravity, float gravityEffect, float lifeLength, float rotation, float scale);
 	bool Update(float dt, Camera camera);
+
+	PoolObject *clone(void) const;
+	void reset(void);
 
 	void UpdateTextureCoordInfo();
 	void setTextureOffset(vec2 offset, int index);

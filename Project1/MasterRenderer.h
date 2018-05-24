@@ -9,13 +9,17 @@
 #include "SkyboxRenderer.h"
 #include "ParticleShader.h"
 #include "ParticleRenderer.h"
+#include "Pool.h"
+
 using namespace std;
 class MasterRenderer
 {	
 public:
-	float FOV = 1000;
+	float FOV = 70;
 	float NEAR_PLANE = 0.1f;
-	float FAR_PLANE = 3000;
+	float FAR_PLANE = 1000;
+
+	Pool particlePool;
 
 	vec3 color;
 

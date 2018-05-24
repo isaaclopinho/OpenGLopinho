@@ -148,6 +148,7 @@ void MasterRenderer::AddParticle(Particle & particle)
 
 MasterRenderer::MasterRenderer() : color(vec3(.1f,.1f,.1f))
 {
+	particlePool.configure<Particle>(100);
 	enableCulling();
 	animatedShader = new AnimatedShader();
 	skyboxShader = new SkyboxShader();

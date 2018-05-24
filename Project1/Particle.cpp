@@ -3,8 +3,14 @@
 #include "MasterRenderer.h"
 #include <math.h>
 
+Particle::Particle() : PoolObject(), gravity(0), position(vec3(0)), velocity(vec3(0)), gravityEffect(0), lifeLength(0), rotation(0), scale(1), texture(ParticleTexture(0,0,false)){
+	distance = 0;
+	texOffset1 = vec2();
+	texOffset2 = vec2();
+}
+
 Particle::Particle(ParticleTexture &texture, vec3 pos, vec3 vel, float gravity, float gravityEffect, float lifeLength, float rotation, float scale)
-	: texture(texture), gravity(gravity), position(pos), velocity(vel), gravityEffect(gravityEffect), lifeLength(lifeLength), rotation(rotation), scale(scale)
+	: PoolObject(), texture(texture), gravity(gravity), position(pos), velocity(vel), gravityEffect(gravityEffect), lifeLength(lifeLength), rotation(rotation), scale(scale)
 {
 	distance = 0;
 	texOffset1 = vec2();
@@ -21,6 +27,19 @@ bool Particle::Update(float dt, Camera camera)
 	UpdateTextureCoordInfo();
 	elapsedTime += dt;
 	return elapsedTime < lifeLength;
+}
+
+PoolObject * Particle::clone() const
+{
+	return (new Particle(*this));
+}
+
+void Particle::reset()
+{
+	elapsedTime = 0;
+	distance = 0;
+	texOffset1 = vec2();
+	texOffset2 = vec2();
 }
 
 void Particle::UpdateTextureCoordInfo()
