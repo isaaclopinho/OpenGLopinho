@@ -7,6 +7,12 @@ public:
 	Entity entity;
 	Player();
 	~Player();
-	void Update(float dt) {};
+	void Update(float dt);
 	void Render();
+
+	vec3 playerPos = vec3(0, 0, 0);
+
+private:
+	
+	void PlayerMove();
 };
