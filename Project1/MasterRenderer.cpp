@@ -118,7 +118,11 @@ void MasterRenderer::updateAllParticles(float dt,Camera camera)
 			
 			//Debug(it.second[i].distance);
 			if (!stillAlive) {
+				Particle *p = &it.second[i];
 				it.second.erase(it.second.begin() + i);
+
+				if(p)
+					particlePool.release<Particle>(p);
 			}
 
 		}
@@ -135,6 +139,7 @@ void MasterRenderer::updateAllParticles(float dt,Camera camera)
 
 
 	for (auto i : deleteCandidates) {
+
 		particless.erase(i.first);
 	}
 	

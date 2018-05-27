@@ -49,7 +49,7 @@ public:
 
 	TestState() {
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/cliffski.png"), 4, false);
-		ps = new ParticleSystem(*pt, 1500, 60, 1, 1);
+		ps = new ParticleSystem(*pt, 50, 60, 1, 1);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/terrain.dae"), glm::vec3(0, -5, 0), glm::vec3(-90, 0, 0), 1000, "", true)));
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
 	}
@@ -57,7 +57,7 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-		ps->Update(dt, vec3(0, 30, 0));
+		ps->Update(dt, vec3(camera.position.x, camera.position.y+30, camera.position.z));
 		
 		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {

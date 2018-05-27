@@ -54,7 +54,10 @@ public:
 	};
 
 public:
-	Pool(const PoolType &p = AUTO_EXTEND) : _type(p) {}
+	Pool(const PoolType &p = FIXED) : _type(p) {
+	
+		cout << "Type " <<_type << endl;
+	}
 	virtual ~Pool(void){
 		for (auto item : _collection)
 			for (auto object : item.second)
@@ -93,6 +96,7 @@ public:
 			T *ptr = nullptr;
 			if (!_collection[type].empty())
 			{
+
 				ptr = static_cast<T *>(_collection[type].front());
 				_collection[type].pop_front();
 			}
@@ -119,6 +123,7 @@ public:
 		{
 			ptr->reset();
 			_collection[type].push_back(ptr);
+
 			return true;
 		}
 		std::cerr << "Pool : can't release an object of type " + std::string(type) + " or a non-valid pointer" << std::endl;
