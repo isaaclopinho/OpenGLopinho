@@ -18,6 +18,7 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "../ParticleSystem.h"
 #include "Player.h"
+#include <btBulletDynamicsCommon.h>
 
 using namespace glm;
 using namespace std;
