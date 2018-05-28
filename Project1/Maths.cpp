@@ -84,4 +84,13 @@ glm::mat4 Maths::createProjectionMatrix(float FOV, float NEAR_PLANE, float FAR_P
 	return glm::perspective<float>(glm::radians(FOV), (float)Game::GetInstance()->WIDTH/ (float)Game::GetInstance()->HEIGHT, NEAR_PLANE, FAR_PLANE);
 }
 
+btVector3 glmToBullet(glm::vec3 src) {
+
+	btVector3 newVector3 = btVector3(src.x, src.y, src.z);
+
+	return newVector3; 
+
+
+};
+
 

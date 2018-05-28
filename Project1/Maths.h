@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <assimp/scene.h>
+#include <btBulletDynamicsCommon.h>
 #include <glm/gtc/quaternion.hpp>
 
 using namespace std;
@@ -18,6 +19,7 @@ public:
 	static glm::vec3 Vec3FromAiVec3(aiVector3D vec);
 	static glm::quat QuatFromAiQuat(aiQuaternion quat);
 	static glm::mat4 createProjectionMatrix(float FOV, float NEAR_PLANE, float FAR_PLANE);
+	static btVector3 glmToBullet(glm::vec3 src);
 	Maths();
 	~Maths();
 };
