@@ -19,7 +19,7 @@
 #include "../ParticleSystem.h"
 #include "Player.h"
 #include <btBulletDynamicsCommon.h>
-
+#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 using namespace glm;
 using namespace std;
 
@@ -43,7 +43,9 @@ class LevelState : public State {
 
 public:
 	LevelState() { 
-		
+		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
 		AddGameObject(new Player());
 	};
 
