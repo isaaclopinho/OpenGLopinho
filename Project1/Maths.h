@@ -19,8 +19,15 @@ public:
 	static glm::vec3 Vec3FromAiVec3(aiVector3D vec);
 	static glm::quat QuatFromAiQuat(aiQuaternion quat);
 	static glm::mat4 createProjectionMatrix(float FOV, float NEAR_PLANE, float FAR_PLANE);
-	static btVector3 glmToBullet(glm::vec3 src);
+	static btVector3 glmToBullet(const glm::vec3& v);
+	static glm::vec3 bulletToGlm(const btVector3& v);
+	static glm::quat bulletToGlm(const btQuaternion& q);
+	static btMatrix3x3 glmToBullet(const glm::mat3& m);
+	static btTransform glmToBullet(const glm::mat4& m);
+	static glm::mat4 bulletToGlm(const btTransform& t);
+	static btQuaternion glmToBullet(const glm::quat& q);
 	Maths();
 	~Maths();
+
 };
 
