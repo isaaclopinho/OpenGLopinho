@@ -15,7 +15,8 @@ Particle::Particle(ParticleTexture &texture, vec3 pos, vec3 vel, float gravity, 
 	distance = 0;
 	texOffset1 = vec2();
 	texOffset2 = vec2();
-	//MasterRenderer::GetInstance().AddParticle(*this);
+
+	MasterRenderer::GetInstance().AddParticle(*this);
 }
 
 bool Particle::Update(float dt, Camera camera)

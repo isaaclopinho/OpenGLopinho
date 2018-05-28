@@ -19,7 +19,7 @@ public:
 	float NEAR_PLANE = 0.1f;
 	float FAR_PLANE = 1000;
 
-	Pool particlePool;
+	//Pool particlePool;
 
 	vec3 color;
 

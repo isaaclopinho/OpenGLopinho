@@ -118,11 +118,7 @@ void MasterRenderer::updateAllParticles(float dt,Camera camera)
 			
 			//Debug(it.second[i].distance);
 			if (!stillAlive) {
-				Particle *p = &it.second[i];
 				it.second.erase(it.second.begin() + i);
-
-				if(p)
-					particlePool.release<Particle>(p);
 			}
 
 		}
@@ -153,7 +149,7 @@ void MasterRenderer::AddParticle(Particle & particle)
 
 MasterRenderer::MasterRenderer() : color(vec3(.1f,.1f,.1f))
 {
-	particlePool.configure<Particle>(100);
+	//particlePool.configure<Particle>(5000);
 	enableCulling();
 	animatedShader = new AnimatedShader();
 	skyboxShader = new SkyboxShader();
