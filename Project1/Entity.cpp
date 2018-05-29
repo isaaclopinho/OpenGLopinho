@@ -55,11 +55,11 @@ void Entity::ChangeAnimation(std::string newAnimation, bool loops)
 /*
 Entity::Entity(glm::vec3 position, glm::vec3 rotation, float scale, int textureIndex) : position(position), rotation(rotation), scale(scale), textureIndex(textureIndex)
 {
-	Debug4("GameObject Position", position.x, position.y, position.z);
-	Debug4("GameObject Rotation", rotation.x, rotation.y, rotation.z);
-	Debug2("GameObject Scale", scale);
+	//"GameObject Position", position.x, position.y, position.z);
+	//"GameObject Rotation", rotation.x, rotation.y, rotation.z);
+	//"GameObject Scale", scale);
 
-	Debug4("GameObject Model", model.rawModel.vaoID, model.rawModel.vertexCount, model.texture.textureID);
+	//"GameObject Model", model.rawModel.vaoID, model.rawModel.vertexCount, model.texture.textureID);
 }*/
 
 Entity::~Entity()

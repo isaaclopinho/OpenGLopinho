@@ -14,7 +14,7 @@ AnimatedShader::~AnimatedShader()
 }
 
 void AnimatedShader::bindAttributes() {
-	Debug("AnimatedShaderBindAttributes");
+	//"AnimatedShaderBindAttributes");
 	bindAttribute(0, "aPos");
 	bindAttribute(1, "aTexCoords");
 	bindAttribute(2, "aNormal");

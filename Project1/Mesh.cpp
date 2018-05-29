@@ -89,7 +89,7 @@ void Mesh::Render(AnimatedShader* ss)
 
 		if (materialIndex < mTextures.size()) {
 			
-			//Debug4(mTextures[materialIndex]->textureID, mSpecularMaps[materialIndex]->textureID,mEmissiveMaps[materialIndex]->textureID, mNormalMaps[materialIndex]->textureID);
+			////mTextures[materialIndex]->textureID, mSpecularMaps[materialIndex]->textureID,mEmissiveMaps[materialIndex]->textureID, mNormalMaps[materialIndex]->textureID);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, mTextures[materialIndex]->textureID);
 			glActiveTexture(GL_TEXTURE1);

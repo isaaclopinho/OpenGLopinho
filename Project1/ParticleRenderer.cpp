@@ -92,7 +92,7 @@ void ParticleRenderer::render(unordered_map<ParticleTexture, vector<Particle>> p
 		pointer = 0;
 
 		vboData.resize(it.second.size() * INSTANCE_DATA_LENGTH);
-		//Debug(vboData.size());
+		////vboData.size());
 
 		for (int i = 0; i < it.second.size(); i++) {
 			updateModelViewMatrix(it.second[i].position, it.second[i].rotation, it.second[i].scale, viewMatrix, vboData);

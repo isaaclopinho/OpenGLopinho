@@ -56,19 +56,19 @@ SkyboxRenderer::SkyboxRenderer(SkyboxShader * shader, mat4 projectionMatrix): sh
 
 	cube = Loader::loadToVAO(VERTICES);
 
-	Debug(cube.vaoID << " test " << cube.vertexCount);
+	//cube.vaoID << " test " << cube.vertexCount);
 
-	Debug(SIZE);
+	//SIZE);
 
-	Debug(SIZE);
+	//SIZE);
 
-	Debug(SIZE);
+	//SIZE);
 	for(int i=0; i < 36; i++)
-		Debugv(VERTICES[i])
+		//VERTICES[i])
 
 	texture = Loader::LoadCubeMap(TEXTURE_FILES);
 	texture2 = Loader::LoadCubeMap(TEXTURE_FILES2);
-	Debug(texture);
+	//texture);
 	
 
 	shader->start();

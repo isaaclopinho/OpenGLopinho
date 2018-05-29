@@ -22,6 +22,7 @@
 #include "ParticleSystem.h"
 #include "ParticleTexture.h"
 #include <glm/gtx/rotate_vector.hpp>
+#include "btBulletCollisionCommon.h"
 
 using namespace glm;
 using namespace std;
@@ -48,6 +49,7 @@ class TestState : public State {
 public:
 
 	TestState() {
+		btBroadphaseInterface *itf = new btDbvtBroadphase();
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/cliffski.png"), 4, false);
 		ps = new ParticleSystem(*pt, 1000, 60, 1, 1);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/terrain.dae"), glm::vec3(0, -5, 0), glm::vec3(-90, 0, 0), 1000, "", true)));

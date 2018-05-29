@@ -116,7 +116,7 @@ void MasterRenderer::updateAllParticles(float dt,Camera camera)
 		for (int i = 0; i < it.second.size(); i++) {
 			bool stillAlive = it.second[i].Update(dt, camera);
 			
-			//Debug(it.second[i].distance);
+			////it.second[i].distance);
 			if (!stillAlive) {
 				it.second.erase(it.second.begin() + i);
 			}

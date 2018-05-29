@@ -9,7 +9,7 @@ string ShaderProgram::ReadFile(string file)
 	buffer << t.rdbuf();
 	// Make a std::string and fill it with the contents of buffer
 	string fileContent = buffer.str();
-	Debug2("Abriu", file);
+	//"Abriu", file);
 	return fileContent;
 }
 
@@ -22,7 +22,7 @@ void ShaderProgram::LinkAndValidateProgram()
 GLint ShaderProgram::getUniformLocation(string uniformName)
 {
 	GLint location = glGetUniformLocation(programID, uniformName.data());
-	Debug2(uniformName, location);
+	//uniformName, location);
 	return location;
 }
 
@@ -62,7 +62,7 @@ void ShaderProgram::loadMatrix(GLint location, glm::mat4 matrix)
 }
 
 ShaderProgram::ShaderProgram(string vertexFile, string fragmentFile) : vertexFile(vertexFile), fragmentFile(fragmentFile){
-	Debug("ShaderProgram Initialized");
+	//"ShaderProgram Initialized");
 	vertexShaderID = LoadShader(vertexFile, GL_VERTEX_SHADER);
 	fragmentShaderID = LoadShader(fragmentFile, GL_FRAGMENT_SHADER);
 	programID = glCreateProgram();
@@ -87,7 +87,7 @@ GLuint ShaderProgram::LoadShader(std::string filename, GLenum type)
 	std::fstream file(filename.c_str(), std::fstream::in | std::fstream::ate | std::fstream::binary);
 
 	if (!file.is_open()) {
-		Debug("Could not open file: " << filename);
+		//"Could not open file: " << filename);
 		exit(-2);
 	}
 
@@ -113,7 +113,7 @@ GLuint ShaderProgram::LoadShader(std::string filename, GLenum type)
 		char ErrorLog[500];
 		int size;
 		glGetShaderInfoLog(shaderID, 500, &size, ErrorLog);
-		Debug("Error compiling file: " << filename << std::endl << ErrorLog );
+		//"Error compiling file: " << filename << std::endl << ErrorLog );
 		exit(-3);
 	}
 

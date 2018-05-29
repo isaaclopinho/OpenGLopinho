@@ -26,7 +26,7 @@ void TerrainShader::connectTextureUnits()
 }
 
 void TerrainShader::bindAttributes() {
-	Debug("TerrainShaderBindAttributes");
+	//"TerrainShaderBindAttributes");
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
 	bindAttribute(2, "normal");

@@ -18,11 +18,11 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 
 	
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
-		Debug(SDL_GetError());
+		//SDL_GetError());
 	}
 
 	if ((window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL)) == nullptr) {
-		Debug(SDL_GetError());
+		//SDL_GetError());
 	}
 
 	if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) != 0) {
@@ -44,7 +44,7 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 
 	//cria contexto onde vai renderizar as parada
 	if ((context = SDL_GL_CreateContext(window)) == nullptr) {
-		Debug(SDL_GetError());
+		//SDL_GetError());
 	}
 
 	SDL_GL_SetSwapInterval(0);
@@ -53,7 +53,7 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 	glewExperimental = GL_TRUE;
 
 	if (GLenum res = glewInit() != GLEW_OK) {
-		Debug(glewGetErrorString(res));		
+		//glewGetErrorString(res));		
 	}
 	glEnable(GL_MULTISAMPLE);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -107,7 +107,7 @@ void Game::Run() {
 		InputManager::GetInstance().Update();
 
 		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
-			Debug2("FPS", 1 / dt);
+			//"FPS", 1 / dt);
 		}
 
 		states.top()->Update(dt);

@@ -17,7 +17,7 @@ void ParticleShader::loadProjectionMatrix(mat4 matrix)
 }
 
 void ParticleShader::bindAttributes() {
-	Debug("ParticleShaderBindAttributes");
+	//"ParticleShaderBindAttributes");
 	bindAttribute(0, "position");
 	bindAttribute(1, "modelViewMatrix");
 	bindAttribute(5, "texOffsets");

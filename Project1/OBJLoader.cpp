@@ -17,7 +17,7 @@
 //		exit(-1);
 //	}
 //
-//	Debug2("Numero de Meshs", scene->mNumMeshes);
+//	//"Numero de Meshs", scene->mNumMeshes);
 //
 //	for (std::uint32_t meshId = 0u; meshId < 1; meshId++) {
 //		aiMesh * mesh = scene->mMeshes[meshId];
@@ -30,7 +30,7 @@
 //		//aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuseColor);
 //		//aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambientColor);
 //
-//		Debug2("numVert", mesh->mNumVertices);
+//		//"numVert", mesh->mNumVertices);
 //		for (uint32_t vertID = 0u; vertID < mesh->mNumVertices; vertID++) {
 //			aiVector3D vert = mesh->mVertices[vertID];
 //			aiVector3D normal = mesh->mNormals[vertID];
@@ -45,7 +45,7 @@
 //			positions.emplace_back(vec3(vert.x, vert.y, vert.z));
 //				
 //			//texture.emplace_back(vec2(mesh->mTextureCoords[vertID][0].x, mesh->mTextureCoords[vertID][0].y));
-//			//Debug2(mesh->mTextureCoords[0][vertID].x, mesh->mTextureCoords[0][vertID].y);
+//			////mesh->mTextureCoords[0][vertID].x, mesh->mTextureCoords[0][vertID].y);
 //
 //		}
 //

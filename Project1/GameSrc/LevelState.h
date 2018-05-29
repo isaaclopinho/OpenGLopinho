@@ -19,7 +19,6 @@
 #include "../ParticleSystem.h"
 #include "Player.h"
 #include <btBulletDynamicsCommon.h>
-#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 using namespace glm;
 using namespace std;
 

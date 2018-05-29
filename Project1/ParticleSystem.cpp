@@ -6,7 +6,7 @@
 ParticleSystem::ParticleSystem(ParticleTexture &texture, float pps, float speed, float gravityComplient, float lifeLength)
 	:texture(texture), pps(pps), speed(speed), gravityComplient(gravityComplient), lifeLength(lifeLength)
 {
-	Debug2("Psystem", texture.textureID);
+	//"Psystem", texture.textureID);
 }
 
 void ParticleSystem::Update(float dt, vec3 center)

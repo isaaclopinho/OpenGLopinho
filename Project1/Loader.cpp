@@ -74,7 +74,7 @@ void Loader::addInstancedAttribute(int vao, int vbo, int attribute, int dataSize
 //	GLuint vaoID = createVAO();
 //	storeDataInAttributeList(0, positions);
 //
-//	Debug4("TextureCoords",textureCoords.size(), "normals", normals.size());
+//	//"TextureCoords",textureCoords.size(), "normals", normals.size());
 //	storeDataInAttributeList(1, textureCoords);
 //	storeDataInAttributeList(2, normals);
 //	bindIndicesBuffer(indices);
@@ -110,21 +110,21 @@ void Loader::Clear()
 		vaos.pop_back();
 	}
 
-	Debug("Clearing models\n.");
+	//"Clearing models\n.");
 	for (auto i = modelsMap.begin(); i != modelsMap.end(); i++) {
 		delete i->second;
 	}
 
 	modelsMap.clear();
 
-	Debug("Clearing scenes.\n");
+	//"Clearing scenes.\n");
 	for (auto i = scenesMap.begin(); i != scenesMap.end(); i++) {
 		aiReleaseImport(i->second);
 	}
 
 	scenesMap.clear();
 
-	Debug("Clearing textures.\n");
+	//"Clearing textures.\n");
 	while (!textureList.empty()) {
 		glDeleteTextures(1, &textureList.back());
 		textureList.pop_back();
@@ -163,7 +163,7 @@ GLuint Loader::LoadTexture(string file)
 	int const type = ilGetInteger(IL_IMAGE_TYPE); // matches OpenGL
 	int const format = ilGetInteger(IL_IMAGE_FORMAT); // matches OpenGL
 
-	Debug4(width, height, type, format);
+	//width, height, type, format);
 
 	glGenTextures(1, &textureID);
 
@@ -217,7 +217,7 @@ GLuint Loader::LoadCubeMap(vector<string> filename)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	textureMap[filename[0]] = textureID;
-	Debug(textureID);
+	//textureID);
 	return textureID;
 }
 //

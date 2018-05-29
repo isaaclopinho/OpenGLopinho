@@ -35,7 +35,7 @@ void SkyboxShader::loadViewMatrix(Camera camera)
 }
 
 void SkyboxShader::bindAttributes() {
-	Debug("SkyboxShaderBindAttributes");
+	//"SkyboxShaderBindAttributes");
 	bindAttribute(0, "position");
 }
 

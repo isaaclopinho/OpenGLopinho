@@ -3,15 +3,15 @@
 #include "TexturedModel.h"
 //
 //Terrain::Terrain(int gridX, int gridZ, Loader loader, string texFile, TerrainTexturePack ttp) : ttp(ttp){
-//	Debug2(SIZE, VERTEX_COUNT);
+//	//SIZE, VERTEX_COUNT);
 //	texture = loader.LoadTexture(texFile);
-//	Debug(texture.textureID);
+//	//texture.textureID);
 //	x = gridX * SIZE;
 //	z = gridZ * SIZE;
 //
-//	Debug3("GRIDSIZE",x, z);
+//	//"GRIDSIZE",x, z);
 //	model = GenerateTerrain(loader);
-//	Debug(model.vaoID);
+//	//model.vaoID);
 //}
 //
 //
