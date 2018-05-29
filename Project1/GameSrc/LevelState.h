@@ -42,9 +42,13 @@ class LevelState : public State {
 
 public:
 	LevelState() { 
+
+		//Initialize Physics
 		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
 		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+
 		AddGameObject(new Player());
 	};
 
