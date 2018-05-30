@@ -33,7 +33,7 @@ void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, Direct
 
 	animatedShader->stop();
 
-	sbRenderer->render(camera);
+	//sbRenderer->render(camera);
 
 
 	pRenderer->render(particless, camera);

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "..\GameObject.h"
+#include "..\PhysicsObject.h"
 #include "..\MasterRenderer.h"
 #include "..\InputManager.h"
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 
-class Player : public GameObject {
+class Player : public PhysicsObject {
 public:
 	Entity entity;
 	Player();
@@ -14,7 +14,7 @@ public:
 	void Update(float dt);
 	void Render();
 
-	vec3 playerPos = vec3(0, 90, -5);
+	vec3 playerPos = vec3(0, 20, -5);
 	vec3 playerRot = vec3(0, 90, 0);
 
 	btRigidBody* getRB() {

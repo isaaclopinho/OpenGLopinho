@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, 1, "", false)
+Player::Player() : entity(Loader::LoadModel("res/Models/t.dae"), playerPos, playerRot, 0.3, "", false)
 {
 	
 	btCollisionShape* playerCollider = new btBoxShape(btVector3(2, 2, 2));
@@ -40,7 +40,7 @@ void Player::CheckInput()
 void Player::PlayerMove() {
 	
 	playerPos = vec3(playerPos.x, playerPos.y, playerPos.z - 0.001);
-	playerRot = vec3(playerRot.x, playerRot.y + 1, playerRot.z);
+	playerRot = vec3(playerRot.x, playerRot.y + 5, playerRot.z);
 	entity.position = playerPos;
 	entity.rotation = playerRot;
 };

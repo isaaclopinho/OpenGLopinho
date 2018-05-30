@@ -36,7 +36,7 @@ class LevelState : public State {
 	DirectionalLight direct = DirectionalLight(vec3(0, 0, -1), vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*10.0f);
 
 
-	Camera camera = Camera(vec3(0, 0, 10));
+	Camera camera = Camera(vec3(0, 2, 0));
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
 
@@ -53,7 +53,7 @@ public:
 		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 
 		phyWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-
+		phyWorld->setGravity(btVector3(0, -9.8, 0));
 
 		//temporary physics ground for testing purposes
 		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
@@ -80,10 +80,6 @@ public:
 		}
 
 		phyWorld->stepSimulation(dt);
-		btTransform trans;
-		player->getRB()->getMotionState()->getWorldTransform(trans);
-
-		cout << trans.getOrigin().getY() << endl;
 		
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
