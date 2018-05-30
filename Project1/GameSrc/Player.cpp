@@ -3,6 +3,7 @@
 Player::Player() : entity(Loader::LoadModel("res/Models/t.dae"), playerPos, playerRot, 0.3, "", false)
 {
 	
+	//initialize physics
 	btCollisionShape* playerCollider = new btBoxShape(btVector3(2, 2, 2));
 	btDefaultMotionState* playerMotion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), Maths::glmToBullet(playerPos)));
 	btScalar playerMass = 100;
