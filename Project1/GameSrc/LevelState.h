@@ -19,6 +19,7 @@
 #include "../ParticleSystem.h"
 #include "Player.h"
 #include <btBulletDynamicsCommon.h>
+
 using namespace glm;
 using namespace std;
 
@@ -35,10 +36,12 @@ class LevelState : public State {
 	DirectionalLight direct = DirectionalLight(vec3(0, 0, -1), vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*10.0f);
 
 
-	Camera camera = Camera(vec3(0, 0, 0));
+	Camera camera = Camera(vec3(0, 0, 10));
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
 
+	btDiscreteDynamicsWorld* phyWorld;
+	Player* player;
 
 public:
 	LevelState() { 
@@ -47,9 +50,24 @@ public:
 		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
 		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+
+		phyWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
 
-		AddGameObject(new Player());
+		//temporary physics ground for testing purposes
+		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
+		btRigidBody* groundRB = new btRigidBody(groundRBCI);
+
+
+		phyWorld->addRigidBody(groundRB);
+		player = new Player();
+		AddGameObject(player);
+
+		phyWorld->addRigidBody(player->getRB());
+
 	};
 
 	~LevelState();
@@ -60,6 +78,13 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
+
+		phyWorld->stepSimulation(dt);
+		btTransform trans;
+		player->getRB()->getMotionState()->getWorldTransform(trans);
+
+		cout << trans.getOrigin().getY() << endl;
+		
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
