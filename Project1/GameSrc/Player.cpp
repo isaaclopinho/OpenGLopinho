@@ -21,6 +21,7 @@ void Player::Update(float dt) {
 	btTransform trans;
 	playerRigidBody->getMotionState()->getWorldTransform(trans);
 	playerPos = vec3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+	entity.position = playerPos;
 }
 
 

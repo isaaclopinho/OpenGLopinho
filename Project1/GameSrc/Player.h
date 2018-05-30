@@ -14,7 +14,7 @@ public:
 	void Update(float dt);
 	void Render();
 
-	vec3 playerPos = vec3(0, 50, -5);
+	vec3 playerPos = vec3(0, 90, -5);
 	vec3 playerRot = vec3(0, 90, 0);
 
 	btRigidBody* getRB() {
