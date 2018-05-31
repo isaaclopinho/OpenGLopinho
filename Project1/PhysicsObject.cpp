@@ -11,6 +11,7 @@ PhysicsObject::PhysicsObject(btCollisionShape* collider, vec3 objectPos, btScala
 	btRigidBody::btRigidBodyConstructionInfo objectRigidBodyCollisionInformation(objectMass, objectMotion, Collider, objectFallInertia);
 	rigidBody = new btRigidBody(objectRigidBodyCollisionInformation);
 
+
 }
 
 PhysicsObject::~PhysicsObject()

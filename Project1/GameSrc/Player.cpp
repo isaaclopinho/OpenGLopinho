@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : entity(Loader::LoadModel("res/Models/t.dae"), playerPos, playerRot, 0.3, "", false)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, 0.3, "", false)
 {
 	
 	//initialize physics
@@ -12,6 +12,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/t.dae"), playerPos, play
 
 	btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
 	playerRigidBody = new btRigidBody(playerRigidBodyCI);
+
 
 
 }

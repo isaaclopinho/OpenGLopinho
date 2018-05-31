@@ -11,7 +11,7 @@
 #include "../GUIRenderer.h"
 #include "../Mesh.h"
 #include "../Movie.h"
-#include "../GameObjectTest.h"
+#include "../GameObject.h"
 #include "../Renderer.h"
 #include "../Light.h"
 #include "../InputManager.h"
@@ -42,6 +42,8 @@ class LevelState : public State {
 
 	btDiscreteDynamicsWorld* phyWorld;
 	Player* player;
+	vector<btRigidBody> rigidBodies;
+
 
 public:
 	LevelState() { 
@@ -61,12 +63,19 @@ public:
 		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
 		btRigidBody* groundRB = new btRigidBody(groundRBCI);
 
-
 		phyWorld->addRigidBody(groundRB);
+			
 		player = new Player();
 		AddGameObject(player);
 
 		phyWorld->addRigidBody(player->getRB());
+
+
+		for (unsigned int i = 0; i < gameObjects.size(); i++) {
+			if (gameObjects[i]->Is("PhysicsObject")) {
+				phyWorld->addRigidBody(gameObjects[i]->getRB());
+			};
+		};
 
 	};
 

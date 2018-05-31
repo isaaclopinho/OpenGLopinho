@@ -10,6 +10,7 @@ class PhysicsObject : public GameObject {
 	
 	protected:
 		bool remove;
+		string type = "PhysicsObject";
 	public:
 		Entity * entity;
 		PhysicsObject() {};
