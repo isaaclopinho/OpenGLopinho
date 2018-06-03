@@ -11,13 +11,14 @@ class GameObject {
 
 protected:
 	bool remove;
-	string type =  "GameObject";
+	
 public:
+	string type;
 	GameObject() { type = "GameObject"; };
 	~GameObject() {};
 	virtual void Update(float dt) = 0;
 	virtual void Render() = 0;
-	btRigidBody* getRB() { return nullptr; };
+	virtual btRigidBody* getRB() { return nullptr; };
 	bool Remove() { return remove; };
 	bool Is(string str) { return str == type; };
 };

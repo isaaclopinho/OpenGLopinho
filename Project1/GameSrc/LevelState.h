@@ -42,6 +42,7 @@ class LevelState : public State {
 
 	btDiscreteDynamicsWorld* phyWorld;
 	Player* player;
+	Player* obj2;
 	vector<btRigidBody> rigidBodies;
 
 
@@ -69,13 +70,6 @@ public:
 		AddGameObject(player);
 
 		phyWorld->addRigidBody(player->getRB());
-
-
-		for (unsigned int i = 0; i < gameObjects.size(); i++) {
-			if (gameObjects[i]->Is("PhysicsObject")) {
-				phyWorld->addRigidBody(gameObjects[i]->getRB());
-			};
-		};
 
 	};
 

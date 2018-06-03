@@ -37,12 +37,23 @@ void Player::CheckInput()
 	if (InputManager::GetInstance().IsKeyDown(SDLK_a)) {
 		PlayerMove();
 	};
+	if (InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) {
+		PlayerJump();
+	}
 }
 
 void Player::PlayerMove() {
 	
-	playerPos = vec3(playerPos.x, playerPos.y, playerPos.z - 0.001);
+	/*playerPos = vec3(playerPos.x, playerPos.y, playerPos.z - 0.001);
 	playerRot = vec3(playerRot.x, playerRot.y + 5, playerRot.z);
 	entity.position = playerPos;
-	entity.rotation = playerRot;
+	entity.rotation = playerRot;*/
+
+	playerRigidBody->setLinearVelocity(btVector3(0, 0, 2));
+	cout << "foi" << endl;
 };
+
+void Player::PlayerJump() {
+
+	playerRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
+}

@@ -8,9 +8,7 @@ using namespace std;
 class PhysicsObject : public GameObject {
 
 	
-	protected:
-		bool remove;
-		string type = "PhysicsObject";
+	
 	public:
 		Entity * entity;
 		PhysicsObject() {};
@@ -19,10 +17,8 @@ class PhysicsObject : public GameObject {
 
 		virtual void Update(float dt) = 0;
 		virtual void Render() = 0;
-		bool Remove() { return remove; };
-
-
-		btRigidBody* getRB() {return rigidBody;	};
+		
+		btRigidBody* getRB() override {return rigidBody;};
 
 private:
 

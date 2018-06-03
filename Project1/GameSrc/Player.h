@@ -17,13 +17,12 @@ public:
 	vec3 playerPos = vec3(0, 20, -5);
 	vec3 playerRot = vec3(0, 90, 0);
 
-	btRigidBody* getRB() {
-		return playerRigidBody;
-	};
+	btRigidBody* getRB() override {return playerRigidBody;};
 
 private:
 	
 	void CheckInput();
+	void PlayerJump();
 	void PlayerMove();
 
 	btRigidBody* playerRigidBody;
