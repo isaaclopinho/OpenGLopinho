@@ -12,13 +12,15 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 
 	btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
 	playerRigidBody = new btRigidBody(playerRigidBodyCI);
-
-
+	canJump = true;
+	jumpTimeStamp = 0;
+	jumpCoolDown = 2000;
 
 }
 
 void Player::Update(float dt) {
 
+	CheckCoolDowns();
 	CheckInput();
 	btTransform trans;
 	playerRigidBody->getMotionState()->getWorldTransform(trans);
@@ -37,8 +39,9 @@ void Player::CheckInput()
 	if (InputManager::GetInstance().IsKeyDown(SDLK_a)) {
 		PlayerMove();
 	};
-	if (InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) {
+	if ((InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) && canJump == true) {
 		PlayerJump();
+		canJump = false;
 	}
 }
 
@@ -50,10 +53,18 @@ void Player::PlayerMove() {
 	entity.rotation = playerRot;*/
 
 	playerRigidBody->setLinearVelocity(btVector3(0, 0, 2));
-	cout << "foi" << endl;
+
 };
 
 void Player::PlayerJump() {
 
-	playerRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
+	playerRigidBody->applyCentralImpulse(btVector3(0, 400, 0));
+	jumpTimeStamp = SDL_GetTicks();
+}
+
+void Player::CheckCoolDowns() {
+
+	if (SDL_GetTicks() > jumpTimeStamp + jumpCoolDown) {
+		canJump = true;
+	}
 }

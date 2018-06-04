@@ -21,9 +21,14 @@ public:
 
 private:
 	
+
+	void CheckCoolDowns();
 	void CheckInput();
 	void PlayerJump();
 	void PlayerMove();
 
 	btRigidBody* playerRigidBody;
+
+	bool canJump;
+	float jumpCoolDown, jumpTimeStamp;
 };
