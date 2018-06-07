@@ -69,7 +69,6 @@ public:
 		//ps->Update(dt, vec3(camera.position.x, camera.position.y+30, camera.position.z));
 		
 		//MasterRenderer::GetInstance().updateAllParticles (dt, camera);
-		std::cout << camera.position.z << std::endl;
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
