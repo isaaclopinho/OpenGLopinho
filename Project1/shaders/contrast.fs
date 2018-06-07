@@ -43,7 +43,7 @@ void main()
 
 	float vignette = smoothstep(r, r-softness, len);
 	texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.9);
-	//texColor = mix(texColor, Sepia(texColor), 1);
+	texColor = mix(texColor, Sepia(texColor), 1);
 	out_Colour = texColor ;	
 }  
 
