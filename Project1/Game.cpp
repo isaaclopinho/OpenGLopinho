@@ -58,6 +58,7 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 		//glewGetErrorString(res));		
 	}
 	glEnable(GL_MULTISAMPLE);
+	glEnable(GL_FRAMEBUFFER_SRGB);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
