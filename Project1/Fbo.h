@@ -12,6 +12,8 @@ public:
 	const int DEPTH_TEXTURE = 1;
 	const int DEPTH_RENDER_BUFFER = 2;
 
+	bool multisample = false;
+
 	int width, height;
 	GLuint frameBuffer;
 
@@ -21,6 +23,7 @@ public:
 	GLuint colourBuffer;
 
 	Fbo(int width, int height, int depthBufferType);
+	Fbo(int width, int height);
 	void cleanUp();
 	void bindFrameBuffer();
 	void unbindFrameBuffer();
@@ -30,6 +33,9 @@ public:
 	void createTextureAttachment();
 
 	void createDepthTextureAttachment();
+	void resolveToFbo(Fbo & output);
+	void resolveToScreen();
+	void createMultisampleColourAttachment();
 	void createDepthBufferAttachment();
 	~Fbo();
 };

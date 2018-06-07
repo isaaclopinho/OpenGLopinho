@@ -103,7 +103,8 @@ void Game::Run() {
 	
 	states.push(new TestState());
 
-	Fbo fbo = Fbo(WIDTH, HEIGHT, 2);
+	Fbo fbo = Fbo(WIDTH, HEIGHT);
+	Fbo output = Fbo(WIDTH, HEIGHT, 1);
 	PostProcessing pp = PostProcessing();
 	pp.init();
 
@@ -123,8 +124,10 @@ void Game::Run() {
 		states.top()->Render();
 
 		fbo.unbindFrameBuffer();
+
+		fbo.resolveToFbo(output);
 		
-		pp.doPostProcessing(fbo.colourTexture);
+		pp.doPostProcessing(output.colourTexture);
 
 		if (newState != NULL) {
 			states.push(newState);

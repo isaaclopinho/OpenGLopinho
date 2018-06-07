@@ -21,8 +21,13 @@ void Fbo::bindToRead()
 
 void Fbo::initialiseFrameBuffer(int type)
 {
+
 	createFrameBuffer();
-	createTextureAttachment();
+
+	if (multisample)
+		createMultisampleColourAttachment();
+	else
+		createTextureAttachment();
 
 	if (type == DEPTH_RENDER_BUFFER)
 		createDepthBufferAttachment();
@@ -63,11 +68,38 @@ void Fbo::createDepthTextureAttachment()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 }
 
+void Fbo::resolveToFbo(Fbo &output) {
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, output.frameBuffer);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, output.width, output.height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	unbindFrameBuffer();
+}
+
+void Fbo::resolveToScreen() {
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+	glDrawBuffer(GL_BACK);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	unbindFrameBuffer();
+}
+
+void Fbo::createMultisampleColourAttachment() {
+	glGenRenderbuffers(1, &colourBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, colourBuffer);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA8, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colourBuffer);
+}
+
 void Fbo::createDepthBufferAttachment()
 {
 	glGenRenderbuffers(1, &depthBuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+
+	if(!multisample)
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+	else
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT24, width, height);
+
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 }
 
@@ -80,6 +112,14 @@ Fbo::Fbo(int width, int height, int depthBufferType) : width(width), height(heig
 	initialiseFrameBuffer(depthBufferType);
 	std::cout << width << " " << height << "\n";
 	std::cout <<" fb: " <<  frameBuffer << " colortEXUTRE: " << colourTexture << "depthTex: " << depthTexture << " DepthBuff: " << depthBuffer << " \n";
+}
+
+Fbo::Fbo(int width, int height): width(width), height(height), multisample(true)
+{
+
+	initialiseFrameBuffer(DEPTH_RENDER_BUFFER);
+	std::cout << "fbo2 fb: " << frameBuffer << " colortEXUTRE: " << colourTexture << "depthTex: " << depthTexture << " DepthBuff: " << depthBuffer << " cBuff: " << colourBuffer << " \n";
+
 }
 
 void Fbo::cleanUp()
