@@ -55,8 +55,11 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -5, 0), glm::vec3(-90, 0, 0), 1000, "", true)));
 		
 		for(int i=0; i < 6; i++)
-			for(int j=0; j < 6; j++)
-				AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-100+i*20, -5.5f,-100+ j*20), glm::vec3(-90, 90, 0), 4, "", true)));
+			for (int j = 0; j < 6; j++) {
+				GameObjectTest * t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-100 + i * 20, -5.5f, -100 + j * 20), glm::vec3(-90, 0, 0), 4, "", true));
+				t->animated = true;
+				AddGameObject(t);
+			}
 
 		
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));

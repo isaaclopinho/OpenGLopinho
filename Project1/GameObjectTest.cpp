@@ -13,7 +13,8 @@ GameObjectTest::~GameObjectTest()
 void GameObjectTest::Update(float dt)
 {
 	//entity.Rotate(vec3(0, 1, 0));
-	//entity.Update(dt);
+	if(animated)
+		entity.Update(dt);
 }
 
 void GameObjectTest::Render()

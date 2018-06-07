@@ -22,6 +22,8 @@ public:
 	GLuint depthBuffer;
 	GLuint colourBuffer;
 
+	GLuint depthShadowTexture;
+
 	Fbo(int width, int height, int depthBufferType);
 	Fbo(int width, int height);
 	void cleanUp();
@@ -30,6 +32,8 @@ public:
 	void bindToRead();
 	void initialiseFrameBuffer(int type);
 	void createFrameBuffer();
+	void createFrameBufferShadow();
+	void createTextureShaderAttachment();
 	void createTextureAttachment();
 
 	void createDepthTextureAttachment();
