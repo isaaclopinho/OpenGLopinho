@@ -2,8 +2,10 @@
 #include "Debug.h"
 #include "GameSrc\LevelState.h"
 #include "TestState.h"
+#include "Fbo.h"
+#include "PostProcessing.h"
 
-#define FRAMETIME 1
+#define FRAMETIME 16
 
 Game* Game::instance = NULL;
 
@@ -98,8 +100,11 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new TestState());
 
+	Fbo fbo = Fbo(WIDTH, HEIGHT, 2);
+	PostProcessing pp = PostProcessing();
+	pp.init();
 
 	while (!states.empty()) {
 		CalculateDeltaTime();
@@ -111,7 +116,14 @@ void Game::Run() {
 		}
 
 		states.top()->Update(dt);
+		
+		fbo.bindFrameBuffer();
+
 		states.top()->Render();
+
+		fbo.unbindFrameBuffer();
+		
+		pp.doPostProcessing(fbo.colourTexture);
 
 		if (newState != NULL) {
 			states.push(newState);
@@ -133,7 +145,8 @@ void Game::Run() {
 		}
 	}
 		
-
+	pp.cleanUp();
+	fbo.cleanUp();
 
 }
 

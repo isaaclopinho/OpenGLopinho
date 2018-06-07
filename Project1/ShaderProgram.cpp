@@ -113,7 +113,7 @@ GLuint ShaderProgram::LoadShader(std::string filename, GLenum type)
 		char ErrorLog[500];
 		int size;
 		glGetShaderInfoLog(shaderID, 500, &size, ErrorLog);
-		//"Error compiling file: " << filename << std::endl << ErrorLog );
+		cout << "Error compiling file: " << filename << std::endl << ErrorLog ;
 		exit(-3);
 	}
 

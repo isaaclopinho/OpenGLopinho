@@ -1,9 +1,10 @@
 #include "PostProcessing.h"
 
 
-void PostProcessing::doPostProcessing(int colourTexture)
+void PostProcessing::doPostProcessing(GLuint colourTexture)
 {
 	start();
+	cc.render(colourTexture);
 	end();
 }
 
@@ -29,10 +30,11 @@ void PostProcessing::end()
 }
 
 
-PostProcessing::PostProcessing()
+void PostProcessing::init()
 {
 	vector<vec2> POSITIONS = { vec2(-1, 1), vec2(-1, -1), vec2(1, 1), vec2(1, -1) };
 	quad = Loader::loadToVAO(POSITIONS);
+	cc = ContrastChanger();
 }
 
 
