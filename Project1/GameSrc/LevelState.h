@@ -18,6 +18,7 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "../ParticleSystem.h"
 #include "Player.h"
+#include "../BulletDebugDrawer.h"
 #include <btBulletDynamicsCommon.h>
 
 using namespace glm;
@@ -25,7 +26,7 @@ using namespace std;
 
 class LevelState : public State {
 
-
+	BulletDebugDrawer* debugDrawer;
 
 	PointLight pt[4] = {
 		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
@@ -65,11 +66,17 @@ public:
 		btRigidBody* groundRB = new btRigidBody(groundRBCI);
 
 		phyWorld->addRigidBody(groundRB);
-			
-		player = new Player();
+		
+		//debugDrawer = new BulletDebugDrawer();
+		phyWorld->setDebugDrawer(debugDrawer);
+
+		player = Player::getInstance();
 		AddGameObject(player);
 
 		phyWorld->addRigidBody(player->getRB());
+
+		//debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+
 
 	};
 
@@ -82,35 +89,40 @@ public:
 			gameObjects[i]->Update(dt);
 		}
 
+		//Physics
 		phyWorld->stepSimulation(dt);
 		
-
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_UP)) {
-			camera.position -= vec3(0, 0, 50)*delta;
+			camera.position -= vec3(0, 0, 5)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_DOWN)) {
-			camera.position += vec3(0, 0, 50)*delta;
+			camera.position += vec3(0, 0, 5)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_w)) {
-			camera.position += vec3(0, 50, 0)*delta;
+			camera.position += vec3(0, 5, 0)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_s)) {
-			camera.position -= vec3(0, 50, 0)*delta;
+			camera.position -= vec3(0, 5, 0)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_LEFT)) {
-			camera.position -= vec3(50, 0, 0)*delta;
+			camera.position -= vec3(5, 0, 0)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_RIGHT)) {
-			camera.position += vec3(50, 0, 0)*delta;
+			camera.position += vec3(5, 0, 0)*delta;
+		}
+
+		if (InputManager::GetInstance().IsKeyDown(SDLK_p)) {
+			cout << "p" << endl;
+			debugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
 		}
 	};
 
@@ -119,6 +131,8 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Render();
 		}
+
+		phyWorld->debugDrawWorld();
 
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
 	};

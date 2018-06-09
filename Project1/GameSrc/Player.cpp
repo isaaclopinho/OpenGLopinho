@@ -1,5 +1,7 @@
 #include "Player.h"
 
+Player* Player::instance = 0;
+
 Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, 0.3, "", false)
 {
 	
@@ -9,12 +11,16 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 	btScalar playerMass = 100;
 	btVector3 playerFallInertia = btVector3(0, 0, 0);
 	playerCollider->calculateLocalInertia(playerMass, playerFallInertia);
-
 	btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
 	playerRigidBody = new btRigidBody(playerRigidBodyCI);
+	
+	//Initialize Player Variables
 	canJump = true;
 	jumpTimeStamp = 0;
 	jumpCoolDown = 2000;
+	maxSpeed = 5;
+	speed = 0.003;
+	turnAngle = 0.0;
 
 }
 
@@ -46,13 +52,30 @@ void Player::CheckInput()
 }
 
 void Player::PlayerMove() {
-	
-	/*playerPos = vec3(playerPos.x, playerPos.y, playerPos.z - 0.001);
-	playerRot = vec3(playerRot.x, playerRot.y + 5, playerRot.z);
-	entity.position = playerPos;
-	entity.rotation = playerRot;*/
 
-	playerRigidBody->setLinearVelocity(btVector3(0, 0, 2));
+	//btTransform transform;
+	//playerRigidBody->getMotionState()->getWorldTransform(transform);
+	//turnAngle -= 1;
+	//transform.setRotation(btQuaternion(btVector3(0, 1, 0), turnAngle));
+
+	//playerPos = vec3(playerPos.x, playerPos.y, playerPos.z - 0.001);
+	//playerRot = vec3(playerRot.x, playerRot.y + 5, playerRot.z);
+	//entity.position = playerPos;
+	//entity.rotation = playerRot;
+
+	btVector3 moveForce = btVector3(0, 0, 20);
+	playerRigidBody->applyCentralImpulse(moveForce);
+
+	if (playerRigidBody->getLinearVelocity().getZ() > maxSpeed) { cout << "passou" << endl; }
+
+
+	//btVector3 newLinearVelocity = btVector3(playerRigidBody->getLinearVelocity().getX(), playerRigidBody->getLinearVelocity().getY(), playerRigidBody->getLinearVelocity().getZ() + (speed /** Game::GetInstance()->GetDeltaTime()*/));
+	//playerRigidBody->setLinearVelocity(newLinearVelocity);
+	//speed = playerRigidBody->getLinearVelocity().getZ();
+	cout << playerRigidBody->getLinearVelocity().getZ() << endl;
+
+
+	
 
 };
 
@@ -67,4 +90,13 @@ void Player::CheckCoolDowns() {
 	if (SDL_GetTicks() > jumpTimeStamp + jumpCoolDown) {
 		canJump = true;
 	}
+}
+
+Player* Player::getInstance() {
+
+	if (!instance) {
+		instance = new Player();
+	}
+
+	return instance;
 }
