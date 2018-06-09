@@ -57,7 +57,7 @@ class TestState : public State {
 
 public:
 
-	TestState() : shadowMap(0, vec2(0.75f, 0.75f), vec2(0.25f, 0.25f)), sfb() {
+	TestState() : shadowMap(0, vec2(0.75f, 0.75f), vec2(0.25f, 0.25f)), sfb(2048,2048) {
 
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
 		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
@@ -72,12 +72,12 @@ public:
 		
 		guiTextures.emplace_back(shadowMap);
 
-		for(int i=0;i < 5; i++)
-			for (int j = 0; j < 5; j++) {
-				GameObjectTest *g = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-5+i*2, 0, -5+j*2), glm::vec3(-90, 0, 0), 1, "", true));
-				g->animated = true;
-				AddGameObject(g);
-			}
+		for (int i = 0; i < 5; i++) {
+			GameObjectTest *g = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-5+i*2, 0, 0), glm::vec3(-90, 0, 0), 1, "", true));
+			g->animated = true;
+			AddGameObject(g);
+		}
+		
 
 		//guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
 		direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
@@ -140,19 +140,19 @@ public:
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
 
-		fbo->bindFrameBuffer();
+		//fbo->bindFrameBuffer();
 
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
 
-		fbo->unbindFrameBuffer();
+		//fbo->unbindFrameBuffer();
 
-		fbo->resolveToFbo(*output);
+		//fbo->resolveToFbo(*output);
 
-		pp->doPostProcessing(output->colourTexture);
+		//pp->doPostProcessing(output->colourTexture);
 
 		guiTextures[0].textureID = sfb.depthTexture;		
 
-		guirenderer.render(guiTextures);
+		//guirenderer.render(guiTextures);
 	}
 
 };
