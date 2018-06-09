@@ -28,7 +28,7 @@ void ParticleSystem::Update(float dt, vec3 center)
 	}
 
 	for (int i = 0; i < count; i++) {
-		EmitParticle2(center);
+		EmitParticle(center);
 	}
 
 	if (timer >= 1) {
@@ -43,7 +43,7 @@ void ParticleSystem::EmitParticle2(vec3 center)
 	velocity = glm::normalize(velocity);
 	velocity = velocity * (speed);
 	
-	Particle(texture, center + vec3((rand() % 250 - 120) / 10.0, 0, (rand() % 500 - 250) / 10.0), velocity, -10, gravityComplient, lifeLength, 0, (rand()%20+10)/100.0);
+	Particle(texture, center + vec3((rand() % 250 - 120) / 10.0, 0, -(rand() % 500) / 10.0), velocity, -10, gravityComplient, lifeLength, 0, (rand()%50+20)/100.0);
 }
 
 void ParticleSystem::EmitParticle(vec3 center)

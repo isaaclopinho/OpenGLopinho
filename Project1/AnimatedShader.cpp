@@ -34,6 +34,9 @@ void AnimatedShader::getAllUniformLocations() {
 	location_specularMap = ShaderProgram::getUniformLocation("material.specular");
 
 	location_normalMap = ShaderProgram::getUniformLocation("normalMap");
+	location_shadowMap = ShaderProgram::getUniformLocation("shadowMap");
+	location_lightSpaceMatrix = ShaderProgram::getUniformLocation("lightSpaceMatrix");
+
 	location_viewPos = ShaderProgram::getUniformLocation("viewPos");
 
 	location_spotLightPosition = ShaderProgram::getUniformLocation("light.position");
@@ -86,6 +89,7 @@ void AnimatedShader::connectMaps()
 	ShaderProgram::loadInt(location_specularMap, 1);
 	ShaderProgram::loadInt(location_emissionMap, 2);
 	ShaderProgram::loadInt(location_normalMap, 3);
+	ShaderProgram::loadInt(location_shadowMap, 4);
 }
 
 void AnimatedShader::SetSpotLightProperties(vec3 pos, vec3 lightDirection, vec3 ambient, vec3 diffuse, vec3 specular, int lightDistance, float cutOff, float outerCutoff)
@@ -154,6 +158,12 @@ void AnimatedShader::materialProperties(float shininess)
 	ShaderProgram::loadFloat(location_shineness, shininess);
 }
 
+
+void AnimatedShader::lightSpace(mat4 light)
+{
+	ShaderProgram::loadMatrix(location_lightSpaceMatrix, light);
+}
+
 void AnimatedShader::loadViewPos(vec3 cameraPos)
 {
 	ShaderProgram::loadVector(location_viewPos, cameraPos);
@@ -192,6 +202,8 @@ void AnimatedShader::loadViewMatrix(Camera camera)
 //{
 //	loadMatrix(lProjMatrix, matrix);
 //}
+
+
 void AnimatedShader::LoadBoneMatrices(std::vector<glm::mat4> matrices) {
 	for (int i = 0; i < 100; i++) {
 		if (i < matrices.size()) {
@@ -202,6 +214,9 @@ void AnimatedShader::LoadBoneMatrices(std::vector<glm::mat4> matrices) {
 		}
 	}
 }
+
+
+
 //
 //void AnimatedShader::LoadShineVars(float damper, float shine) {
 //	loadFloat(lShineDamper, damper);

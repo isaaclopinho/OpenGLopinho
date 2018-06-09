@@ -365,7 +365,7 @@ void Renderer::render(vector<Entity*> entities)
 
 	for (auto entity : entities) {
 		prepareInstance(entity);
-		entity->GetMesh()->Render(shader);
+		entity->GetMesh()->Render();
 	}
 
 	unbindAttributes();

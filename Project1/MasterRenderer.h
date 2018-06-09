@@ -11,6 +11,8 @@
 #include "ParticleRenderer.h"
 #include "Pool.h"
 
+
+
 using namespace std;
 class MasterRenderer
 {	
@@ -19,40 +21,27 @@ public:
 	float NEAR_PLANE = 0.1f;
 	float FAR_PLANE = 1000;
 
-	//Pool particlePool;
-
 	vec3 color;
-
+	mat4 lightSpaceMatrix;
 	glm::mat4 projectionMatrix;
 	void createProjectionMatrix();
 	vector<Entity*> entities;
-	//vector<Particle> particles;
 
 	unordered_map<ParticleTexture, vector<Particle>> particless;
 
-	//unordered_map<Mesh, vector<Entity>> entities;
-	//unordered_map<TexturedModel, vector<Entity>> entities;
-	//vector<Terrain> terrains;
-	//StaticShader * entityShader;
-	//IsaacShader * isaacShader;
-	//IsaacRenderer * isaacRenderer;
-	//EntityRenderer * entityRenderer;
-	//TerrainRenderer * terrainRenderer;
-	//TerrainShader * terrainShader;
-	Renderer *renderer;
+	Renderer *renderer;	
 	SkyboxRenderer *sbRenderer;
 	AnimatedShader *animatedShader;
 	ParticleShader *particleShader;
 	SkyboxShader *skyboxShader;
 	ParticleRenderer *pRenderer;
+
 	static void enableCulling();
 	static void disableCulling();
 	void render(SpotLight sun, PointLight * point, DirectionalLight dl, Camera camera);
-
+	
 	void processEntity(Entity* go);
-
-	void processTerrain(Terrain terrain);
-
+	
 	void cleanUp();
 
 	void prepare();
@@ -65,7 +54,6 @@ public:
 	void updateAllParticles(float dt, Camera camera);
 	
 	void AddParticle(Particle & particle);
-
 
 	MasterRenderer();
 	~MasterRenderer();

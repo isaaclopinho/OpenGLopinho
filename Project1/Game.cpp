@@ -103,10 +103,7 @@ void Game::Run() {
 	
 	states.push(new TestState());
 
-	Fbo fbo = Fbo(WIDTH, HEIGHT);
-	Fbo output = Fbo(WIDTH, HEIGHT, 1);
-	PostProcessing pp = PostProcessing();
-	pp.init();
+	
 
 	while (!states.empty()) {
 		CalculateDeltaTime();
@@ -119,15 +116,17 @@ void Game::Run() {
 
 		states.top()->Update(dt);
 		
-		fbo.bindFrameBuffer();
+	//	fbo.bindFrameBuffer();
 
 		states.top()->Render();
 
-		fbo.unbindFrameBuffer();
+		//fbo.unbindFrameBuffer();
 
-		fbo.resolveToFbo(output);
+	//	pp.doPostProcessing(fbo.depthTexture);
+
+		//fbo.resolveToFbo(output);
 		
-		pp.doPostProcessing(output.colourTexture);
+		//pp.doPostProcessing(output.colourTexture);
 
 		if (newState != NULL) {
 			states.push(newState);
@@ -149,8 +148,8 @@ void Game::Run() {
 		}
 	}
 		
-	pp.cleanUp();
-	fbo.cleanUp();
+	//pp.cleanUp();
+//	fbo.cleanUp();
 
 }
 

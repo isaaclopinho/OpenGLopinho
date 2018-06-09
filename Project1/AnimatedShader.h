@@ -17,6 +17,8 @@ private:
 	GLint location_diffuseMap, location_specularMap, location_emissionMap, location_shineness;
 	GLint location_normalMap;
 	GLint location_viewPos;
+	GLint location_shadowMap;
+	GLint location_lightSpaceMatrix;
 
 	GLint location_dirLightDirection;
 	GLint location_dirLightAmbient;
@@ -56,15 +58,15 @@ public:
 	void SetPointLightProperties(int i, vec3 pos, vec3 ambient, vec3 diffuse, vec3 specular, int lightDistance);
 	vec3 lightConstants(int dist);
 	void materialProperties(float shininess);
+	void lightSpace(mat4 light);
 	void loadViewPos(vec3 cameraPos);
 	void loadTransformationMatrix(mat4 matrix);
 	void loadProjectionMatrix(mat4 matrix);
 	void loadViewMatrix(Camera camera);
 
 	void LoadBoneMatrices(std::vector<glm::mat4> matrices);
-
 	void LoadBoolAnimated(int value);
-		
+			
 	AnimatedShader();
 	~AnimatedShader();
 };

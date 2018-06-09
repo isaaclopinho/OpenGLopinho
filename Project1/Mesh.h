@@ -32,7 +32,7 @@ public:
 
 	bool LoadMesh(const std::string filename);
 
-	void Render(AnimatedShader* ss);
+	void Render();
 	
 	int animated;
 

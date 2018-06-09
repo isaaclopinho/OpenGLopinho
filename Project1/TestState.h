@@ -23,6 +23,8 @@
 #include "ParticleTexture.h"
 #include <glm/gtx/rotate_vector.hpp>
 #include "btBulletCollisionCommon.h"
+#include "ShadowFrameBuffer.h"
+#include "PostProcessing.h"
 
 using namespace glm;
 using namespace std;
@@ -36,42 +38,57 @@ class TestState : public State {
 		PointLight(vec3(0, -2, 10),		13,		vec3(1, 1,1)*0.0f,	vec3(1,1,1) * 0.0f,	vec3(1, 1,1)*0.0f)
 	};
 
-	vec3 pos = vec3(10000, 10000, -10000);
+	vec3 pos = vec3(-2.0, 4.0, -1.0);
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
-	DirectionalLight direct = DirectionalLight(vec3(0, 0, 0), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
+	DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
 
-	Camera camera = Camera(vec3(-2, 26.1, -8.1));
+	Camera camera = Camera(vec3(0, 0, 3));
 	int i = 0;
 	vector<GUITexture> guiTextures;
-	GUIRenderer guirenderer = GUIRenderer(); //agrupar no masterRenderer
+	GUIRenderer guirenderer = GUIRenderer(); 
 	ParticleSystem *  ps;
+	GUITexture shadowMap;
+
+	ShadowFrameBuffer sfb;
+
+	Fbo *fbo, *output;
+	PostProcessing * pp;
+
 public:
 
-	TestState() {
+	TestState() : shadowMap(0, vec2(0.75f, 0.75f), vec2(0.25f, 0.25f)), sfb() {
+
+		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
+		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
+
+		pp = new PostProcessing();
+		pp->init();
+
 		btBroadphaseInterface *itf = new btDbvtBroadphase();
-		//ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/cliffski.png"), 4, false);
-		//ps = new ParticleSystem(*pt, 10, 60, 1, 1);
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -5, 0), glm::vec3(-90, 0, 0), 1000, "", true)));
+		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/fire_002.png"), 5, true);
+		ps = new ParticleSystem(*pt, 50, 3, 0, 1);
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -0.5, 0), glm::vec3(-90, 0, 0), 25, "", true)));
 		
-		for(int i=0; i < 6; i++)
-			for (int j = 0; j < 6; j++) {
-				GameObjectTest * t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-100 + i * 20, -5.5f, -100 + j * 20), glm::vec3(-90, 0, 0), 4, "", true));
-				t->animated = true;
-				AddGameObject(t);
+		guiTextures.emplace_back(shadowMap);
+
+		for(int i=0;i < 5; i++)
+			for (int j = 0; j < 5; j++) {
+				GameObjectTest *g = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-5+i*2, 0, -5+j*2), glm::vec3(-90, 0, 0), 1, "", true));
+				g->animated = true;
+				AddGameObject(g);
 			}
 
-		
-		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
-		direct = DirectionalLight(pos, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*0.6f);
+		//guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
+		direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
 	}
 
 
 	void Update(float dt) {
 		float delta = dt;
-		//ps->Update(dt, vec3(camera.position.x, camera.position.y+30, camera.position.z));
+		ps->Update(dt, vec3(0, 0, -15));
 		
-		//MasterRenderer::GetInstance().updateAllParticles (dt, camera);
+		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
@@ -104,22 +121,37 @@ public:
 			camera.position += vec3(50, 0, 0)*delta;
 		}
 		
-		/*if (camera.position.z >= -1 && i==0) {
-			Movie::playfile("res/videos/Downloads.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
-			i++;
-		}*/
+		if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
+			Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
+		}
 		
-		//pos = rotateY(pos, radians(5.0f));
+	//pos = rotateY(pos, radians(5.0f));
 		//sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.6f, vec3(1, 1, 1), vec3(1, 1, 1));
-		
+	direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f); 
 
 	}
 
 	void Render() {
+		
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Render();
 		}
+
+		sfb.renderSceneOnBuffer();
+		sfb.bindShadowMap();
+
+		fbo->bindFrameBuffer();
+
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
+
+		fbo->unbindFrameBuffer();
+
+		fbo->resolveToFbo(*output);
+
+		pp->doPostProcessing(output->colourTexture);
+
+		guiTextures[0].textureID = sfb.depthTexture;		
+
 		guirenderer.render(guiTextures);
 	}
 

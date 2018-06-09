@@ -79,7 +79,7 @@ bool Mesh::LoadMesh(const std::string filename)
 	return ret;
 }
 
-void Mesh::Render(AnimatedShader* ss)
+void Mesh::Render()
 {
 	glBindVertexArray(VAO);
 
@@ -98,6 +98,7 @@ void Mesh::Render(AnimatedShader* ss)
 			glBindTexture(GL_TEXTURE_2D, mEmissiveMaps[materialIndex]->textureID);
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_2D, mNormalMaps[materialIndex]->textureID);
+			
 		}
 
 		glDrawElementsBaseVertex(GL_TRIANGLES, mEntries[i].numIndices, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int)*mEntries[i].baseIndex), mEntries[i].baseVertex);

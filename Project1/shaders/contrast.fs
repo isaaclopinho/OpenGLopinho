@@ -23,12 +23,11 @@ void main()
 {
 	vec2 texCoords = textureCoords;
   	//texCoords.x += 2 * sin(texCoords.y * 4*2*3.14159 + offset) / 100;
-    	//vec4 color = texture(colourTexture, texCoords);
-    	//float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
-	//out_Colour = vec4(average, average, average, 1);	
-	//out_Colour = texture(colourTexture, texCoords);
+    	vec4 color = texture(colourTexture, texCoords);
+    	float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+	out_Colour = vec4(average, average, average, 1);	
+	out_Colour = texture(colourTexture, texCoords);
 
-	//sample our texture
 	vec4 texColor = texture2D(colourTexture, texCoords);
 	
 	vec2 resolution = vec2(1280, 720);

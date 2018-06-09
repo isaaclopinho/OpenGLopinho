@@ -9,6 +9,8 @@ layout (location = 4) in vec4 pesos;
 out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoords;
+out vec4 ShadowCoord;
+out vec4 FragPosLightSpace;
 
 const int MAX_BONES = 100;
 
@@ -16,8 +18,11 @@ uniform mat4 model;
 uniform mat4 projection;
 uniform mat4 view;
 
+uniform mat4 lightSpaceMatrix;
+
 uniform mat4 gBones[MAX_BONES];
 uniform int animated;
+
 
 void main(void) {
 	mat4 BoneTransform = mat4(1.0);
@@ -32,10 +37,10 @@ void main(void) {
 	vec4 transform = BoneTransform * vec4(aPos, 1.0);
 
 	FragPos = vec3(model * transform);
-    Normal = mat3(transpose(inverse(model))) * aNormal;  
-    TexCoords = aTexCoords;
-    
-    gl_Position = projection * view * vec4(FragPos,1.0);
+    	Normal = mat3(transpose(inverse(model))) * aNormal;  
+    	TexCoords = aTexCoords;
+   	FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
+    	gl_Position = projection * view * vec4(FragPos,1.0);
 
 
 }
