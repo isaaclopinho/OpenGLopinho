@@ -5,6 +5,12 @@
 
 class GameCamera : public Camera {
 
-	void CameraMove();
+public:
+
+	GameCamera(vec3 pos) { position = pos; yaw = 0; pitch = 0; roll = 0; };
 	void Update();
+
+private:
+	void CameraMove();
+	Player* player = Player::getInstance();
 };

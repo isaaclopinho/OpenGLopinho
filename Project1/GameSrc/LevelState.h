@@ -4,7 +4,7 @@
 #include <glm\glm.hpp>
 #include "../Game.h"
 #include "../State.h"
-#include "../Camera.h"
+#include "../GameCamera.h"
 #include "../Loader.h"
 #include "../MasterRenderer.h"
 #include "../GUITexture.h"
@@ -37,7 +37,7 @@ class LevelState : public State {
 	DirectionalLight direct = DirectionalLight(vec3(0, 0, -1), vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*10.0f);
 
 
-	Camera camera = Camera(vec3(0, 2, 0));
+	GameCamera camera = GameCamera(vec3(0, 2, 0));
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
 
@@ -124,6 +124,8 @@ public:
 			cout << "p" << endl;
 			debugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
 		}
+
+		camera.Update();
 	};
 
 	void Render() {
