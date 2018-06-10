@@ -11,6 +11,6 @@ public:
 	void Update();
 
 private:
-	void CameraMove();
+	void CameraFollow();
 	Player* player = Player::getInstance();
 };

@@ -1,11 +1,13 @@
 #include "GameCamera.h"
 
-void GameCamera::CameraMove() {
+void GameCamera::CameraFollow() {
 
-	player->getPlayerPos();
+	vec3 newCameraPos = player->getPlayerPos();
+	position = vec3(newCameraPos.x, newCameraPos.y, newCameraPos.z + 5);
+	cout << newCameraPos.x << " " << newCameraPos.y << " " << newCameraPos.z << endl;
 };
 
 void GameCamera::Update() {
 
-	CameraMove();
+	CameraFollow();
 };

@@ -67,14 +67,11 @@ void Player::PlayerMove() {
 	playerRigidBody->applyCentralImpulse(moveForce);
 
 	ControlSpeed();
-	if (playerRigidBody->getLinearVelocity().getZ() > maxSpeed) { cout << "passou" << endl; }
 
 
 	//btVector3 newLinearVelocity = btVector3(playerRigidBody->getLinearVelocity().getX(), playerRigidBody->getLinearVelocity().getY(), playerRigidBody->getLinearVelocity().getZ() + (speed /** Game::GetInstance()->GetDeltaTime()*/));
 	//playerRigidBody->setLinearVelocity(newLinearVelocity);
 	//speed = playerRigidBody->getLinearVelocity().getZ();
-	cout << playerRigidBody->getLinearVelocity().getZ() << endl;
-
 
 	
 
