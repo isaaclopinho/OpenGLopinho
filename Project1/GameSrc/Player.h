@@ -39,4 +39,5 @@ private:
 	vec3 playerPos = vec3(0, 20, -5);
 	vec3 playerRot = vec3(0, 90, 0);
 
+	void ControlSpeed();
 };

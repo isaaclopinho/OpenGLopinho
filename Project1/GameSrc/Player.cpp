@@ -66,6 +66,7 @@ void Player::PlayerMove() {
 	btVector3 moveForce = btVector3(0, 0, 20);
 	playerRigidBody->applyCentralImpulse(moveForce);
 
+	ControlSpeed();
 	if (playerRigidBody->getLinearVelocity().getZ() > maxSpeed) { cout << "passou" << endl; }
 
 
@@ -100,3 +101,17 @@ Player* Player::getInstance() {
 
 	return instance;
 }
+
+void Player::ControlSpeed() {
+
+	float playerSpeedX = playerRigidBody->getLinearVelocity().getX();
+	float playerSpeedY = playerRigidBody->getLinearVelocity().getY();
+	float playerSpeedZ = playerRigidBody->getLinearVelocity().getZ();
+
+	if (playerSpeedX > maxSpeed) { playerSpeedX = maxSpeed; };
+	if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
+	if (playerSpeedZ > maxSpeed) { playerSpeedZ = maxSpeed; };
+
+	playerRigidBody->setLinearVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
+
+};
