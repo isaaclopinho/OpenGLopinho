@@ -27,6 +27,8 @@ public:
 	void createProjectionMatrix();
 	vector<Entity*> entities;
 
+	bool usingShadow;
+
 	unordered_map<ParticleTexture, vector<Particle>> particless;
 
 	Renderer *renderer;	

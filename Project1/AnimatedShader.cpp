@@ -53,6 +53,9 @@ void AnimatedShader::getAllUniformLocations() {
 	location_spotLightLinear = ShaderProgram::getUniformLocation("light.linear");
 	location_spotLightQuadratic = ShaderProgram::getUniformLocation("light.quadratic");
 
+	location_usingShadow = ShaderProgram::getUniformLocation("usingShadow");
+
+
 	location_dirLightDirection = ShaderProgram::getUniformLocation("dirLight.direction");
 	location_dirLightAmbient = ShaderProgram::getUniformLocation("dirLight.ambient");
 	location_dirLightDiffuse = ShaderProgram::getUniformLocation("dirLight.diffuse");
@@ -183,6 +186,11 @@ void AnimatedShader::loadViewMatrix(Camera camera)
 {
 	mat4 viewMatrix = Maths::createViewMatrix(camera);
 	ShaderProgram::loadMatrix(location_viewMatrix, viewMatrix);
+}
+
+void AnimatedShader::usingShadow(int us)
+{
+	ShaderProgram::loadInt(location_usingShadow, us);
 }
 
 

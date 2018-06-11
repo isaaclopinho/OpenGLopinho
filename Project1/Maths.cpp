@@ -81,7 +81,7 @@ glm::quat Maths::QuatFromAiQuat(aiQuaternion quaternion)
 
 glm::mat4 Maths::createProjectionMatrix(float FOV, float NEAR_PLANE, float FAR_PLANE)
 {
-	return glm::perspective<float>(glm::radians(FOV), (float)Game::GetInstance()->WIDTH/ (float)Game::GetInstance()->HEIGHT, NEAR_PLANE, FAR_PLANE);
+	return glm::perspective<float>(glm::radians(FOV), Game::GetInstance()->GetAspectRatio(), NEAR_PLANE, FAR_PLANE);
 }
 
 glm::vec3 Maths::bulletToGlm(const btVector3& v) { 

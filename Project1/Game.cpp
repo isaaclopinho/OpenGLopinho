@@ -71,6 +71,10 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 	ilutRenderer(ILUT_OPENGL);
 }
 
+float Game::GetAspectRatio() {
+	return (float)WIDTH / (float)HEIGHT;
+}
+
 Game::~Game() {
 	aiDetachAllLogStreams();
 	// Delete our OpengL context
@@ -101,7 +105,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new TestState());
 
 	
 
