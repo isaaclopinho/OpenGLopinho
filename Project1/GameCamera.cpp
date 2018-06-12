@@ -7,25 +7,16 @@ void GameCamera::CameraFollow() {
 	if (distance(desiredPosition, Maths::bulletToGlm(smoothedPosition)) > 0.05f) {
 		position = Maths::bulletToGlm(smoothedPosition);
 	}
-
-
-	//CheckOffset();
-	
-	
-	
-	cout << position.x << " " << position.y << " " << position.z << endl;
-	//cout << position.x << " " << position.y << " " << position.z << endl;
 };
 
 void GameCamera::Update() {
 
-	CameraFollow();
+	CheckOffset();
 };
 
-void GameCamera::CheckOffset(vec3 playerPos) {
+void GameCamera::CheckOffset() {
 
-	if (playerPos.z > position.z -	 cameraFollowOffset.z) {
-		position.z += 1;
-		cout << "passou" << endl;
+	if (player->getPlayerPos().z > position.z -	 cameraFollowOffset.z) {
+		CameraFollow();
 	}
 };

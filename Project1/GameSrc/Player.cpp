@@ -19,7 +19,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 	jumpTimeStamp = 0;
 	jumpCoolDown = 2000;
 	maxSpeed = 5;
-	speed = 0.003;
+	maxMoveForce = 20;
 	turnAngle = 0.0;
 
 }
@@ -45,7 +45,7 @@ void Player::CheckInput()
 {
 
 	if (InputManager::GetInstance().IsKeyDown(SDLK_a)) {
-		PlayerMove();
+		PlayerMove(0, 1);
 	};
 	if ((InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) && canJump == true) {
 		PlayerJump();
@@ -53,7 +53,7 @@ void Player::CheckInput()
 	}
 }
 
-void Player::PlayerMove() {
+void Player::PlayerMove(float horizontalInput, float verticalInput) {
 
 	//btTransform transform;
 	//playerRigidBody->getMotionState()->getWorldTransform(transform);
@@ -65,8 +65,13 @@ void Player::PlayerMove() {
 	//entity.position = playerPos;
 	//entity.rotation = playerRot;
 
-	btVector3 moveForce = btVector3(0, 0, 20);
-	playerRigidBody->applyCentralImpulse(moveForce);
+
+
+	float xForce = horizontalInput * maxMoveForce;
+	float zForce = verticalInput * maxMoveForce;
+
+	btVector3 finalForce = btVector3(xForce, 0, zForce);
+	playerRigidBody->applyCentralImpulse(finalForce);
 
 	ControlSpeed();
 

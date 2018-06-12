@@ -26,11 +26,11 @@ public:
 private:
 
 	static Player* instance;
-	float turnAngle, maxSpeed, speed;
+	float turnAngle, maxSpeed, maxMoveForce;
 	void CheckCoolDowns();
 	void CheckInput();
 	void PlayerJump();
-	void PlayerMove();
+	void PlayerMove(float horizontalInput, float verticalInput);
 
 	btRigidBody* playerRigidBody;
 
