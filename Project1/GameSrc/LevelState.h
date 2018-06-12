@@ -104,13 +104,13 @@ public:
 			camera.position += vec3(0, 0, 5)*delta;
 		}
 
-		if (InputManager::GetInstance().IsKeyDown(SDLK_w)) {
+		/*if (InputManager::GetInstance().IsKeyDown(SDLK_w)) {
 			camera.position += vec3(0, 5, 0)*delta;
 		}
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_s)) {
 			camera.position -= vec3(0, 5, 0)*delta;
-		}
+		}*/
 
 		if (InputManager::GetInstance().IsKeyDown(SDLK_LEFT)) {
 			camera.position -= vec3(5, 0, 0)*delta;
@@ -125,7 +125,7 @@ public:
 			debugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
 		}
 
-		camera.Update();
+		//camera.Update();
 	};
 
 	void Render() {

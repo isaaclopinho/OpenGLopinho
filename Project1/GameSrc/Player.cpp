@@ -43,14 +43,29 @@ void Player::Render() {
 
 void Player::CheckInput()
 {
+	float horizontalMovement = 0, verticalMovement = 0;
+
+	if (InputManager::GetInstance().IsKeyDown(SDLK_w)) {
+		verticalMovement = 1;
+	};
 
 	if (InputManager::GetInstance().IsKeyDown(SDLK_a)) {
-		PlayerMove(0, 1);
+		horizontalMovement = -1;
+	};
+
+	if (InputManager::GetInstance().IsKeyDown(SDLK_s)) {
+		verticalMovement = -1;
+	};
+
+	if (InputManager::GetInstance().IsKeyDown(SDLK_d)) {
+		horizontalMovement = 1;
 	};
 	if ((InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) && canJump == true) {
 		PlayerJump();
 		canJump = false;
 	}
+
+	PlayerMove(horizontalMovement, verticalMovement);
 }
 
 void Player::PlayerMove(float horizontalInput, float verticalInput) {
