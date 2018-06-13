@@ -54,6 +54,7 @@ uniform DirLight dirLight;
 #define NR_POINT_LIGHTS 4
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight light;
+uniform int usingShadow;
 
 uniform vec3 viewPos;
 uniform Material material;
@@ -83,7 +84,6 @@ void main()
 	vec3 emission = texture(material.emission, TexCoords).rgb;
 
 	result += emission;
-   	float shadow = ShadowCalculation(FragPosLightSpace); 
 	
 	FragColor = vec4(result,1);
 }
@@ -106,11 +106,15 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
    	vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
     	vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
 
-	float shadow = ShadowCalculation(FragPosLightSpace);       
-    	vec3 lighting = (ambient + (1.0 - shadow) * (diff * lightColor)) * color;    
-    
+  	if(usingShadow == 1){
+		float shadow = ShadowCalculation(FragPosLightSpace);       
+    		vec3 lighting = (ambient + (1.0 - shadow) * (diff * lightColor)) * color; 
 
-    return lighting + specular;
+    		return lighting + specular;
+	}
+    	
+	return ambient+diffuse+specular;
+	
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){

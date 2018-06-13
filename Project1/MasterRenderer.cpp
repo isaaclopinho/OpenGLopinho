@@ -25,6 +25,9 @@ void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, Direct
 	animatedShader->SetDirectionalLightProperties(directionalLight.direction, directionalLight.ambient, directionalLight.diffuse, directionalLight.specular);
 	animatedShader->lightSpace(lightSpaceMatrix);
 
+	usingShadow ? animatedShader->usingShadow(1) : animatedShader->usingShadow(0);
+
+
 	for (int i = 0; i < 4; i++) {
 		animatedShader->SetPointLightProperties(i, pointLight[i].position, pointLight[i].ambient, pointLight[i].diffuse, pointLight[i].specular, pointLight[i].distance);
 	}
@@ -37,9 +40,9 @@ void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, Direct
 
 	animatedShader->stop();
 
-	sbRenderer->render(camera);
+	//sbRenderer->render(camera);
 	
-	pRenderer->render(particless, camera);
+	//pRenderer->render(particless, camera);
 
 	entities.clear();
 }
@@ -67,7 +70,7 @@ void  MasterRenderer::createProjectionMatrix()
 	projectionMatrix = Maths::createProjectionMatrix(FOV, NEAR_PLANE, FAR_PLANE);
 }
 
-void MasterRenderer::updateAllParticles(float dt,Camera camera)
+void MasterRenderer::updateAllParticles(float dt, Camera camera)
 {
 
 	vector<pair<ParticleTexture, vector<Particle>>> deleteCandidates;
@@ -115,7 +118,9 @@ MasterRenderer::MasterRenderer() : color(vec3(.1f,.1f,.1f))
 	animatedShader = new AnimatedShader();
 	skyboxShader = new SkyboxShader();
 	particleShader = new ParticleShader();
+
 	createProjectionMatrix();
+
 	renderer = new Renderer(animatedShader, projectionMatrix);	
 	sbRenderer = new SkyboxRenderer(skyboxShader, projectionMatrix);
 	pRenderer = new ParticleRenderer(particleShader, projectionMatrix);

@@ -14,6 +14,8 @@ private:
 	GLint location_projectionMatrix;
 	GLint location_viewMatrix;
 
+	GLint location_usingShadow;
+
 	GLint location_diffuseMap, location_specularMap, location_emissionMap, location_shineness;
 	GLint location_normalMap;
 	GLint location_viewPos;
@@ -63,6 +65,7 @@ public:
 	void loadTransformationMatrix(mat4 matrix);
 	void loadProjectionMatrix(mat4 matrix);
 	void loadViewMatrix(Camera camera);
+	void usingShadow(int us);
 
 	void LoadBoneMatrices(std::vector<glm::mat4> matrices);
 	void LoadBoolAnimated(int value);

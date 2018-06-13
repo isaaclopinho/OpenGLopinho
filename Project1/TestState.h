@@ -25,6 +25,8 @@
 #include "btBulletCollisionCommon.h"
 #include "ShadowFrameBuffer.h"
 #include "PostProcessing.h"
+#include "FlareManager.h"
+
 
 using namespace glm;
 using namespace std;
@@ -55,40 +57,73 @@ class TestState : public State {
 	Fbo *fbo, *output;
 	PostProcessing * pp;
 
+	GameObjectTest *t;
+
+	vector<FlareTexture> texturesFlare;
+
+	FlareManager * lensFlare;
+
+	FlareRenderer rendererF = FlareRenderer();
+
 public:
 
 	TestState() : shadowMap(0, vec2(0.75f, 0.75f), vec2(0.25f, 0.25f)), sfb(2048,2048) {
-
+		MasterRenderer::GetInstance().usingShadow = true;
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
 		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
 
 		pp = new PostProcessing();
 		pp->init();
+		
+		FlareTexture flare = FlareTexture(Loader::LoadTexture("res/lensFlares/tex8.png"), 0.5f);
+		flare.screenPos = vec2(0.5f);
+		texturesFlare.emplace_back(flare);
+
+		/*texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex4.png"), 0.23f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex2.png"), 0.1f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex7.png"), 0.05f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex1.png"), 0.02f));
+
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex3.png"), 0.06f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex9.png"), 0.12f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex5.png"), 0.07f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex1.png"), 0.012f));
+
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex9.png"), 0.1f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex3.png"), 0.07f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex5.png"), 0.3f));
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex4.png"), 0.4f));
+
+		texturesFlare.emplace_back(FlareTexture(Loader::LoadTexture("res/lensFlare/tex8.png"), 0.6f));*/
+
+
+		lensFlare = new FlareManager(0.16f, texturesFlare);
 
 		btBroadphaseInterface *itf = new btDbvtBroadphase();
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/fire_002.png"), 5, true);
-		ps = new ParticleSystem(*pt, 50, 3, 0, 1);
+		//ps = new ParticleSystem(*pt, 50, 3, 0, 1);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -0.5, 0), glm::vec3(-90, 0, 0), 25, "", true)));
 		
 		guiTextures.emplace_back(shadowMap);
 
-		for (int i = 0; i < 5; i++) {
-			GameObjectTest *g = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(-5+i*2, 0, 0), glm::vec3(-90, 0, 0), 1, "", true));
-			g->animated = true;
-			AddGameObject(g);
-		}
-		
+		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0 , 0, 0), glm::vec3(90,0, 0), float(rand()%50+1)/100.0, "", true));
+		t->animated = true;
+		AddGameObject(t);
 
-		//guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/GUI/gui.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
+		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/lensFlare/tex8.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
 		direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
 	}
 
 
 	void Update(float dt) {
 		float delta = dt;
-		ps->Update(dt, vec3(0, 0, -15));
+		//ps->Update(dt, vec3(0, 0, -15));
 		
-		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
+		//MasterRenderer::GetInstance().updateAllParticles (dt, camera);
+
+		camera.Update(dt, t->entity.position, t->entity.rotation);
+		vec3 posi = camera.position;
+
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
@@ -97,29 +132,7 @@ public:
 			remove = true;
 		}
 
-		if (InputManager::GetInstance().IsKeyDown(SDLK_UP)) {
-			camera.position -= vec3(0, 0, 50)*delta;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_DOWN)) {
-			camera.position += vec3(0, 0, 50)*delta;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_w)) {
-			camera.position += vec3(0, 50, 0)*delta;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_s)) {
-			camera.position -= vec3(0, 50, 0)*delta;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_LEFT)) {
-			camera.position -= vec3(50, 0, 0)*delta;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_RIGHT)) {
-			camera.position += vec3(50, 0, 0)*delta;
-		}
+		
 		
 		if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
 			Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
@@ -140,19 +153,21 @@ public:
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
 
-		//fbo->bindFrameBuffer();
+		fbo->bindFrameBuffer();
 
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
 
-		//fbo->unbindFrameBuffer();
 
-		//fbo->resolveToFbo(*output);
+		fbo->unbindFrameBuffer();
 
-		//pp->doPostProcessing(output->colourTexture);
+		fbo->resolveToFbo(*output);
+
+		pp->doPostProcessing(output->colourTexture);
 
 		guiTextures[0].textureID = sfb.depthTexture;		
 
-		//guirenderer.render(guiTextures);
+		//rendererF.render(texturesFlare, 0.8f);
+	//	guirenderer.render(guiTextures);
 	}
 
 };

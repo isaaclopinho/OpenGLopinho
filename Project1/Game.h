@@ -32,6 +32,7 @@ public:
 	SDL_Renderer* renderer;
 			
 	Game(string nome, int w, int h);
+	float GetAspectRatio();
 	~Game();
 	void Run();
 	SDL_GLContext GetContext();
