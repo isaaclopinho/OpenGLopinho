@@ -105,7 +105,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new TestState());
+	states.push(new LevelState());
 
 	
 

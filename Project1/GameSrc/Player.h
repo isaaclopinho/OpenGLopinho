@@ -30,14 +30,14 @@ private:
 	void CheckCoolDowns();
 	void CheckInput();
 	void PlayerJump();
-	void PlayerMove(float horizontalInput, float verticalInput);
+	void PlayerMove(float horizontalInput, float verticalInput, int newRot);
 
 	btRigidBody* playerRigidBody;
 
 	bool canJump;
 	float jumpCoolDown, jumpTimeStamp;
-	vec3 playerPos = vec3(0, 20, -5);
-	vec3 playerRot = vec3(0, 0, 0);
+	vec3 playerPos = vec3(0, 10, 0);
+	vec3 playerRot = vec3(-90, 0, 0);
 
 	void ControlSpeed();
 };

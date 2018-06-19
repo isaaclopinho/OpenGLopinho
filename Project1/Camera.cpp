@@ -23,14 +23,18 @@ float Camera::calculateVerticalDistance() {
 
 void Camera::calculateZoom(float z) {
 	distanceFromTarget -= z;
+	cout << "distance: "<<distanceFromTarget << endl;
 }
 
 void Camera::calculatePitch(float p) {
 	pitch -= p;
+	cout <<"pitch: "<< pitch << endl;
 }
 
 void Camera::calculateAngleAroundPlayer(float a) {
 	angleAroundTarget += a;
+
+	cout << "angle: " << angleAroundTarget << endl;
 }
 
 
@@ -66,7 +70,7 @@ void Camera::Update(float delta,vec3 pos, vec3 rot) {
 	float horizontalDistance = calculateHorizontalDistance();
 	float verticalDistance = calculateVerticalDistance();
 
-	calculateCameraPosition(horizontalDistance, verticalDistance);
+	calculateCameraPosition(horizontalDistance, verticalDistance + vDist);
 	yaw = - (targetRotation.y + angleAroundTarget);
 
 	viewMatrix = Maths::createViewMatrix(*this);

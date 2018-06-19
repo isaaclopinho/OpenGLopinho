@@ -8,7 +8,7 @@ class GameCamera : public Camera {
 
 public:
 
-	GameCamera(vec3 pos) { position = pos; yaw = 0; pitch = 0; roll = 0; cameraFollowOffset = vec3(0, 1, 3); smoothSpeed = 0.125f; };
+	GameCamera(vec3 pos) { position = pos; yaw = 180; pitch = 0; roll = 0; cameraFollowOffset = vec3(0, 0.4, -1); smoothSpeed = 0.125f; };
 	void Update();
 	
 private:

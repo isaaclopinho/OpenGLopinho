@@ -649,6 +649,8 @@ void Mesh::GetTransforms(std::string animationName, std::vector<glm::mat4>& resu
 	}
 
 	int index = (nOfFrames * currentTime) / animationDuration;
+	if (currentTime > animationDuration)
+		index = nOfFrames - 1;
 
 	result = cachedTransformations[animationName][index];
 }

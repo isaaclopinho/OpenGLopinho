@@ -16,7 +16,8 @@ void GameCamera::Update() {
 
 void GameCamera::CheckOffset() {
 
-	if (player->getPlayerPos().z > position.z -	 cameraFollowOffset.z) {
+	if ((player->getPlayerPos().z > position.z -	 cameraFollowOffset.z) || (player->getPlayerPos().x > position.x - cameraFollowOffset.x)){
 		CameraFollow();
 	}
+
 };

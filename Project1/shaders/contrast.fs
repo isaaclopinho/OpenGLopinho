@@ -23,26 +23,26 @@ void main()
 {
 	vec2 texCoords = textureCoords;
   	//texCoords.x += 2 * sin(texCoords.y * 4*2*3.14159 + offset) / 100;
-    	vec4 color = texture(colourTexture, texCoords);
-    	float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
-	out_Colour = vec4(average, average, average, 1);	
-	out_Colour = texture(colourTexture, texCoords);
+    	//vec4 color = texture(colourTexture, texCoords);
+    	//float average = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+	//out_Colour = vec4(average, average, average, 1);	
+	//out_Colour = texture(colourTexture, texCoords);
 
 	vec4 texColor = texture2D(colourTexture, texCoords);
 	
-	vec2 resolution = vec2(1280, 720);
+//	vec2 resolution = vec2(1280, 720);
 	
-	vec2 position = (gl_FragCoord.xy / resolution.xy) - vec2(0.5);
+//	vec2 position = (gl_FragCoord.xy / resolution.xy) - vec2(0.5);
 	
-	float len = length(position);
+//	float len = length(position);
 	
-	float r = 0.5;
+//	float r = 0.5;
 
-	float softness = 0.5;
+//	float softness = 0.5;
 
-	float vignette = smoothstep(r, r-softness, len);
-	texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.9);
-	texColor = mix(texColor, Sepia(texColor), 1);
+	//float vignette = smoothstep(r, r-softness, len);
+	//texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.9);
+	//texColor = mix(texColor, Sepia(texColor), 1);
 	out_Colour = texColor ;	
 }  
 

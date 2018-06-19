@@ -19,7 +19,7 @@ public:
 	mat4 viewMatrix;
 	mat4 projectionMatrix;
 
-	float distanceFromTarget = 50;
+	float distanceFromTarget = 10;
 	float angleAroundTarget = 0;
 	vec3 position = glm::vec3();
 	float pitch = 0;
@@ -28,6 +28,8 @@ public:
 
 	vec3 targetPosition;
 	vec3 targetRotation;
+
+	float vDist = 0;
 
 	void calculateCameraPosition(float hDistance, float vDistance);
 	float calculateHorizontalDistance();
