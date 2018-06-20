@@ -13,7 +13,7 @@
 #define //x, y) std::cout << "Debug: (" << x << ", " << y << ")\n"
 #define //x, y, z) std::cout << "Debug: (" << x << ", " << y << ", " << z << ")\n"
 #define //x, y, z, w) std::cout << "Debug: (" << x << ", " << y << ", " << z << ", " << w << ")\n"
-#define Debugv(v) std::cout << v.x << " " << v.y << " " << v.z << "\n";
+#define Debugv(v) //std::cout << v.x << " " << v.y << " " << v.z << "\n";
 #define //x)
 #define //x,y)
 #define //x,y,z)

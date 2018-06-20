@@ -57,13 +57,14 @@ public:
 	
 	InputManager() : quitRequested(false), mouseX(0), mouseY(0), updateCounter(0) {
 		for (int i = 0; i < 6; i++)
-			mouseState[i] = mouseUpdate[i] = controllerAxisValues[x] = 0;
+			mouseState[i] = mouseUpdate[i] = controllerAxisValues[i] = 0;
 		for(int x = 0; x < 15; x++){
         	controllerButtonState[x] = 0;
         	controllerButtonUpdate[x] = 0;
     	}
-
-    	controle = SDL_GameControllerOpen(0);
+		if (SDL_IsGameController(0)) {
+			controle = SDL_GameControllerOpen(0);
+		}
 	}
 
 	~InputManager() {
@@ -106,6 +107,8 @@ public:
 				keyUpdate[event.key.keysym.sym] = updateCounter;
 			}
 		}
+
+		UpdateController();
 	}
 
 	bool KeyPress(int key) {

@@ -113,6 +113,10 @@ void Game::Run() {
 		CalculateDeltaTime();
 
 		InputManager::GetInstance().Update();
+		
+
+		if (InputManager::GetInstance().ControllerButtonPress(0))
+			std::cout << "Pau no cu do lg\n\a";
 
 		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
 			//"FPS", 1 / dt);
