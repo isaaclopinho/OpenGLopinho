@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "Debug.h"
-#include "GameSrc\LevelState.h"
+#include "GameSrc/LevelState.h"
 #include "TestState.h"
 #include "Fbo.h"
 #include "PostProcessing.h"

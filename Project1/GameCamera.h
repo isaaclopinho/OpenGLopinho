@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "Maths.h"
 #include "Camera.h"
-#include "GameSrc\Player.h"
+#include "GameSrc/Player.h"
 
 class GameCamera : public Camera {
 

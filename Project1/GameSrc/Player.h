@@ -1,9 +1,9 @@
 #pragma once
 
-#include "..\PhysicsObject.h"
-#include "..\MasterRenderer.h"
-#include "..\InputManager.h"
-#include "..\Game.h"
+#include "../PhysicsObject.h"
+#include "../MasterRenderer.h"
+#include "../InputManager.h"
+#include "../Game.h"
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 

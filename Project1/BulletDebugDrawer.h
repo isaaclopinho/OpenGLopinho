@@ -1,5 +1,9 @@
 #pragma once
+#ifdef __APPLE__
+#include <SDL2/SDL_opengl.h>
+#else
 #include <SDL_opengl.h>
+#endif
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 

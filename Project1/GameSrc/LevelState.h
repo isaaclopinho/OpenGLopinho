@@ -1,7 +1,10 @@
 #pragma once
-
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include <SDL.h>
-#include <glm\glm.hpp>
+#endif
+#include <glm/glm.hpp>
 #include "../Game.h"
 #include "../State.h"
 #include "../GameCamera.h"
@@ -15,7 +18,7 @@
 #include "../Renderer.h"
 #include "../Light.h"
 #include "../InputManager.h"
-#include <glm\gtx\rotate_vector.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include "../ParticleSystem.h"
 #include "Player.h"
 #include "../BulletDebugDrawer.h"
