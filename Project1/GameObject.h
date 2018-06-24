@@ -18,7 +18,6 @@ public:
 	~GameObject() {};
 	virtual void Update(float dt) = 0;
 	virtual void Render() = 0;
-	virtual btRigidBody* getRB() { return nullptr; };
 	bool Remove() { return remove; };
 	bool Is(string str) { return str == type; };
 };

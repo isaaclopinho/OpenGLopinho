@@ -15,11 +15,10 @@ public:
 	~Player();
 	void Update(float dt);
 	void Render();
+    vec3 getPlayerPos() { return playerPos; };
+    vec3 getPlayerRot() { return playerRot; };
 
-	vec3 getPlayerPos() { return playerPos; };
-	vec3 getPlayerRot() { return playerRot; };
-
-	btRigidBody* getRB() override {return playerRigidBody;};
+//    btRigidBody* getRB() override {return playerRigidBody;};
 
 	static Player* getInstance();
 
@@ -32,12 +31,10 @@ private:
 	void PlayerJump();
 	void PlayerMove(float horizontalInput, float verticalInput, int newRot);
 
-	btRigidBody* playerRigidBody;
-
 	bool canJump;
 	float jumpCoolDown, jumpTimeStamp;
-	vec3 playerPos = vec3(0, 10, 0);
-	vec3 playerRot = vec3(-90, 0, 0);
+    vec3 playerPos = vec3(0, 10, 0); //starting position
+    vec3 playerRot = vec3(-90, 0, 0); //starting rotation?
 	int walkSpeed;
 
 	void ControlSpeed();

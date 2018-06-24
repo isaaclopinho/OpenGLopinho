@@ -85,7 +85,7 @@ public:
 		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
-		btRigidBody* groundRB = new btRigidBody(groundRBCI);
+		btRigidBody* groundRB = new btRigidBody(groundRBCI);;
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua.obj"), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 1, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(5, 0, 0), vec3(0, 0, 0), 1, "", false)));
 
@@ -100,7 +100,7 @@ public:
 		camera.pitch = 30;
 		camera.vDist = -13;
 		camera.angleAroundTarget = 180;
-		phyWorld->addRigidBody(player->getRB());
+		phyWorld->addRigidBody(player->getPhysicsBody());
 
 
 		//debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
@@ -133,19 +133,14 @@ public:
 			gameObjects[i]->Render();
 		}
 
-
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-
-		fbo->bindFrameBuffer();
-
+        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
-
-		fbo->unbindFrameBuffer();
-
-		fbo->resolveToFbo(*output);
-
-		pp->doPostProcessing(output->colourTexture);
+        
+        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+        fbo->resolveToFbo(*output); //comentar pra rodar no mac
+        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
 	};
 };

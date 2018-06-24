@@ -2,19 +2,19 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 0.3, "Walk", true)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 0.3, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(0.05f,0.03f,0), btVector3(), &entity)
 {
-	btTransform initTransform;
-	initTransform.setIdentity();
-	initTransform.setOrigin(btVector3(0, 10, 0));
+//    btTransform initTransform;
+//    initTransform.setIdentity();
+//    initTransform.setOrigin(btVector3(0, 10, 0));
 	//initialize physics
-	btConvexShape* playerCollider = new btCapsuleShape(0.05f, 0.03f);
-	btDefaultMotionState* playerMotion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), Maths::glmToBullet(playerPos)));
-	btScalar playerMass = 100;
-	btVector3 playerFallInertia = btVector3(0, 0, 0);
-	playerCollider->calculateLocalInertia(playerMass, playerFallInertia);
-	btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
-	playerRigidBody = new btRigidBody(playerRigidBodyCI);
+//    btConvexShape* playerCollider = new btCapsuleShape(0.05f, 0.03f);
+//    btDefaultMotionState* playerMotion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), Maths::glmToBullet(playerPos)));
+//    btScalar playerMass = 100;
+//    btVector3 playerFallInertia = btVector3(0, 0, 0);
+//    playerCollider->calculateLocalInertia(playerMass, playerFallInertia);
+//    btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
+//    playerRigidBody = new btRigidBody(playerRigidBodyCI);
 	
 	//Initialize Player Variables
 	canJump = true;
@@ -32,8 +32,7 @@ void Player::Update(float dt) {
 	dt = dt;
 	CheckCoolDowns();
 	CheckInput();
-	btTransform trans;
-	playerRigidBody->getMotionState()->getWorldTransform(trans);
+	btTransform trans = getWorldTransForm();
 	playerPos = vec3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 	entity.position = playerPos;
 	entity.Update(dt);
@@ -94,16 +93,15 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 
 	//float xForce = horizontalInput * maxMoveForce;
-	float zForce =  playerRigidBody->getLinearVelocity().length() + (verticalInput * maxMoveForce);
+	float zForce =  getVelocity().length() + (verticalInput * maxMoveForce);
 
 	vec3 forward = glm::rotate( vec3(0, 0, 1), radians(getPlayerRot().z), vec3(0,1,0));
 	forward = normalize(forward);
 
-	btVector3 finalForce = btVector3(forward.x * zForce, playerRigidBody->getLinearVelocity().getY() +  forward.y, forward.z * zForce);
+	btVector3 finalForce = btVector3(forward.x * zForce, getVelocity().getY() +  forward.y, forward.z * zForce);
 
-	playerRigidBody->setLinearVelocity(finalForce);
-
-
+    setVelocity(finalForce);
+    
 	entity.position = playerPos;
 	entity.rotation = playerRot;
 
@@ -114,8 +112,9 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 };
 
 void Player::PlayerJump() {
-
-	playerRigidBody->applyCentralImpulse(btVector3(0, 1000, 0));
+    
+    applyForce(btVector3(0,1000,0));
+//    _body->applyCentralImpulse(btVector3(0, 1000, 0));
 	jumpTimeStamp = SDL_GetTicks();
 }
 
@@ -137,9 +136,9 @@ Player* Player::getInstance() {
 
 void Player::ControlSpeed() {
 
-	float playerSpeedX = playerRigidBody->getLinearVelocity().getX();
-	float playerSpeedY = playerRigidBody->getLinearVelocity().getY();
-	float playerSpeedZ = playerRigidBody->getLinearVelocity().getZ();
+	float playerSpeedX = getVelocity().getX();
+	float playerSpeedY = getVelocity().getY();
+	float playerSpeedZ = getVelocity().getZ();
 
 	if (playerSpeedX > maxSpeed) { playerSpeedX = maxSpeed; };
 	//if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
@@ -148,20 +147,20 @@ void Player::ControlSpeed() {
 	//if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
 	if (playerSpeedZ < -maxSpeed) { playerSpeedZ = -maxSpeed; };
 
-	playerRigidBody->setLinearVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
+    setVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
 };
 
 void Player::AnimationController() {
 
 
-	if ((playerRigidBody->getLinearVelocity().length() > 0) && (playerRigidBody->getLinearVelocity().length() < walkSpeed)) {
+	if ((getVelocity().length() > 0) && (getVelocity().length() < walkSpeed)) {
 
 		if (entity.currentAnimation != "Walk") {
 			entity.ChangeAnimation("Walk", true);
 		} 
 	}
 
-	if ((playerRigidBody->getLinearVelocity().length() > walkSpeed) && (entity.currentAnimation != "Run")) {
+	if ((getVelocity().length() > walkSpeed) && (entity.currentAnimation != "Run")) {
 
 		entity.ChangeAnimation("Run", true);
 
