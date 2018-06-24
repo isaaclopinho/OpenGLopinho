@@ -72,11 +72,11 @@ void Player::CheckInput()
 		canJump = false;
 	}
 
-	if (InputManager::GetInstance().IsKeyDown(SDLK_LSHIFT)) {
-		entity.ChangeAnimation("Run", true);
-	}
+	//cout << playerRigidBody->getLinearVelocity().length() << endl;
 
 	PlayerMove(horizontalMovement, verticalMovement, newRot);
+
+	ControlSpeed();
 }
 
 void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) {
@@ -92,7 +92,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 
 	//float xForce = horizontalInput * maxMoveForce;
-	float zForce =  verticalInput * maxMoveForce;
+	float zForce =  (playerRigidBody->getLinearVelocity().length()) + verticalInput * maxMoveForce;
 
 	vec3 forward = glm::rotate( vec3(0, 0, 1), radians(getPlayerRot().z), vec3(0,1,0));
 	forward = normalize(forward);
@@ -100,7 +100,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 	btVector3 finalForce = btVector3(forward.x * zForce, playerRigidBody->getLinearVelocity().getY() +  forward.y, forward.z * zForce);
 
 	playerRigidBody->setLinearVelocity(finalForce);
-	ControlSpeed();
+
 
 	entity.position = playerPos;
 	entity.rotation = playerRot;
@@ -142,9 +142,12 @@ void Player::ControlSpeed() {
 	if (playerSpeedX > maxSpeed) { playerSpeedX = maxSpeed; };
 	if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
 	if (playerSpeedZ > maxSpeed) { playerSpeedZ = maxSpeed; };
+	if (playerSpeedX < -maxSpeed) { playerSpeedX = -maxSpeed; };
+	if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
+	if (playerSpeedZ < -maxSpeed) { playerSpeedZ = -maxSpeed; };
 
 	playerRigidBody->setLinearVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
-
+	cout << playerRigidBody->getLinearVelocity().getX() << " " << playerRigidBody->getLinearVelocity().getY() << " " << playerRigidBody->getLinearVelocity().getZ() << endl;
 };
 
 void Player::AnimationController() {
