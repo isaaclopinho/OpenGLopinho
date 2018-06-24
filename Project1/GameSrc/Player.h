@@ -38,6 +38,8 @@ private:
 	float jumpCoolDown, jumpTimeStamp;
 	vec3 playerPos = vec3(0, 10, 0);
 	vec3 playerRot = vec3(-90, 0, 0);
+	int walkSpeed;
 
 	void ControlSpeed();
+	void AnimationController();
 };

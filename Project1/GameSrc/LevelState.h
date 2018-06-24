@@ -59,33 +59,35 @@ class LevelState : public State {
 
 	btDiscreteDynamicsWorld* phyWorld;
 	Player* player;
-	Player* obj2;
 	vector<btRigidBody> rigidBodies;
 
 
 public:
 	LevelState() : sfb(){ 
+		
+		//Shadows and PostProcessing
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
 		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
 		pp = new PostProcessing();
 		pp->init();
+		MasterRenderer::GetInstance().usingShadow = true;
+
+
 		//Initialize Physics
 		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
 		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
 		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-
-		MasterRenderer::GetInstance().usingShadow = true;
 		phyWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 		phyWorld->setGravity(btVector3(0, -9.8, 0));
 
 		//temporary physics ground for testing purposes
 		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-	
 		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
 		btRigidBody* groundRB = new btRigidBody(groundRBCI);
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua.obj"), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 1, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(5, 0, 0), vec3(0, 0, 0), 1, "", false)));
 
 		phyWorld->addRigidBody(groundRB);
 		
@@ -94,13 +96,11 @@ public:
 
 		player = Player::getInstance();
 		AddGameObject(player);
-		camera.distanceFromTarget = 3;
+		camera.distanceFromTarget = 7;
 		camera.pitch = 30;
-		camera.vDist = -5;
+		camera.vDist = -13;
 		camera.angleAroundTarget = 180;
 		phyWorld->addRigidBody(player->getRB());
-
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, 0, 0), glm::vec3(-90, 0, 0), 25, "", true)));
 
 
 		//debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
@@ -122,11 +122,6 @@ public:
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
-		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_p)) {
-			cout << "p" << endl;
-			debugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
 		}
 
 		camera.Update(dt, player->entity.position, player->entity.rotation);
