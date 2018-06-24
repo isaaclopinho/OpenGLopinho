@@ -42,4 +42,6 @@ private:
 
 	void ControlSpeed();
 	void AnimationController();
+
+	float dt;
 };
