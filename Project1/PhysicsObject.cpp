@@ -107,3 +107,9 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 position,
 //    _body->setDamping(0.5, 0.5);
     
 }
+
+void PhysicsObject::Render() {
+
+	MasterRenderer::GetInstance().processEntity(entity);
+
+};

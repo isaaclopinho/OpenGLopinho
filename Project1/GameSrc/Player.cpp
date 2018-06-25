@@ -34,7 +34,6 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 
 void Player::Update(float dt) {
 
-	dt = dt;
 	CheckCoolDowns();
 	CheckInput();
 	btTransform trans = getWorldTransForm();
@@ -164,10 +163,10 @@ void Player::ControlSpeed() {
 	float playerSpeedZ = getVelocity().getZ();
 
 	if (playerSpeedX > maxSpeed) { playerSpeedX = maxSpeed; };
-	//if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
+	if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
 	if (playerSpeedZ > maxSpeed) { playerSpeedZ = maxSpeed; };
 	if (playerSpeedX < -maxSpeed) { playerSpeedX = -maxSpeed; };
-	//if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
+	if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
 	if (playerSpeedZ < -maxSpeed) { playerSpeedZ = -maxSpeed; };
 
     setVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));

@@ -27,6 +27,8 @@
 #include "../ShadowFrameBuffer.h"
 #include "../Fbo.h"
 #include "../PostProcessing.h"
+#include "../PhysicsObject.h"
+
 using namespace glm;
 using namespace std;
 
@@ -82,13 +84,12 @@ public:
 		phyWorld->setGravity(btVector3(0, -9.8, 0));
 
 		//temporary physics ground for testing purposes
-		btCollisionShape* groundShape = new btBoxShape(btVector3(10, 1, 200));
+		btCollisionShape* groundShape = new btBoxShape(btVector3(20, 1, 500));
 		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
 		btRigidBody* groundRB = new btRigidBody(groundRBCI);;
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua2.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), 100, "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(5, 0, 0), vec3(0, 0, 0), 1, "", false)));
-
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua2.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), 300, "", true)));
+		//AddGameObject(new PhysicsObject(0, Box, btVector3(30, 0, 0), btVector3(0, 90, 0), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(30, 0, 0), vec3(90, 0, 0), 10, "", false)));
 		phyWorld->addRigidBody(groundRB);
 		
 		//debugDrawer = new BulletDebugDrawer();

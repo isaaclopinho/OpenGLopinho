@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "MasterRenderer.h"
 #include "Entity.h"
 #include <iostream>
 using namespace std;
@@ -23,8 +24,8 @@ public:
     PhysicsObject(float mass, PhysicsShape shape, btVector3 position, btVector3 rotation,
                   btVector3 scale, btVector3 inercia, Entity* mesh = NULL);
     ~PhysicsObject();
-    virtual void Update(float dt) = 0;
-    virtual void Render() = 0;
+    virtual void Update(float dt);
+    virtual void Render();
     
     btVector3 getWorldPosition();
     btVector3 getWorldRotation();
