@@ -6,9 +6,9 @@ SkyboxRenderer::SkyboxRenderer(SkyboxShader * shader, mat4 projectionMatrix): sh
 {
 	float SIZE = 900;
 
-	vector<string> TEXTURE_FILES = { "res/skybox/night/nightRight.png", "res/skybox/night/nightLeft.png", "res/skybox/night/nightTop.png", "res/skybox/night/nightBottom.png", "res/skybox/night/nightBack.png", "res/skybox/night/nightFront.png" };
+	vector<string> TEXTURE_FILES2 = { "res/skybox/night/nightRight.png", "res/skybox/night/nightLeft.png", "res/skybox/night/nightTop.png", "res/skybox/night/nightBottom.png", "res/skybox/night/nightBack.png", "res/skybox/night/nightFront.png" };
 	//vector<string> TEXTURE_FILES2 = TEXTURE_FILES;
-	vector<string> TEXTURE_FILES2 = { "res/skybox/right.png", "res/skybox/left.png", "res/skybox/top.png", "res/skybox/bottom.png", "res/skybox/back.png", "res/skybox/front.png" };
+	vector<string> TEXTURE_FILES = { "res/skybox/right.png", "res/skybox/left.png", "res/skybox/top.png", "res/skybox/bottom.png", "res/skybox/back.png", "res/skybox/front.png" };
 
 	vector<vec3> VERTICES = {
 		vec3(-SIZE,  SIZE, -SIZE),

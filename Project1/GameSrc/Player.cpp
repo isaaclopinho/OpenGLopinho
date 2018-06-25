@@ -20,10 +20,15 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	canJump = true;
 	jumpTimeStamp = 0;
 	jumpCoolDown = 2000;
-	maxSpeed = 10;
+	maxSpeed = 20;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
-	walkSpeed = 6;
+	walkSpeed = 15;
+
+	maxVelocity = 20;
+	velocity = 0;
+	minVelocity = 0;
+	velocityStep = 0.2f;
 
 }
 
@@ -76,7 +81,7 @@ void Player::CheckInput()
 
 	PlayerMove(horizontalMovement, verticalMovement, newRot);
 
-	ControlSpeed();
+	//ControlSpeed();
 	AnimationController();
 }
 
@@ -93,7 +98,25 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 
 	//float xForce = horizontalInput * maxMoveForce;
-	float zForce =  getVelocity().length() + (verticalInput * maxMoveForce);
+
+	if (verticalInput == 1) {
+		velocity = glm::clamp(velocity+velocityStep, minVelocity, maxVelocity);
+	}
+	else if (verticalInput == -1) {
+		velocity = glm::clamp(velocity - velocityStep, -maxVelocity/2, maxVelocity);
+	}
+	else {
+
+		if(velocity < 0)
+			velocity = glm::clamp(velocity + velocityStep*2, -maxVelocity, minVelocity);
+		else
+			velocity = glm::clamp(velocity - velocityStep*2, minVelocity, maxVelocity);
+
+	}
+
+	std::cout << velocity << endl;
+
+	float zForce = velocity;
 
 	vec3 forward = glm::rotate( vec3(0, 0, 1), radians(getPlayerRot().z), vec3(0,1,0));
 	forward = normalize(forward);
@@ -153,16 +176,23 @@ void Player::ControlSpeed() {
 void Player::AnimationController() {
 
 
-	if ((getVelocity().length() > 0) && (getVelocity().length() < walkSpeed)) {
+	if ((velocity > 0) && (velocity < walkSpeed)) {
 
 		if (entity.currentAnimation != "Walk") {
 			entity.ChangeAnimation("Walk", true);
 		} 
 	}
 
-	if ((getVelocity().length() > walkSpeed) && (entity.currentAnimation != "Run")) {
+	if (velocity < 0) {
+		if (entity.currentAnimation != "Walk") {
+			entity.ChangeAnimation("Walk", true);
+		}
+	}
+
+	if ((velocity > walkSpeed) && (entity.currentAnimation != "Run")) {
 
 		entity.ChangeAnimation("Run", true);
 
 	}
+
 };

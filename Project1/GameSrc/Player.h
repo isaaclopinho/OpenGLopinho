@@ -37,6 +37,8 @@ private:
     vec3 playerRot = vec3(-90, 0, 0); //starting rotation?
 	int walkSpeed;
 
+	float velocity, velocityStep, maxVelocity, minVelocity;
+
 	void ControlSpeed();
 	void AnimationController();
 

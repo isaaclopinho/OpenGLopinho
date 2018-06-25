@@ -17,7 +17,7 @@ public:
 	int texture, texture2;
 	SkyboxShader * shader;
 	float time = 0;
-	float cd = 5;
+	float cd = 3600;
 	SkyboxRenderer(SkyboxShader * shader, mat4 proj);
 	~SkyboxRenderer();
 	void render(Camera camera);
