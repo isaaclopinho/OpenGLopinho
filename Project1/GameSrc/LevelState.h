@@ -82,11 +82,11 @@ public:
 		phyWorld->setGravity(btVector3(0, -9.8, 0));
 
 		//temporary physics ground for testing purposes
-		btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+		btCollisionShape* groundShape = new btBoxShape(btVector3(10, 1, 200));
 		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
 		btRigidBody* groundRB = new btRigidBody(groundRBCI);;
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua2.dae"), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 100, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/rua2.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), 100, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(5, 0, 0), vec3(0, 0, 0), 1, "", false)));
 
 		phyWorld->addRigidBody(groundRB);
