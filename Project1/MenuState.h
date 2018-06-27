@@ -59,8 +59,8 @@ public:
 
 
 		guiMenu.emplace_back(GUITexture(texturesID[0], vec2(0,0), vec2(1,1)));
-		guiMenu.emplace_back(GUITexture(texturesButtonNormal[0], vec2(0, -0.4), vec2(0.35, 0.11)));
-		guiMenu.emplace_back(GUITexture(texturesButtonNormal[1], vec2(0, -0.7), vec2(0.35, 0.11)));
+		guiMenu.emplace_back(GUITexture(texturesButtonNormal[0], vec2(0, -0.4), vec2(459.0f / 1280.0f, 80.0f/720.0f)));
+		guiMenu.emplace_back(GUITexture(texturesButtonNormal[1], vec2(0, -0.7), vec2(459.0f / 1280.0f, 80.0f / 720.0f)));
 
 
 	};
@@ -124,7 +124,8 @@ public:
 	};
 
 	void Render() {
-
+		glClearColor(1, 1, 1, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		guirenderer.render(guiMenu);
 
 	};

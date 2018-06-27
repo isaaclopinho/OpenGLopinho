@@ -13,6 +13,7 @@ class GUIRenderer
 public:
 	GUIShader * shader;
 	RawModel quad;
+	RawModel line;
 	GUIRenderer();
 	void render(vector<GUITexture> guis);
 	~GUIRenderer();
