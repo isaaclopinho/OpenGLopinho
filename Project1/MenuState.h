@@ -18,6 +18,7 @@
 #include "Renderer.h"
 #include "Light.h"
 #include "InputManager.h"
+#include "VideoState.h"
 #include "ParticleSystem.h"
 using namespace glm;
 using namespace std;
@@ -40,6 +41,8 @@ class MenuState : public State {
 
 	int op = 0;
 	int opMax = 2;
+
+	bool bloqueado = false;
 
 public:
 	MenuState()  {
@@ -69,56 +72,70 @@ public:
 	}
 
 	void Update(float dt) {
-		
-		time += dt;
+		if (!bloqueado) {
+			time += dt;
 
 
 
 
-		if (time >= 1.0f / (float)frames) {
-			contador++;
+			if (time >= 1.0f / (float)frames) {
+				contador++;
 
-			if (contador > frames - 1)
-				contador = 0;
+				if (contador > frames - 1)
+					contador = 0;
 
-			guiMenu[0].textureID = texturesID[contador];
-			time = 0;
-		}
+				guiMenu[0].textureID = texturesID[contador];
+				time = 0;
+			}
 
 
-		if (InputManager::GetInstance().KeyPress(SDLK_UP)) {
+			if (InputManager::GetInstance().KeyPress(SDLK_UP)) {
 
-			op++;
+				op++;
 
-			if (op > opMax-1)
-				op = 0;
-			
-		}else if (InputManager::GetInstance().KeyPress(SDLK_DOWN)) {
+				if (op > opMax - 1)
+					op = 0;
 
-			op--;
+			}
+			else if (InputManager::GetInstance().KeyPress(SDLK_DOWN)) {
 
-			if (op < 0)
-				op = opMax-1;
-		}
+				op--;
 
-		guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
-		guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
-		
-		
-		if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
+				if (op < 0)
+					op = opMax - 1;
+			}
 
-			switch (op) {
-				case 0: 
-					Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
-					InputManager::GetInstance().ResetState();
-					Game::GetInstance()->AddState(new LevelState());
+			guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
+			guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
+
+
+			if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
+
+				switch (op) {
+				case 0:
+					bloqueado = true;
 					break;
-				case 1: 
+				case 1:
 					remove = true;
 					break;
+				}
 			}
 		}
+		else {
+			time += dt;
 
+			if (time >= 1.0f / (float)frames) {
+				contador++;
+
+				if (contador > frames - 1) {
+					contador = frames - 1;
+					Game::GetInstance()->AddState(new VideoState());
+				}
+
+				guiMenu[0].textureID = texturesID[contador];
+				time = 0;
+			}
+		}
 
 
 	};
