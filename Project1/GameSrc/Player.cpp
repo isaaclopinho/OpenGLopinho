@@ -2,7 +2,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 0.3, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(0.05f,0.03f,0), btVector3(), &entity)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 1, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(0.05f,0.03f,0), btVector3(), &entity)
 {
 //    btTransform initTransform;
 //    initTransform.setIdentity();
@@ -20,21 +20,20 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	canJump = true;
 	jumpTimeStamp = 0;
 	jumpCoolDown = 2000;
-	maxSpeed = 20;
+	maxSpeed = 50;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
 	walkSpeed = 15;
 
-	maxVelocity = 20;
+	maxVelocity = 50;
 	velocity = 0;
 	minVelocity = 0;
-	velocityStep = 0.2f;
+	velocityStep = 0.5f;
 
 }
 
 void Player::Update(float dt) {
 
-	dt = dt;
 	CheckCoolDowns();
 	CheckInput();
 	btTransform trans = getWorldTransForm();
@@ -42,6 +41,7 @@ void Player::Update(float dt) {
 	entity.position = playerPos;
 	entity.Update(dt);
 	//cout << entity.position.x << " " << entity.position.y << " " << entity.position.z << endl;
+	cout << "vel X: " << getVelocity().getX() << "vel Y: " << getVelocity().getY() << "vel Z: " << getVelocity().getZ() <<  endl;
 }
 
 
@@ -136,7 +136,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 void Player::PlayerJump() {
     
-    applyForce(btVector3(0,1000,0));
+    applyForce(btVector3(0,2000,0));
 //    _body->applyCentralImpulse(btVector3(0, 1000, 0));
 	jumpTimeStamp = SDL_GetTicks();
 }
@@ -164,10 +164,10 @@ void Player::ControlSpeed() {
 	float playerSpeedZ = getVelocity().getZ();
 
 	if (playerSpeedX > maxSpeed) { playerSpeedX = maxSpeed; };
-	//if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
+	if (playerSpeedY > maxSpeed) { playerSpeedY = maxSpeed; };
 	if (playerSpeedZ > maxSpeed) { playerSpeedZ = maxSpeed; };
 	if (playerSpeedX < -maxSpeed) { playerSpeedX = -maxSpeed; };
-	//if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
+	if (playerSpeedY < -maxSpeed) { playerSpeedY = -maxSpeed; };
 	if (playerSpeedZ < -maxSpeed) { playerSpeedZ = -maxSpeed; };
 
     setVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
