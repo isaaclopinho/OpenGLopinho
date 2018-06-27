@@ -2,8 +2,7 @@
 #include "Debug.h"
 #include "GameSrc/LevelState.h"
 #include "TestState.h"
-#include "Fbo.h"
-#include "PostProcessing.h"
+#include "MenuState.h"
 
 #define FRAMETIME 16
 
@@ -105,7 +104,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new MenuState());
 
 	
 
@@ -124,17 +123,9 @@ void Game::Run() {
 
 		states.top()->Update(dt);
 		
-	//	fbo.bindFrameBuffer();
 
 		states.top()->Render();
 
-		//fbo.unbindFrameBuffer();
-
-	//	pp.doPostProcessing(fbo.depthTexture);
-
-		//fbo.resolveToFbo(output);
-		
-		//pp.doPostProcessing(output.colourTexture);
 
 		if (newState != NULL) {
 			states.push(newState);
@@ -156,8 +147,6 @@ void Game::Run() {
 		}
 	}
 		
-	//pp.cleanUp();
-//	fbo.cleanUp();
 
 }
 

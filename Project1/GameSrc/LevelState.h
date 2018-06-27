@@ -63,7 +63,7 @@ class LevelState : public State {
 
 
 public:
-	LevelState() : sfb(4096*3,4096*3){ 
+	LevelState() : sfb(4096,4096){ 
 		
 		//Shadows and PostProcessing
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);

@@ -111,6 +111,11 @@ public:
 		UpdateController();
 	}
 
+	void ResetState() {
+		for(auto& t : keyState)
+			t.second = false;
+	}
+
 	bool KeyPress(int key) {
 		return keyUpdate[key] == updateCounter && keyState[key];
 
