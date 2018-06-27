@@ -26,7 +26,9 @@ class MenuState : public State {
 
 
 	vector<GLuint> texturesID;
-	vector<GLuint> texturesText;
+	vector<GLuint> texturesButtonNormal;
+	vector<GLuint> texturesButtonSelected;
+
 	vector<GUITexture> guiMenu;
 	GUIRenderer guirenderer = GUIRenderer();
 
@@ -34,7 +36,10 @@ class MenuState : public State {
 	float time2 = 0;
 	int contador = 0;
 	int contadorText = 0;
-	float frames = 13;
+	float frames = 8;
+
+	int op = 0;
+	int opMax = 2;
 
 public:
 	MenuState()  {
@@ -45,15 +50,17 @@ public:
 			texturesID.emplace_back(g);
 		}
 
-		GLuint g1 = Loader::LoadTexture("res/menu/1.png");
-		GLuint g2 = Loader::LoadTexture("res/menu/2.png");
 
-		texturesText.emplace_back(g1);
-		texturesText.emplace_back(g2);
+		texturesButtonNormal.emplace_back(Loader::LoadTexture("res/menu/start.png"));
+		texturesButtonNormal.emplace_back(Loader::LoadTexture("res/menu/exit.png"));
+
+		texturesButtonSelected.emplace_back(Loader::LoadTexture("res/menu/start2.png"));
+		texturesButtonSelected.emplace_back(Loader::LoadTexture("res/menu/exit2.png"));
 
 
 		guiMenu.emplace_back(GUITexture(texturesID[0], vec2(0,0), vec2(1,1)));
-		guiMenu.emplace_back(GUITexture(texturesText[0], vec2(0, 0), vec2(1, 1)));
+		guiMenu.emplace_back(GUITexture(texturesButtonNormal[0], vec2(0, -0.4), vec2(0.35, 0.11)));
+		guiMenu.emplace_back(GUITexture(texturesButtonNormal[1], vec2(0, -0.7), vec2(0.35, 0.11)));
 
 
 	};
@@ -64,7 +71,8 @@ public:
 	void Update(float dt) {
 		
 		time += dt;
-		time2 += dt;
+
+
 
 
 		if (time >= 1.0f / (float)frames) {
@@ -78,31 +86,45 @@ public:
 		}
 
 
-		if (time2 >= 0.5f) {
-			contadorText++;
+		if (InputManager::GetInstance().KeyPress(SDLK_UP)) {
 
-			if (contadorText > 1)
-				contadorText = 0;
+			op++;
 
-			guiMenu[1].textureID = texturesText[contadorText];
+			if (op > opMax-1)
+				op = 0;
+			
+		}else if (InputManager::GetInstance().KeyPress(SDLK_DOWN)) {
 
-			time2 = 0;
+			op--;
+
+			if (op < 0)
+				op = opMax-1;
 		}
+
+		guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
+		guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
+		
 		
 		if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
-			Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
-			InputManager::GetInstance().ResetState();
-			Game::GetInstance()->AddState(new LevelState());
+
+			switch (op) {
+				case 0: 
+					Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
+					InputManager::GetInstance().ResetState();
+					Game::GetInstance()->AddState(new LevelState());
+					break;
+				case 1: 
+					remove = true;
+					break;
+			}
 		}
 
 
-		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
-			remove = true;
-		}
 
 	};
 
 	void Render() {
+
 		guirenderer.render(guiMenu);
 
 	};
