@@ -4,7 +4,7 @@
 #include "TestState.h"
 #include "MenuState.h"
 
-#define FRAMETIME 16
+#define FRAMETIME 1
 
 Game* Game::instance = NULL;
 
@@ -104,7 +104,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new MenuState());
+	states.push(new LevelState());
 
 	
 

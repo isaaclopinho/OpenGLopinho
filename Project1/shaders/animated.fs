@@ -79,7 +79,7 @@ void main()
     	for(int i = 0; i < NR_POINT_LIGHTS; i++)
         	result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);   		
 
-    	result += CalcSpotLight(light, norm, FragPos, viewDir);    
+    	//result += CalcSpotLight(light, norm, FragPos, viewDir);    
     
 	vec3 emission = texture(material.emission, TexCoords).rgb;
 

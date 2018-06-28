@@ -43,7 +43,7 @@ class TestState : public State {
 	vec3 pos = vec3(-2.0, 4.0, -1.0);
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
-	DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.0f);
+	DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
 
 	Camera camera = Camera(vec3(0, 0, 3));
 	int i = 0;
@@ -109,9 +109,8 @@ public:
 		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0 , 0, 0), glm::vec3(90,0, 0), float(rand()%50+1)/100.0, "", true));
 		t->animated = true;
 		AddGameObject(t);
-
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/lensFlare/tex8.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
-		direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
+		//direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
 	}
 
 
@@ -139,8 +138,8 @@ public:
 		}
 		
 	//pos = rotateY(pos, radians(5.0f));
-		//sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*0.6f, vec3(1, 1, 1), vec3(1, 1, 1));
-	direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f); 
+		sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*1.0f, vec3(1, 1, 1), vec3(1, 1, 1));
+	//direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f); 
 
 	}
 

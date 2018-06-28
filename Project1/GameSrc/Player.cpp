@@ -41,7 +41,7 @@ void Player::Update(float dt) {
 	entity.position = playerPos;
 	entity.Update(dt);
 	//cout << entity.position.x << " " << entity.position.y << " " << entity.position.z << endl;
-	cout << "vel X: " << getVelocity().getX() << "vel Y: " << getVelocity().getY() << "vel Z: " << getVelocity().getZ() <<  endl;
+	//cout << "vel X: " << getVelocity().getX() << "vel Y: " << getVelocity().getY() << "vel Z: " << getVelocity().getZ() <<  endl;
 }
 
 
@@ -114,7 +114,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 	}
 
-	std::cout << velocity << endl;
+	//std::cout << velocity << endl;
 
 	float zForce = velocity;
 
