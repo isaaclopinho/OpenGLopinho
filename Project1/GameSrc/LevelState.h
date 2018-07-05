@@ -21,20 +21,25 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include "../ParticleSystem.h"
 #include "Player.h"
-#include "../BulletDebugDrawer.h"
 #include <btBulletDynamicsCommon.h>
 #include "../GameObjectTest.h"
 #include "../ShadowFrameBuffer.h"
 #include "../Fbo.h"
 #include "../PostProcessing.h"
 #include "../PhysicsObject.h"
+#include "../PhysicsWorld.h"
 
 using namespace glm;
 using namespace std;
 
-class LevelState : public State {
+//bool callBackFunc(btManifoldPoint& cp, const btCollisionObject* colObj0, int partId0, int index0, const btCollisionObject* colObj1, int partId1, int index1){
+//
+//    // colisões de objetos com flag 4 são tratadas aqui.
+//
+//    return false;
+//}
 
-	BulletDebugDrawer* debugDrawer;
+class LevelState : public State {
 
 	ShadowFrameBuffer sfb;
 
@@ -59,13 +64,16 @@ class LevelState : public State {
 
 	SpotLight sl = SpotLight(camera.position, vec3(0, 0, -1), 13, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f)), vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*0.0f);
 
-	btDiscreteDynamicsWorld* phyWorld;
+	
 	Player* player;
 	vector<btRigidBody> rigidBodies;
 
 
 public:
-	LevelState() : sfb(4096,4096){ 
+    PhysicsWorld phyWorld;
+    
+    
+	LevelState() : sfb(4096,4096), phyWorld(){
 		
 		//Shadows and PostProcessing
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
@@ -76,21 +84,14 @@ public:
 
 
 		//Initialize Physics
-		btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-		phyWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-		phyWorld->setGravity(btVector3(0, -9.8, 0));
-
+//        gContactAddedCallback=callBackFunc; // seta o ponteiro para nosso callback de contato;
 		//temporary physics ground for testing purposes
-		btCollisionShape* groundShape = new btBoxShape(btVector3(200, 1, 1000));
-		btDefaultMotionState* groundState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
-		btRigidBody::btRigidBodyConstructionInfo groundRBCI(0, groundState, groundShape, btVector3(0, 0, 0));
-		btRigidBody* groundRB = new btRigidBody(groundRBCI);;
-		
-		
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), 700, "", true)));
+        
+        //(mass, shape, position, rotation, scale, inercia, entity);
+        PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,0,0), btVector3(0,0,0), btVector3(200,1,1000), btVector3(0,0,0), new Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0,1,0), glm::vec3(0,-90, 0), 700, "", true));
+        
+        
+        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), 700, "", true)));
 		
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa degrau.dae"), glm::vec3(50, 26, 0), glm::vec3(0, -90, 0),26, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(50, -10, 62), glm::vec3(0, -90, 0), 40, "", true)));
@@ -128,24 +129,21 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 310), glm::vec3(-90, 0, 90), 1, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 425), glm::vec3(-90, 0, 90), 1, "", true)));
 
-
-
-		//AddGameObject(new PhysicsObject(0, Box, btVector3(30, 0, 0), btVector3(0, 90, 0), btVector3(0, 0, 0), &Entity(Loader::LoadModel("res/models/casabrise.obj"), vec3(30, 0, 0), vec3(90, 0, 0), 10, "", false)));
-		phyWorld->addRigidBody(groundRB);
-		
-		//debugDrawer = new BulletDebugDrawer();
-		phyWorld->setDebugDrawer(debugDrawer);
-
+        
+//        AddGameObject(PhysicsObject());
+        
+        phyWorld.addPhysicsObject(ground);
+        printf("cria player\n");
 		player = Player::getInstance();
+        printf("adiciona player\n");
 		AddGameObject(player);
 		camera.distanceFromTarget = 30;
 		camera.pitch = 30;
 		camera.vDist = -50;
 		camera.angleAroundTarget = 180;
-		phyWorld->addRigidBody(player->getPhysicsBody());
-
-
-		//debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+        printf("adicionando rigid body do player\n");
+		phyWorld.addPhysicsObject(player);
+        printf("adicionou\n");
 
 
 	};
@@ -158,9 +156,8 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
-
-		//Physics
-		phyWorld->stepSimulation(dt);
+        phyWorld.updateWorld(dt);
+        
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
@@ -178,15 +175,18 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Render();
 		}
-
+        
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-        fbo->bindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
-		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
-        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-        fbo->resolveToFbo(*output); //comentar pra rodar no mac
-        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
+        phyWorld.debugDraw();
+        
+//        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->resolveToFbo(*output); //comentar pra rodar no mac
+//        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+        
 	};
 };

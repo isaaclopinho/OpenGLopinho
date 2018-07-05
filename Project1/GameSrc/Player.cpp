@@ -2,8 +2,9 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 1, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(0.05f,0.03f,0), btVector3(), &entity)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 1, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,2,0), btVector3(), &entity)
 {
+    
 //    btTransform initTransform;
 //    initTransform.setIdentity();
 //    initTransform.setOrigin(btVector3(0, 10, 0));
@@ -17,6 +18,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 //    playerRigidBody = new btRigidBody(playerRigidBodyCI);
 	
 	//Initialize Player Variables
+
 	canJump = true;
 	jumpTimeStamp = 0;
 	jumpCoolDown = 2000;
@@ -30,6 +32,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	minVelocity = 0;
 	velocityStep = 0.5f;
 
+    getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
 }
 
 void Player::Update(float dt) {
