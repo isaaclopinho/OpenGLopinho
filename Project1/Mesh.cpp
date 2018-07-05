@@ -639,6 +639,14 @@ void Mesh::BoneTransform(float timeInSeconds, std::vector<glm::mat4>& transforms
 
 void Mesh::GetTransforms(std::string animationName, std::vector<glm::mat4>& result, float currentTime, bool repeat)
 {
+//    if(!animated){
+//        result.clear();
+//        cout<<mNumofBones<<endl;
+//        for(int i = 0; i < mNumofBones; i++){
+//            result.emplace_back(glm::mat4());
+//        }
+//    }
+    
 	float framesPerSec = FPS;
 	float animationDuration = animationMap[animationName]->mDuration;
 

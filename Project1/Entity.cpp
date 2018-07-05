@@ -36,7 +36,8 @@ void Entity::Update(float dt)
 {
 
 	time += dt;
-	mesh->GetTransforms(currentAnimation, transforms, time, loopAnimation);
+    if(mesh->animated)
+        mesh->GetTransforms(currentAnimation, transforms, time, loopAnimation);
 	//anim.Update(dt);
 	//anim.BoneTransforms(transforms);
 
