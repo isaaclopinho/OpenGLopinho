@@ -152,16 +152,16 @@ public:
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
 
-		fbo->bindFrameBuffer();
+//        fbo->bindFrameBuffer();
 
 		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
 
 
-		fbo->unbindFrameBuffer();
+//        fbo->unbindFrameBuffer();
 
-		fbo->resolveToFbo(*output);
+//        fbo->resolveToFbo(*output);
 
-		pp->doPostProcessing(output->colourTexture);
+//        pp->doPostProcessing(output->colourTexture);
 
 		guiTextures[0].textureID = sfb.depthTexture;		
 

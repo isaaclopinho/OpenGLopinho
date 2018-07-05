@@ -39,8 +39,8 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 	//dessenha num buffer pra depois desenhar na tela
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+//    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+//    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
 
 
 	//cria contexto onde vai renderizar as parada
