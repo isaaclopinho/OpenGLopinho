@@ -28,7 +28,7 @@ void main()
 	//out_Colour = vec4(average, average, average, 1);	
 	//out_Colour = texture(colourTexture, texCoords);
 
-	vec4 texColor = texture2D(colourTexture, texCoords);
+	vec4 texColor = texture(colourTexture, texCoords);
 	
 //	vec2 resolution = vec2(1280, 720);
 	

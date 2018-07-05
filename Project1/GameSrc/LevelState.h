@@ -1,3 +1,7 @@
+#define MAXBARRA 0.2
+#define BARRAX -0.5
+#define BARRAY 0.87
+
 #pragma once
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
@@ -46,6 +50,11 @@ class LevelState : public State {
 	Fbo * fbo;
 	Fbo * output;
 	PostProcessing * pp;
+    
+    vector<GUITexture> GUITextures;
+    GUIRenderer guirenderer = GUIRenderer();
+    int hpTotal = 100;
+    int hpAtual = 100;
 
 	PointLight pt[4] = {
 		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
@@ -146,6 +155,16 @@ public:
         printf("adicionou\n");
 
 
+        //HUD
+        
+        GLuint teste2 = Loader::LoadTexture("res/GUI/barra_semEnergia.png");
+        GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.15)));
+        
+        GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
+        GUITextures.emplace_back(GUITexture(teste, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.04)));
+        
+        GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
+        GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
 	};
 
 	~LevelState();
@@ -168,7 +187,18 @@ public:
 		}
 
 		camera.Update(dt, player->entity.position, player->entity.rotation);
+        
+        if(InputManager::GetInstance().KeyPress(SDLK_h)){
+            player->LoseHP(10);
+        }
+        UpdateHP();
 	};
+    
+    void UpdateHP(){
+        
+        GUITextures[1].scale = vec2((player->GetHP()<=0)?0:(float)(player->GetHP()) / (float)(player->GetMaxHP()) * MAXBARRA,(player->GetHP()<=0)?0:0.05);
+        GUITextures[1].position = vec2(BARRAX - (MAXBARRA *(1 -((float)(player->GetHP()) / (float)(player->GetMaxHP())))),BARRAY);
+    }
 
 	void Render() {
 	
@@ -181,12 +211,12 @@ public:
 //        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
-		MasterRenderer::GetInstance().render(sl, pt, direct, camera);
-        phyWorld.debugDraw();
+        MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
 //        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
 //        fbo->resolveToFbo(*output); //comentar pra rodar no mac
 //        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
+        guirenderer.render(GUITextures);
 	};
 };

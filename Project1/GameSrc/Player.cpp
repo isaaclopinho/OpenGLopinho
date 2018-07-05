@@ -33,6 +33,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	velocityStep = 0.5f;
 
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
+    maxHP = hp = 100;
 }
 
 void Player::Update(float dt) {
@@ -199,3 +200,23 @@ void Player::AnimationController() {
 	}
 
 };
+
+void Player::SetHP(int newHP){
+    hp = newHP;
+}
+int Player::GetHP(){
+    return hp;
+}
+void Player::SetMaxHP(int newMaxHP){
+    maxHP = newMaxHP;
+}
+int Player::GetMaxHP(){
+    return maxHP;
+}
+void Player::LoseHP(int hpLoss){
+    hp -= hpLoss;
+    if(hp <= 0){
+        hp = 0;
+        cout << "DEAD" << endl;
+    }
+}

@@ -17,6 +17,11 @@ public:
 	void Render();
     vec3 getPlayerPos() { return playerPos; };
     vec3 getPlayerRot() { return playerRot; };
+    void SetHP(int newHP);
+    int GetHP();
+    void SetMaxHP(int newMaxHP);
+    int GetMaxHP();
+    void LoseHP(int hpLoss);
 
 //    btRigidBody* getRB() override {return playerRigidBody;};
 
@@ -36,6 +41,8 @@ private:
     vec3 playerPos = vec3(0, 10, 0); //starting position
     vec3 playerRot = vec3(-90, 0, 0); //starting rotation?
 	int walkSpeed;
+    int maxHP;
+    int hp;
 
 	float velocity, velocityStep, maxVelocity, minVelocity;
 
