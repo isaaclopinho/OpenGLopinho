@@ -106,3 +106,11 @@ void PhysicsObject::Render() {
 	MasterRenderer::GetInstance().processEntity(entity);
 
 };
+
+/// brief: Desativa Contato (i.e: corpo atravessa outros, mas colide);
+void PhysicsObject::toggleContact(bool flag){
+    int flags = _body->getFlags();
+    int contact = btCollisionObject::CollisionFlags::CF_NO_CONTACT_RESPONSE;
+    flags = flag ? flags | contact : flags & (!contact);
+    _body->setFlags(flags);
+}

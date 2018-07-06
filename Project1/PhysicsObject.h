@@ -51,6 +51,7 @@ public:
     void setVelocity(btVector3 velocity);
     btVector3 getVelocity();
     void toggleGravity(bool flag);
+    void toggleContact(bool flag);
     
 
 private:
