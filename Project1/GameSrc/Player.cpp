@@ -4,19 +4,6 @@ Player* Player::instance = 0;
 
 Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, 1, "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,2,0), btVector3(), &entity)
 {
-    
-//    btTransform initTransform;
-//    initTransform.setIdentity();
-//    initTransform.setOrigin(btVector3(0, 10, 0));
-	//initialize physics
-//    btConvexShape* playerCollider = new btCapsuleShape(0.05f, 0.03f);
-//    btDefaultMotionState* playerMotion = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), Maths::glmToBullet(playerPos)));
-//    btScalar playerMass = 100;
-//    btVector3 playerFallInertia = btVector3(0, 0, 0);
-//    playerCollider->calculateLocalInertia(playerMass, playerFallInertia);
-//    btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerMotion, playerCollider, playerFallInertia);
-//    playerRigidBody = new btRigidBody(playerRigidBodyCI);
-	
 	//Initialize Player Variables
 
 	canJump = true;
@@ -34,6 +21,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     maxHP = hp = 100;
+    type = "Player";
 }
 
 void Player::Update(float dt) {
