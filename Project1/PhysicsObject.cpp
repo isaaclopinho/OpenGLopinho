@@ -8,7 +8,7 @@
  \param position posição inicial.
  \param rotation rotação inicial
  \param scala escala do objeto.
- \param inecria vector 3 para definir estado inicial da fisica.
+ \param inecria (velocidade inicial).
  \param mesh opicional referencia para a mesh que vai acompanhar o corpo fisico;
  \return PhysicsObject construido de acordo com os parametros fornecidos;
  */
@@ -38,15 +38,16 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 position,
     _motionState = new btDefaultMotionState(btTransform(this->_rotation, this->_position));
     this->_shape->calculateLocalInertia(this->_mass, this->_inercia);
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo(this->_mass, this->_motionState, this->_shape, this->_inercia);
-    //    bodyCI.m_restitution = 0;
-    //    bodyCI.m_friction = 0.0;
+//    bodyCI.m_restitution = 0;
+//    bodyCI.m_friction = 0.0;
     _body = new btRigidBody(bodyCI);
     
     _body->setUserPointer(this); //ponteiro para a classe que contém o rigidBody
-    
-    //    _body->setLinearFactor(btVector3(1,1,0 ));
-    //    _body->setAngularFactor(btVector3(0,0,0));
-    //    _body->setDamping(0.5, 0.5);
+    _body->setFlags(4);
+//    _body->setLinearFactor(btVector3(1,1,0 ));
+//    _body->setAngularFactor(btVector3(0,0,0));
+//    _body->setDamping(0.5, 0.5);
+    type = "Floor";
 }
 
 PhysicsObject::~PhysicsObject()
@@ -90,11 +91,9 @@ void PhysicsObject::toggleGravity(bool flag){
 
 void PhysicsObject::Update(float dt)
 {
-
-	btTransform trans;
-	_body->getMotionState()->getWorldTransform(trans);
     if (entity != NULL) {
-        
+        btTransform trans;
+        _body->getMotionState()->getWorldTransform(trans);
 //        entity->Update(dt);
         entity->position = Maths::bulletToGlm(btVector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
     }
@@ -107,10 +106,11 @@ void PhysicsObject::Render() {
 
 };
 
-/// brief: Desativa Contato (i.e: corpo atravessa outros, mas colide);
+
+/// brief: true = Ativa/false = Desativa Contato (i.e: corpo atravessa ou não os outros, mas colide);
 void PhysicsObject::toggleContact(bool flag){
-    int flags = _body->getFlags();
+    int flags = _body->getCollisionFlags();
     int contact = btCollisionObject::CollisionFlags::CF_NO_CONTACT_RESPONSE;
-    flags = flag ? flags | contact : flags & (!contact);
-    _body->setFlags(flags);
+    flags = (flag == false ? flags | contact : flags & (!contact));
+    _body->setCollisionFlags(flags);
 }

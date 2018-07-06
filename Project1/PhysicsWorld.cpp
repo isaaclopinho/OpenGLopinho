@@ -55,20 +55,22 @@ void PhysicsWorld::updateWorld(float dt){
             
             // Faz algo
             _testDidCollided = true;
-            printf("colidiu alguma coisa\n");
             // recuperando o objeto com o userpointer
             //antes de fazer isso todos os corpos adicionados tem que ser PhysicsObject;
-//            PhysicsObject *physicsBodyA = (PhysicsObject*)bodyA->getUserPointer();
-//            PhysicsObject *physicsBodyB = (PhysicsObject*)bodyB->getUserPointer();
+            PhysicsObject *physicsBodyA = (PhysicsObject*)bodyA->getUserPointer();
+            PhysicsObject *physicsBodyB = (PhysicsObject*)bodyB->getUserPointer();
 
-//            if(physicsBodyA->tag == UnitTag::PlayerTag)
-//            {
-//
-//                if(physicsBodyB->tag == UnitTag::EnemyTag)
-//                {
-//                    break;
-//                }
-//            }
+            if(physicsBodyA->Is("Player"))
+            {
+                if (physicsBodyB->Is("Floor")){
+                    printf("colisão com chão");
+                }
+            } else if(physicsBodyB->Is("Player"))
+            {
+                if (physicsBodyA->Is("Floor")){
+                    printf("colisão com chão");
+                }
+            }
             
         }
         
