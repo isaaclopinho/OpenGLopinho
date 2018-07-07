@@ -34,6 +34,7 @@ public:
 
     Entity* entity;
 //    PhysicsObject() {}; // necessário?
+    PhysicsObject(float mass, PhysicsShape shape, btVector3 inercia, Entity* e);
     PhysicsObject(float mass, PhysicsShape shape, btVector3 position, btVector3 rotation,
                   btVector3 scale, btVector3 inercia, Entity* e = NULL);
     
