@@ -155,6 +155,12 @@ public:
         AddGameObject(attackBoxPlayer);
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
+        
+        PhysicsObject* inimigo = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,0), btVector3(0,0,0), btVector3(2,2,2), btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 10, 0), glm::vec3(-90, 0, 0), vec3(2,2,2), "IdleRight", true));
+        phyWorld.addPhysicsObject(inimigo);
+        AddGameObject(inimigo);
+        inimigo->type = "Enemy";
+        
 
         //HUD
         
