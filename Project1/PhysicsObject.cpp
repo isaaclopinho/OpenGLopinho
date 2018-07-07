@@ -97,17 +97,15 @@ btVector3 PhysicsObject::getWorldRotation(){
     btScalar rot[3];
     btMatrix3x3 rotMatrix = btMatrix3x3(_body->getWorldTransform().getRotation());
     rotMatrix.getEulerZYX(rot[0], rot[1], rot[2]);
-    
     return btVector3(rot[0], rot[1], rot[2]);
 }
 
 void PhysicsObject::Update(float dt)
 {
     if (entity != NULL) {
-        btTransform trans;
-        _body->getMotionState()->getWorldTransform(trans);
         entity->Update(dt);
-        entity->position = Maths::bulletToGlm(btVector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+		entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
+        entity->position = Maths::bulletToGlm(getWorldPosition());
     }
 	
 }

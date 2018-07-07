@@ -195,18 +195,20 @@ public:
 		}
         
 //        glm::vec3 newPos = glm::vec3(player->entity.position.x, player->entity.position.y + 10, player->entity.position.z + 7);
-        glm::vec3 newPos = Maths::bulletToGlm((player->getWorldRotation() * 3) + player->getWorldPosition());
+        glm::vec3 newPos = Maths::bulletToGlm((player->getWorldRotation().normalized() * 3) + player->getWorldPosition());
 //        glm::vec3 newPos = transform1.
         
         glm::vec3 newRot = glm::vec3(player->entity.rotation.x, player->entity.rotation.y, player->entity.rotation.z);
         
 //        std::cout << "newrot: " << newRot.x << " " <<newRot.y << " " << newRot.z << endl;
         
-        attackBoxPlayer->setPosition(Maths::glmToBullet(newPos));
+        attackBoxPlayer->setPosition(Maths::glmToBullet(Maths::bulletToGlm(player->getWorldPosition()) + (player->getForwardVector()*8.0f)));
 //        attackBoxplayer->getWorldRotation().normalized();
-        attackBoxPlayer->SetRotation(Maths::glmToBullet(newRot));
-//        attackBoxPlayer->entity->position = newPos;
-        attackBoxPlayer->entity->rotation = newRot;
+		//attackBoxPlayer->SetRotation(Maths::glmToBullet(newRot));
+		//attackBoxPlayer->SetRotation(player->getWorldRotation());
+        //attackBoxPlayer->entity->position = newPos;
+        //attackBoxPlayer->entity->rotation = newRot;
+		printf("%f, %f, %f\n", player->getPlayerRot().x, player->getPlayerRot().y, player->getPlayerRot().z);
 
 		camera.Update(dt, player->entity.position, player->entity.rotation);
         

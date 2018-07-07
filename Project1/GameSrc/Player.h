@@ -22,7 +22,7 @@ public:
     void SetMaxHP(int newMaxHP);
     int GetMaxHP();
     void LoseHP(int hpLoss);
-
+	vec3 getForwardVector();
 //    btRigidBody* getRB() override {return playerRigidBody;};
 
 	static Player* getInstance();

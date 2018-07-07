@@ -29,8 +29,9 @@ void Player::Update(float dt) {
 	CheckCoolDowns();
 	CheckInput();
 	btTransform trans = getWorldTransForm();
-	playerPos = vec3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-	entity.position = playerPos;
+	entity.position = Maths::bulletToGlm(getWorldPosition());
+	//entity.rotation = Maths::bulletToGlm(getWorldRotation());
+	//entity.rotation.x -= 90;
 	entity.Update(dt);
 	//cout << entity.position.x << " " << entity.position.y << " " << entity.position.z << endl;
 	//cout << "vel X: " << getVelocity().getX() << "vel Y: " << getVelocity().getY() << "vel Z: " << getVelocity().getZ() <<  endl;
@@ -124,6 +125,12 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 
 
+};
+
+vec3 Player::getForwardVector() {
+	vec3 forward = glm::rotate(vec3(0, 0, 1), radians(getPlayerRot().z), vec3(0, 1, 0));
+	forward = normalize(forward);
+	return forward;
 };
 
 void Player::PlayerJump() {
