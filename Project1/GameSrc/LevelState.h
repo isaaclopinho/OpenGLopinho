@@ -149,14 +149,15 @@ public:
 		camera.angleAroundTarget = 180;
 		phyWorld.addPhysicsObject(player);
         //(mass, shape, position, rotation, scale, inercia, entity);
-        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,2,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,2,5), "", true));
+        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
 
         phyWorld.addPhysicsObject(attackBoxPlayer);
         AddGameObject(attackBoxPlayer);
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
         
-		PhysicsObject* inimigo = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 10, -20 * i), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 10, -20 * i), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+		PhysicsObject* inimigo = new PhysicsObject(100, PhysicsShape::Box, btVector3(0, 2, -20), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+        inimigo->getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
 		phyWorld.addPhysicsObject(inimigo);
 		AddGameObject(inimigo);
 		inimigo->type = "Enemy";
@@ -201,7 +202,7 @@ public:
         
 //        std::cout << "newrot: " << newRot.x << " " <<newRot.y << " " << newRot.z << endl;
         
-        attackBoxPlayer->setPosition(Maths::glmToBullet(Maths::bulletToGlm(player->getWorldPosition()) + (player->getForwardVector()*8.0f)));
+        attackBoxPlayer->setPosition((player->getWorldPosition()+btVector3(0,5,0)) + Maths::glmToBullet(player->getForwardVector()*10.0f));
 //        attackBoxplayer->getWorldRotation().normalized();
 		//attackBoxPlayer->SetRotation(Maths::glmToBullet(newRot));
 		//attackBoxPlayer->SetRotation(player->getWorldRotation());

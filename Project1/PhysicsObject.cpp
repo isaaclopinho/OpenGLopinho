@@ -39,7 +39,7 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 position,
     this->_shape->calculateLocalInertia(this->_mass, this->_inercia);
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo(this->_mass, this->_motionState, this->_shape, this->_inercia);
 //    bodyCI.m_restitution = 0;
-//    bodyCI.m_friction = 0.0;
+    bodyCI.m_friction = 0.8;
     _body = new btRigidBody(bodyCI);
     
     _body->setUserPointer(this); //ponteiro para a classe que contém o rigidBody
@@ -104,7 +104,8 @@ void PhysicsObject::Update(float dt)
 {
     if (entity != NULL) {
         entity->Update(dt);
-		//entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
+//        entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
+//        entity->rotation.x -= 90;
         entity->position = Maths::bulletToGlm(getWorldPosition());
     }
 	

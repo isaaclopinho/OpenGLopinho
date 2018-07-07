@@ -70,7 +70,22 @@ void PhysicsWorld::updateWorld(float dt){
                     //cout << "ACABOU1" << endl;
                 }
                 
-            } else if(physicsBodyB->Is("Player"))
+            }
+            
+            if(physicsBodyA->Is("Trigger")){
+                if (physicsBodyB->Is("Enemy")){
+//                    Inimigo *physicsBodyB = (Inimigo*)bodyB->getUserPointer();
+                    cout << "gg" << endl;
+                }
+            }
+            
+            if(physicsBodyB->Is("Trigger")){
+                if (physicsBodyA->Is("Enemy")){
+                    cout << "gg" << endl;
+                }
+            }
+            
+            if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
 //                    printf("colisão com chão");
