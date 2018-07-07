@@ -1,5 +1,52 @@
 #include "PhysicsObject.h"
 
+//! Construtor de PhysicsObject
+/*!
+ \param mass a massa do Objeto
+ \param shape tipo do colisor PhysicsShape::
+ \param inecria (velocidade inicial).
+ \param mesh de onde vamos recuperar o transform.
+ \return PhysicsObject construido de acordo com os parametros fornecidos;
+ */
+PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): _mass(mass), _inercia(inercia), _position(Maths::glmToBullet(e->position)){
+    entity = e;
+    btVector3 rotation = Maths::glmToBullet(e->rotation);
+    _rotation = btQuaternion();
+    _rotation.setEulerZYX(rotation.getX(), rotation.getY(), rotation.getZ());
+    btVector3 scale = Maths::glmToBullet(e->scale);
+    switch (shape){
+        case PhysicsShape::Box:
+            //height, width, depth
+            _shape = new btBoxShape(scale);
+            break;
+        case PhysicsShape::Capsule:
+            // radius, height
+            _shape = new btCapsuleShape(scale.x(), scale.y());
+            break;
+        case PhysicsShape::Cyllinder:
+            //radius bottom, height, radius top
+            _shape = new btCylinderShape(scale);
+            break;
+        case PhysicsShape::Sphere:
+            //radius
+            _shape = new btSphereShape(scale.x());
+            break;
+    }
+    
+    _motionState = new btDefaultMotionState(btTransform(this->_rotation, this->_position));
+    this->_shape->calculateLocalInertia(this->_mass, this->_inercia);
+    btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo(this->_mass, this->_motionState, this->_shape, this->_inercia);
+    //    bodyCI.m_restitution = 0;
+    //    bodyCI.m_friction = 0.0;
+    _body = new btRigidBody(bodyCI);
+    
+    _body->setUserPointer(this); //ponteiro para a classe que contém o rigidBody
+    //    _body->setLinearFactor(btVector3(1,1,0 ));
+    //    _body->setAngularFactor(btVector3(0,0,0));
+    //    _body->setDamping(0.5, 0.5);
+    type = "Floor";
+}
+
 
 //! Construtor de PhysicsObject
 /*!
@@ -43,7 +90,6 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 position,
     _body = new btRigidBody(bodyCI);
     
     _body->setUserPointer(this); //ponteiro para a classe que contém o rigidBody
-    _body->setFlags(4);
 //    _body->setLinearFactor(btVector3(1,1,0 ));
 //    _body->setAngularFactor(btVector3(0,0,0));
 //    _body->setDamping(0.5, 0.5);
