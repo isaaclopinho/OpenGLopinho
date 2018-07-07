@@ -52,7 +52,7 @@ public:
     btVector3 getVelocity();
     void toggleGravity(bool flag);
     void toggleContact(bool flag);
-    
+    void SetRotation(btVector3 rotation);
 
 private:
     

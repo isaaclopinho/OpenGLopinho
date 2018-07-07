@@ -1,8 +1,8 @@
 #include "Player.h"
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
-
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,2,0), btVector3(), &entity)
+//(mass, shape, position, rotation, scale, inercia, entity);
+Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,1.5,0), btVector3(), &entity)
 {
 	//Initialize Player Variables
 

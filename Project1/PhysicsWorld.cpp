@@ -67,7 +67,7 @@ void PhysicsWorld::updateWorld(float dt){
                 }
                 
                 if(physicsBodyB->Is("Trigger")){
-                    cout << "ACABOU" << endl;
+                    cout << "ACABOU1" << endl;
                 }
                 
             } else if(physicsBodyB->Is("Player"))
@@ -76,7 +76,7 @@ void PhysicsWorld::updateWorld(float dt){
 //                    printf("colisão com chão");
                 }
                 if(physicsBodyA->Is("Trigger")){
-                    cout << "ACABOU" << endl;
+                    cout << "ACABOU2" << endl;
                 }
             }
             
