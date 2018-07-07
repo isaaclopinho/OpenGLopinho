@@ -128,7 +128,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 void Player::PlayerJump() {
     
-    applyForce(btVector3(0,2000,0));
+    applyForce(btVector3(0,5500,0));
 //    _body->applyCentralImpulse(btVector3(0, 1000, 0));
 	jumpTimeStamp = SDL_GetTicks();
 }

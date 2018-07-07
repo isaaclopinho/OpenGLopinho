@@ -16,7 +16,7 @@ PhysicsWorld::PhysicsWorld(){
     _dispatcher = new btCollisionDispatcher(_collisionConfiguration);
     _solver = new btSequentialImpulseConstraintSolver();
     _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
-    _world->setGravity(btVector3(0, -9.8, 0));
+    _world->setGravity(btVector3(0, -98, 0));
     _testDidCollided = false;
     _debugDrawer = new BulletDebugDrawer();
     _debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
@@ -63,12 +63,20 @@ void PhysicsWorld::updateWorld(float dt){
             if(physicsBodyA->Is("Player"))
             {
                 if (physicsBodyB->Is("Floor")){
-                    printf("colisão com chão");
+//                    printf("colisão com chão");
                 }
+                
+                if(physicsBodyB->Is("Trigger")){
+                    cout << "ACABOU" << endl;
+                }
+                
             } else if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
-                    printf("colisão com chão");
+//                    printf("colisão com chão");
+                }
+                if(physicsBodyA->Is("Trigger")){
+                    cout << "ACABOU" << endl;
                 }
             }
             

@@ -53,8 +53,6 @@ class LevelState : public State {
     
     vector<GUITexture> GUITextures;
     GUIRenderer guirenderer = GUIRenderer();
-    int hpTotal = 100;
-    int hpAtual = 100;
 
 	PointLight pt[4] = {
 		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
@@ -75,6 +73,7 @@ class LevelState : public State {
 
 	
 	Player* player;
+    PhysicsObject* attackBoxPlayer;
 	vector<btRigidBody> rigidBodies;
 
 
@@ -153,7 +152,13 @@ public:
         printf("adicionando rigid body do player\n");
 		phyWorld.addPhysicsObject(player);
         printf("adicionou\n");
+        
+        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,5,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), 5, "", true));
 
+        phyWorld.addPhysicsObject(attackBoxPlayer);
+        AddGameObject(attackBoxPlayer);
+        attackBoxPlayer->toggleContact(false);
+        attackBoxPlayer->type = "Trigger";
 
         //HUD
         
