@@ -11,7 +11,7 @@ using namespace std;
 class Maths
 {
 public:
-	static glm::mat4 createTransformationMatrix(glm::vec3 translation, glm::vec3 rotation, float scale);
+	static glm::mat4 createTransformationMatrix(glm::vec3 translation, glm::vec3 rotation,vec3 scale);
 	static glm::mat4 createTransformationMatrix(glm::vec2 translation, glm::vec2 scale);
 	static glm::mat4 createViewMatrix(Camera camera);
 	static glm::mat4 Mat4FromAiMat4(aiMatrix4x4 mat);

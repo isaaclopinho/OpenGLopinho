@@ -102,11 +102,11 @@ public:
 		btBroadphaseInterface *itf = new btDbvtBroadphase();
 		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/fire_002.png"), 5, true);
 		//ps = new ParticleSystem(*pt, 50, 3, 0, 1);
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -0.5, 0), glm::vec3(-90, 0, 0), 25, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -0.5, 0), glm::vec3(-90, 0, 0), vec3(25,25,25), "", true)));
 		
 		guiTextures.emplace_back(shadowMap);
 
-		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0 , 0, 0), glm::vec3(90,0, 0), float(rand()%50+1)/100.0, "", true));
+		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0 , 0, 0), glm::vec3(90,0, 0), float(rand()%50+1)/100.0f * vec3(1, 1, 1), "", true));
 		t->animated = true;
 		AddGameObject(t);
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/lensFlare/tex8.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));

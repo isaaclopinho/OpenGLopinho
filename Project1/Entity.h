@@ -13,14 +13,14 @@ public:
 	vec3 rotation;
 	//Animator anim;
 	std::string currentAnimation;
-	float scale;
+	vec3 scale;
 	vector<mat4>transforms;
 	float time;
 	bool loopAnimation;
 
 	//int textureIndex;
 
-	Entity(Mesh* m, glm::vec3 p, glm::vec3 r, float s, std::string startAnimation, bool loopAnimation);
+	Entity(Mesh* m, glm::vec3 p, glm::vec3 r, vec3 s, std::string startAnimation, bool loopAnimation);
 	//Entity(glm::vec3 position, glm::vec3 rotation, float scale, int textureIndex); //varias textura em um obj
 	~Entity();
 

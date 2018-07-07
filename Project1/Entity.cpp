@@ -23,7 +23,7 @@ void Entity::Rotate(glm::vec3 rot)
 //	return (float)rows / (float)model.texture.rows;
 //}
 
-Entity::Entity(Mesh * m, glm::vec3 p, glm::vec3 r, float s, std::string startAnimation, bool loopAnimation) : mesh(m), position(p), rotation(r), scale(s), time(0), currentAnimation(startAnimation), loopAnimation(loopAnimation)/*, anim(m, "Run", true)*/
+Entity::Entity(Mesh * m, glm::vec3 p, glm::vec3 r, vec3 s, std::string startAnimation, bool loopAnimation) : mesh(m), position(p), rotation(r), scale(s), time(0), currentAnimation(startAnimation), loopAnimation(loopAnimation)/*, anim(m, "Run", true)*/
 {
 }
 
