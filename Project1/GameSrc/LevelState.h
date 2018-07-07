@@ -156,11 +156,10 @@ public:
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
         
-        PhysicsObject* inimigo = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,0), btVector3(0,0,0), btVector3(2,2,2), btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 10, 0), glm::vec3(-90, 0, 0), vec3(2,2,2), "IdleRight", true));
-        phyWorld.addPhysicsObject(inimigo);
-        AddGameObject(inimigo);
-        inimigo->type = "Enemy";
-        
+		PhysicsObject* inimigo = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 10, -20 * i), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 10, -20 * i), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+		phyWorld.addPhysicsObject(inimigo);
+		AddGameObject(inimigo);
+		inimigo->type = "Enemy";
 
         //HUD
         
@@ -208,7 +207,7 @@ public:
 		//attackBoxPlayer->SetRotation(player->getWorldRotation());
         //attackBoxPlayer->entity->position = newPos;
         //attackBoxPlayer->entity->rotation = newRot;
-		printf("%f, %f, %f\n", player->getPlayerRot().x, player->getPlayerRot().y, player->getPlayerRot().z);
+		//printf("%f, %f, %f\n", player->getPlayerRot().x, player->getPlayerRot().y, player->getPlayerRot().z);
 
 		camera.Update(dt, player->entity.position, player->entity.rotation);
         
@@ -232,14 +231,14 @@ public:
         
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-//        fbo->bindFrameBuffer(); //comentar pra rodar no mac
+        //fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
         MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
-//        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-//        fbo->resolveToFbo(*output); //comentar pra rodar no mac
-//        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+       // fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+       // fbo->resolveToFbo(*output); //comentar pra rodar no mac
+       // pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
         guirenderer.render(GUITextures);
 	};

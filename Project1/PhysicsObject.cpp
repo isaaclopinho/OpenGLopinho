@@ -104,7 +104,7 @@ void PhysicsObject::Update(float dt)
 {
     if (entity != NULL) {
         entity->Update(dt);
-		entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
+		//entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
         entity->position = Maths::bulletToGlm(getWorldPosition());
     }
 	
