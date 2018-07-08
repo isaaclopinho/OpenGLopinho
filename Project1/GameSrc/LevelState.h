@@ -77,6 +77,8 @@ class LevelState : public State {
     PhysicsObject* attackBoxPlayer;
 	vector<btRigidBody> rigidBodies;
 
+	ParticleSystem *  ps;
+
 
 public:
     PhysicsWorld phyWorld;
@@ -92,6 +94,10 @@ public:
 		MasterRenderer::GetInstance().usingShadow = true;
 
 
+		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/smoke.png"), 8, false);
+		ps = new ParticleSystem(*pt, 32, 15, 0, 4);
+
+		ps->type = 1;
 		//Initialize Physics
 //        gContactAddedCallback=callBackFunc; // seta o ponteiro para nosso callback de contato;
 		//temporary physics ground for testing purposes
@@ -200,7 +206,7 @@ public:
 		camera.angleAroundTarget = 180;
         phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
-        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
+        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(NULL, glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
 
         phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
         AddGameObject(attackBoxPlayer);
@@ -244,8 +250,8 @@ public:
 
         phyWorld.updateWorld(dt);
         
-
-
+		ps->Update(dt, vec3(0,2,50));
+		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;

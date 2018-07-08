@@ -13,6 +13,8 @@ public:
 	float timer = 0;
 	float pEmitidas = 0;
 
+	int type = 0;
+
 	ParticleTexture texture;
 
 	ParticleSystem(ParticleTexture &texture, float pps, float speed, float gravityComplient, float lifeLength);
