@@ -46,10 +46,10 @@ void Enemy::Update(float dt){
 
 bool Enemy::PlayerNearby(){
     btScalar dist = (Player::getInstance()->getWorldPosition() - getWorldPosition()).norm();
-    bool near = (dist <= 100);
-    if (near) printf("player por perto\n");
+    bool neara = (dist <= 100);
+    if (neara) printf("player por perto\n");
     else printf("player nÃo por perto \n");
-    return near;
+    return neara;
 }
 
 void Enemy::RecieveDamage(int damage){

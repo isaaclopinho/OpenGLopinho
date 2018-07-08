@@ -80,17 +80,18 @@ public:
 		}
 
 
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 1; i <= 60; i++) {
 			std::cout << "res/menu/icone/sp (" + to_string(i) + ").png" << endl;
 			GLuint g = Loader::LoadTexture("res/menu/icone/sp (" + to_string(i) + ").png");
 			textureIcone.emplace_back(g);
 		}
+		float offset = 0.0f;
 
 
 		guiMenu.emplace_back(GUITexture(texturesID[0], vec2(0,0), vec2(1,1)));
-		guiMenu.emplace_back(GUITexture(textureStart[0], vec2(0, -0.4), vec2(459.0f / 1280.0f, 80.0f/720.0f)));
-		guiMenu.emplace_back(GUITexture(textureExit[0], vec2(0, -0.7), vec2(459.0f / 1280.0f, 80.0f / 720.0f)));
-		guiMenu.emplace_back(GUITexture(textureIcone[0], vec2(0, 0), vec2(200.0f / 1280.0f, 80.0f / 720.0f)));
+		guiMenu.emplace_back(GUITexture(textureStart[0], vec2(0.57f, -0.10 - offset), vec2(125.0f / 1280.0f, 88.0f/720.0f)*1.1f ));
+		guiMenu.emplace_back(GUITexture(textureExit[0], vec2(0.57f, -0.40 - offset), vec2(93.0f / 1280.0f, 83.0f / 720.0f)* 1.1f ));
+		guiMenu.emplace_back(GUITexture(textureIcone[0], vec2(0.57f, 0.35f - offset), vec2(277.0f / 1280.0f, 143.0f / 720.0f) * 1.5f));
 
 
 	};
@@ -99,10 +100,24 @@ public:
 	}
 
 	void Update(float dt) {
+
+
+		timeIcone += dt;
+		if (timeIcone >= 2.0f / (float)textureIcone.size()) {
+			contadorIcone++;
+
+			if (contadorIcone >= textureIcone.size())
+				contadorIcone = 0;
+
+			guiMenu[3].textureID = textureIcone[contadorIcone];
+
+
+			timeIcone = 0;
+		}
+
 		if (!bloqueado) {
 			time += dt;
 
-			timeIcone += dt;
 
 
 			if (time >= 1.0f / (float)frames) {
@@ -148,7 +163,7 @@ public:
 
 				if (timeStartButton >= 0.5f/12.0f) {
 					guiMenu[1].textureID = textureStart[contadorFrameStartButton];
-					guiMenu[2].textureID = textureStart[contadorFrameExitButton];
+					guiMenu[2].textureID = textureExit[contadorFrameExitButton];
 					timeStartButton = 0;
 					contadorFrameStartButton = glm::clamp(contadorFrameStartButton + 1, 0, 11);
 					contadorFrameExitButton = glm::clamp(contadorFrameExitButton - 1, 0, 11);
@@ -161,7 +176,7 @@ public:
 
 				if (timeStartButton >= 0.5f/12.0f) {
 					guiMenu[1].textureID = textureStart[contadorFrameStartButton];
-					guiMenu[2].textureID = textureStart[contadorFrameExitButton];
+					guiMenu[2].textureID = textureExit[contadorFrameExitButton];
 					timeStartButton = 0;
 					contadorFrameStartButton = glm::clamp(contadorFrameStartButton - 1, 0, 11);
 					contadorFrameExitButton = glm::clamp(contadorFrameExitButton + 1, 0, 11);
@@ -171,17 +186,7 @@ public:
 			
 
 
-			if (timeIcone >= 2.0f / (float)textureIcone.size()) {
-				contadorIcone++;
-
-				if (contadorIcone >= textureIcone.size())
-					contadorIcone = 0;
-				
-				guiMenu[3].textureID = textureIcone[ contadorIcone];
-
-
-				timeIcone = 0;
-			}
+			
 
 			// guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
 			//guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
@@ -203,7 +208,7 @@ public:
 			time += dt;
 			timeFadeout += dt;
 
-			float t = timeFadeout / 3.0f;
+			float t = timeFadeout / 2.0f;
 
 			for(int i=1; i<4; i++)
 				guiMenu[i].constant = lerp(1.0f, 0.0f, t);

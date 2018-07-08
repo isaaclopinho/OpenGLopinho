@@ -126,6 +126,10 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa estrutura.dae"), glm::vec3(-75, 0, 502), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa simples.dae"), glm::vec3(-69, 26, 568), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 27.0f, "", true)));
 
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 33), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(54, 0, 120), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
+
+
         
   //      AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), vec3(1,1,1) * 700.0f, "", true)));
 		//
@@ -219,12 +223,15 @@ public:
         }
         phyWorld.updateWorld(dt);
         
+
+		
+
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
 		}
 
-		if (InputManager::GetInstance().IsKeyDown(SDLK_p)) {
+		if (InputManager::GetInstance().KeyPress(SDLK_p)) {
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
             std::cout << "newpos: " << attackBoxPlayer->getWorldPosition().getX() << " " << attackBoxPlayer->getWorldPosition().getY() << " " << attackBoxPlayer->getWorldPosition().getZ() << " " << std::endl;
 		}
