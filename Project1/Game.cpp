@@ -104,9 +104,9 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new MenuState());
 
-	
+
 
 	while (!states.empty()) {
 		CalculateDeltaTime();

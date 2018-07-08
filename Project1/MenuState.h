@@ -20,6 +20,7 @@
 #include "InputManager.h"
 #include "VideoState.h"
 #include "ParticleSystem.h"
+#include <glm/gtx/compatibility.hpp>
 using namespace glm;
 using namespace std;
 
@@ -57,6 +58,8 @@ class MenuState : public State {
 	float timeIcone = 0;
 
 	bool startButton = true;
+
+	float timeFadeout = 0;
 
 
 public:
@@ -166,6 +169,8 @@ public:
 
 			}
 			
+
+
 			if (timeIcone >= 2.0f / (float)textureIcone.size()) {
 				contadorIcone++;
 
@@ -173,6 +178,7 @@ public:
 					contadorIcone = 0;
 				
 				guiMenu[3].textureID = textureIcone[ contadorIcone];
+
 
 				timeIcone = 0;
 			}
@@ -195,13 +201,22 @@ public:
 		}
 		else {
 			time += dt;
+			timeFadeout += dt;
+
+			float t = timeFadeout / 3.0f;
+
+			for(int i=1; i<4; i++)
+				guiMenu[i].constant = lerp(1.0f, 0.0f, t);
+
 
 			if (time >= 1.0f / (float)frames) {
 				contador++;
 
 				if (contador > frames - 1) {
 					contador = frames - 1;
-					Game::GetInstance()->AddState(new VideoState());
+
+					if(t >= 1)
+						Game::GetInstance()->AddState(new VideoState());
 				}
 
 				guiMenu[0].textureID = texturesID[contador];

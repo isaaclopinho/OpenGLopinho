@@ -41,6 +41,7 @@ void GUIRenderer::render(vector<GUITexture> guis)
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, guis[i].textureID);
+		shader->loadConstant(guis[i].constant);
 		mat4 matrix = Maths::createTransformationMatrix(guis[i].position, guis[i].scale);
 		shader->loadTransformationMatrix(matrix);
 
