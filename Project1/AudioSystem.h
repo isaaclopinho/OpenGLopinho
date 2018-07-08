@@ -1,8 +1,15 @@
 #pragma once
 
+#ifdef __APPLE__
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#include <SDL2/SDL_mixer.h>
+//#include <SDL2/SDL.h>
+#else
 #include <al.h>
 #include <alc.h>
 #include <SDL_mixer.h>
+#endif
 #include <iostream>
 #include <vector>
 #include <cstdio>

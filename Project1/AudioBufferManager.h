@@ -1,8 +1,19 @@
 #pragma once
 
+#ifdef __APPLE__
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#include <SDL2/SDL_mixer.h>
+#else
 #include <al.h>
 #include <alc.h>
 #include <SDL_mixer.h>
+#endif
+#include <string>
+#include <iostream>
+
+
+
 #include <unordered_map>
 
 class AudioBufferManager {

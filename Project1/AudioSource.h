@@ -1,8 +1,5 @@
 #pragma once
 
-#include <al.h>
-#include <alc.h>
-#include <SDL_mixer.h>
 #include <string>
 #include "AudioBufferManager.h"
 
