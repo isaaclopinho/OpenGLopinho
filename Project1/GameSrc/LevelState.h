@@ -186,7 +186,11 @@ public:
         ground->type = "Floor";
         phyWorld.addPhysicsObject(ground, COL_FLOOR);
 		player = Player::getInstance();
+		player->limitZ = vec2(-68.43, 850);
+		player->limitX = vec2(-50, 50);
+
 		AddGameObject(player);
+		
 		camera.distanceFromTarget = 30;
 		camera.pitch = 30;
 		camera.vDist = -50;
@@ -235,10 +239,10 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
         }
+
         phyWorld.updateWorld(dt);
         
 
-		
 
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {

@@ -28,6 +28,10 @@ public:
 //    btRigidBody* getRB() override {return playerRigidBody;};
 	static Player* getInstance();
 
+	vec2 limitX = vec2();
+	vec2 limitZ = vec2();
+
+
 private:
 
 	static Player* instance;
