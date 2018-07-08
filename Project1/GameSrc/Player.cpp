@@ -2,13 +2,11 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 //(mass, shape, position, rotation, scale, inercia, entity);
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,1.5,0), btVector3(), &entity)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,1.5,0), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
 {
 	//Initialize Player Variables
 
 	canJump = true;
-	jumpTimeStamp = 0;
-	jumpCoolDown = 2000;
 	maxSpeed = 50;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
@@ -18,23 +16,30 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	velocity = 0;
 	minVelocity = 0;
 	velocityStep = 0.5f;
-
+    
+    getPhysicsBody()->setFriction(0.8);
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     maxHP = hp = 100;
     type = "Player";
 }
 
+void Player::land(){
+    //respeitar cooldown pq fisica atualiza mto rapido antes de pular, land é chamado :((
+    if (jump.IsInCooldown() == false ) canJump = true; //tr00;
+}
+
 void Player::Update(float dt) {
 
-	CheckCoolDowns();
 	CheckInput();
 	btTransform trans = getWorldTransForm();
 	entity.position = Maths::bulletToGlm(getWorldPosition());
 	//entity.rotation = Maths::bulletToGlm(getWorldRotation());
 	//entity.rotation.x -= 90;
 	entity.Update(dt);
-	//cout << entity.position.x << " " << entity.position.y << " " << entity.position.z << endl;
-	//cout << "vel X: " << getVelocity().getX() << "vel Y: " << getVelocity().getY() << "vel Z: " << getVelocity().getZ() <<  endl;
+    jump.Update(dt);
+    ataque.Update(dt);
+    invulneravel.Update(dt);
+    knockback.Update(dt);
 }
 
 
@@ -65,10 +70,10 @@ void Player::CheckInput()
 		//horizontalMovement = 1;
 		newRot = -2;
 	};
-	if ((InputManager::GetInstance().IsKeyDown(SDLK_SPACE)) && canJump == true) {
-		PlayerJump();
-		canJump = false;
-	}
+	if ((InputManager::GetInstance().KeyPress(SDLK_SPACE)) && canJump) {
+        jump.Reset(); //start
+        PlayerJump();
+    }
 
 	//cout << playerRigidBody->getLinearVelocity().length() << endl;
 
@@ -116,10 +121,13 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
 	btVector3 finalForce = btVector3(forward.x * zForce, getVelocity().getY() +  forward.y, forward.z * zForce);
 
-    setVelocity(finalForce);
     
-	entity.position = playerPos;
-	entity.rotation = playerRot;
+    
+    if(!knockback.IsInCooldown()){
+        setVelocity(finalForce);
+        entity.position = playerPos;
+        entity.rotation = playerRot;
+    }
 
 	playerRot = vec3(playerRot.x, playerRot.y, playerRot.z + newRot);
 
@@ -135,16 +143,17 @@ vec3 Player::getForwardVector() {
 
 void Player::PlayerJump() {
     
-    applyForce(btVector3(0,5500,0));
+    applyForce(btVector3(0,6500,0));
+    canJump = false;
 //    _body->applyCentralImpulse(btVector3(0, 1000, 0));
-	jumpTimeStamp = SDL_GetTicks();
+//    jumpTimeStamp = SDL_GetTicks();
 }
 
 void Player::CheckCoolDowns() {
 
-	if (SDL_GetTicks() > jumpTimeStamp + jumpCoolDown) {
-		canJump = true;
-	}
+//    if (SDL_GetTicks() > jumpTimeStamp + jumpCoolDown) {
+//        canJump = true;
+//    }
 }
 
 Player* Player::getInstance() {
@@ -208,10 +217,25 @@ void Player::SetMaxHP(int newMaxHP){
 int Player::GetMaxHP(){
     return maxHP;
 }
-void Player::LoseHP(int hpLoss){
-    hp -= hpLoss;
-    if(hp <= 0){
-        hp = 0;
-        cout << "DEAD" << endl;
+void Player::LoseHP(int hpLoss, btVector3 origin){
+    
+    if (invulneravel.IsInCooldown() == false){
+        
+        knockback.Reset();
+        
+        // onde o inimigo está - onde o player está = vetor que aponta do inimigo ao player;
+        btVector3 direction = (getWorldPosition() - origin).normalized();
+        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
+        direction.setY(abs(direction.y()));
+        direction.setX(direction.x());
+        direction.setZ(direction.z());
+        applyForce((direction) * 5000);
+        this->invulneravel.Reset(); //start
+        hp -= hpLoss;
+        if(hp <= 0){
+            hp = 0;
+            cout << "DEAD" << endl;
+        }
     }
+    
 }

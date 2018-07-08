@@ -37,14 +37,14 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 inercia, 
     this->_shape->calculateLocalInertia(this->_mass, this->_inercia);
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo(this->_mass, this->_motionState, this->_shape, this->_inercia);
     //    bodyCI.m_restitution = 0;
-    //    bodyCI.m_friction = 0.0;
+    bodyCI.m_friction = 0.8;
     _body = new btRigidBody(bodyCI);
     
     _body->setUserPointer(this); //ponteiro para a classe que contém o rigidBody
     //    _body->setLinearFactor(btVector3(1,1,0 ));
     //    _body->setAngularFactor(btVector3(0,0,0));
     //    _body->setDamping(0.5, 0.5);
-    type = "Floor";
+    type = "PhysicsObject";
 }
 
 

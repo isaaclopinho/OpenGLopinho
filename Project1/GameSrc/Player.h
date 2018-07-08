@@ -4,6 +4,7 @@
 #include "../MasterRenderer.h"
 #include "../InputManager.h"
 #include "../Game.h"
+#include "../Timer.h"
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 
@@ -14,6 +15,7 @@ public:
 	Player();
 	~Player();
 	void Update(float dt);
+    void land();
 	void Render();
     vec3 getPlayerPos() { return playerPos; };
     vec3 getPlayerRot() { return playerRot; };
@@ -21,10 +23,9 @@ public:
     int GetHP();
     void SetMaxHP(int newMaxHP);
     int GetMaxHP();
-    void LoseHP(int hpLoss);
+    void LoseHP(int hpLoss, btVector3 origin);
 	vec3 getForwardVector();
 //    btRigidBody* getRB() override {return playerRigidBody;};
-
 	static Player* getInstance();
 
 private:
@@ -37,7 +38,8 @@ private:
 	void PlayerMove(float horizontalInput, float verticalInput, int newRot);
 
 	bool canJump;
-	float jumpCoolDown, jumpTimeStamp;
+//    float jumpCoolDown, jumpTimeStamp;
+    Timer jump, invulneravel, ataque, knockback;
     vec3 playerPos = vec3(0, 10, 0); //starting position
     vec3 playerRot = vec3(-90, 0, 0); //starting rotation?
 	int walkSpeed;

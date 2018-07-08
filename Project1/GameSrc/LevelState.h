@@ -138,6 +138,7 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 310), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 425), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
         
+        ground->type = "Floor";
         phyWorld.addPhysicsObject(ground, COL_FLOOR);
 		player = Player::getInstance();
 		AddGameObject(player);
@@ -145,7 +146,7 @@ public:
 		camera.pitch = 30;
 		camera.vDist = -50;
 		camera.angleAroundTarget = 180;
-        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL);
+        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
         attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
 
@@ -155,7 +156,8 @@ public:
         attackBoxPlayer->type = "Trigger";
         
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL);
+//        inimigo->toggleContact(false);
+        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
         AddGameObject(inimigo);
 
         //HUD
@@ -219,7 +221,7 @@ public:
 		camera.Update(dt, player->entity.position, player->entity.rotation);
         
         if(InputManager::GetInstance().KeyPress(SDLK_h)){
-            player->LoseHP(10);
+            player->LoseHP(10, btVector3(0,0,0));
         }
         UpdateHP();
 	};

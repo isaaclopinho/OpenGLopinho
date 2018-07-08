@@ -80,19 +80,21 @@ void PhysicsWorld::updateWorld(float dt){
             {
                 if (physicsBodyB->Is("Floor")){
 //                    printf("colisão com chão");
+                    Player::getInstance()->land();
                 }
                 if (physicsBodyB->Is("Enemy")){
-                    Enemy *e = (Enemy*)bodyB->getUserPointer();
-//                    Player::getInstance();
+                    Enemy *e = (Enemy*)bodyB->getUserPointer(); //pegar dano com inimigo?
+                    Player::getInstance()->LoseHP(10, e->getWorldPosition());
                 }
                 
             }else if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
-                    //                    printf("colisão com chão");
+                    Player::getInstance()->land();
                 }
                 if (physicsBodyA->Is("Enemy")){
-                    Enemy *e = (Enemy*)bodyA->getUserPointer();
+                    Enemy *e = (Enemy*)bodyA->getUserPointer(); //pegar dano com inimigo?
+                    Player::getInstance()->LoseHP(10, e->getWorldPosition());
                 }
             }
             
