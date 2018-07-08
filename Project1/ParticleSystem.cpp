@@ -48,10 +48,10 @@ void ParticleSystem::EmitParticle2(vec3 center)
 
 void ParticleSystem::EmitParticle(vec3 center)
 {
-	vec3 velocity = vec3(float(rand() % 3 - 1), float(rand() % 3 - 1), 0) ;
+	vec3 velocity = vec3(float(rand() % 30 - 10), float(rand() % 30 - 10), float(rand() % 30 - 10) ) ;
 	velocity = glm::normalize(velocity);
 	velocity = velocity * (speed);
-	Particle(texture, center, velocity, -10 , gravityComplient, lifeLength, rand()%360, float(rand()%15+1));
+	Particle(texture, center, velocity, -10 , gravityComplient, lifeLength, rand()%360, float(rand()%30+1)/100.0f);
 }
 
 ParticleSystem::~ParticleSystem()

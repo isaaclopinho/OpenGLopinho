@@ -74,7 +74,10 @@ public:
 
 		pp = new PostProcessing();
 		pp->init();
-		
+		camera.pitch = 0;
+		camera.angleAroundTarget = 0;
+		camera.roll = 0;
+		camera.distanceFromTarget = 2;
 		FlareTexture flare = FlareTexture(Loader::LoadTexture("res/lensFlares/tex8.png"), 0.5f);
 		flare.screenPos = vec2(0.5f);
 		texturesFlare.emplace_back(flare);
@@ -100,14 +103,17 @@ public:
 		lensFlare = new FlareManager(0.16f, texturesFlare);
 
 		btBroadphaseInterface *itf = new btDbvtBroadphase();
-		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/fire_002.png"), 5, true);
-		//ps = new ParticleSystem(*pt, 50, 3, 0, 1);
+		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/blood_hit.png"), 4, true);
+		ps = new ParticleSystem(*pt, 10, 0.6f, 0.2f, 0.8f);
+
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/models/plane.dae"), glm::vec3(0, -0.5, 0), glm::vec3(-90, 0, 0), vec3(25,25,25), "", true)));
 		
 		guiTextures.emplace_back(shadowMap);
 
-		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/t.dae"), glm::vec3(0 , 0, 0), glm::vec3(90,0, 0), float(rand()%50+1)/100.0f * vec3(1, 1, 1), "", true));
+		t = new GameObjectTest(Entity(Loader::LoadModel("res/models/pet-01.dae"), glm::vec3(0 , -1, 0), glm::vec3(-90,0, 0), vec3(1, 1, 1)*0.15f, "IdleRight", true));
 		t->animated = true;
+
+		
 		AddGameObject(t);
 		guiTextures.emplace_back(GUITexture(Loader::LoadTexture("res/lensFlare/tex8.png"), vec2(0.75f, 0.90f), vec2(0.22f, 0.1f)));
 		//direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*1.0f);
@@ -116,9 +122,9 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-		//ps->Update(dt, vec3(0, 0, -15));
+		ps->Update(dt, vec3(t->entity.position.x, t->entity.position.y + 0.375f, t->entity.position.z));
 		
-		//MasterRenderer::GetInstance().updateAllParticles (dt, camera);
+		MasterRenderer::GetInstance().updateAllParticles (dt, camera);
 
 		camera.Update(dt, t->entity.position, t->entity.rotation);
 		vec3 posi = camera.position;

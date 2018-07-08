@@ -42,7 +42,7 @@ void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, Direct
 
 	sbRenderer->render(camera);
 	
-	//pRenderer->render(particless, camera);
+	pRenderer->render(particless, camera);
 
 	entities.clear();
 }
