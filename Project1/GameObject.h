@@ -10,7 +10,7 @@ using namespace std;
 class GameObject {
 
 protected:
-	bool remove;
+	bool remove = false;
 	
 public:
 	string type;

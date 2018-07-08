@@ -1,9 +1,8 @@
 #include "GameObjectTest.h"
 
 
-GameObjectTest::GameObjectTest(Entity entity) : entity(entity)
+GameObjectTest::GameObjectTest(Entity entity) : entity(entity), GameObject()
 {
-
 }
 
 GameObjectTest::~GameObjectTest()

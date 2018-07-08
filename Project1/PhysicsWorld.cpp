@@ -7,6 +7,8 @@
 //
 
 #include "PhysicsWorld.h"
+#include "Enemy.h"
+#include "Player.h"
 
 #include <stdio.h>
 
@@ -73,15 +75,38 @@ void PhysicsWorld::updateWorld(float dt){
             }
             
             if(physicsBodyA->Is("Trigger")){
-                if (physicsBodyB->Is("Enemy")){
-//                    Inimigo *physicsBodyB = (Inimigo*)bodyB->getUserPointer();
-                    cout << "gg" << endl;
+                Player* p = Player::getInstance();
+                if (InputManager::GetInstance().ControllerButtonPress(X360_X)){
+                    
+                    Enemy *e = (Enemy*)bodyB->getUserPointer();
+                    e->RecieveDamage(10);
+                    
+                    btVector3 direcao = (e->getWorldPosition() - p->getWorldPosition()).normalized();
+                    
+                    cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
+                    
+                    direcao *= btVector3(1, 4, 1);
+                    
+                    e->applyForce(direcao * 3000);
+                    
+                    //                    cout << "gg" << endl;
                 }
             }
             
             if(physicsBodyB->Is("Trigger")){
-                if (physicsBodyA->Is("Enemy")){
-                    cout << "gg" << endl;
+                Player* p = Player::getInstance();
+                if (InputManager::GetInstance().ControllerButtonPress(X360_X)){
+                    
+                    Enemy *e = (Enemy*)bodyA->getUserPointer();
+                    e->RecieveDamage(10);
+                    
+                    btVector3 direcao = (e->getWorldPosition() - p->getWorldPosition()).normalized();
+                    
+                    cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
+                    
+                    e->applyForce(direcao * 1000);
+                    
+//                    cout << "gg" << endl;
                 }
             }
             

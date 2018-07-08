@@ -32,7 +32,7 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 inercia, 
             _shape = new btSphereShape(scale.x());
             break;
     }
-    
+    remove = false;
     _motionState = new btDefaultMotionState(btTransform(this->_rotation, this->_position));
     this->_shape->calculateLocalInertia(this->_mass, this->_inercia);
     btRigidBody::btRigidBodyConstructionInfo bodyCI = btRigidBody::btRigidBodyConstructionInfo(this->_mass, this->_motionState, this->_shape, this->_inercia);

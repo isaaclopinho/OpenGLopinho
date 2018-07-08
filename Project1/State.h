@@ -6,7 +6,7 @@
 
 class State {
 protected:
-	std::vector<std::unique_ptr<GameObject>> gameObjects;
+	std::vector<GameObject*> gameObjects;
 
 	bool remove;
 

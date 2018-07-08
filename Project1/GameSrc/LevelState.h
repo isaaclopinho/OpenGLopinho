@@ -32,6 +32,7 @@
 #include "../PostProcessing.h"
 #include "../PhysicsObject.h"
 #include "../PhysicsWorld.h"
+#include "Enemy.h"
 
 using namespace glm;
 using namespace std;
@@ -156,11 +157,15 @@ public:
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
         
-		PhysicsObject* inimigo = new PhysicsObject(100, PhysicsShape::Box, btVector3(0, 2, -20), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-        inimigo->getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
-		phyWorld.addPhysicsObject(inimigo);
-		AddGameObject(inimigo);
-		inimigo->type = "Enemy";
+//        PhysicsObject* inimigo = new PhysicsObject(100, PhysicsShape::Box, btVector3(0, 2, -20), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+//        inimigo->getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
+//        phyWorld.addPhysicsObject(inimigo); TODO
+//        AddGameObject(inimigo); TODO
+//        inimigo->type = "Enemy";
+        
+        Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+        phyWorld.addPhysicsObject(inimigo);
+        AddGameObject(inimigo);
 
         //HUD
         
@@ -178,10 +183,23 @@ public:
 
 	void Update(float dt) {
 		float delta = dt;
-
+        for (int i = gameObjects.size()-1; i >= 0; i--){
+            if (gameObjects[i]->Remove() == true) {
+                
+                cout << "Removeu " << gameObjects[i]->type << " : i = " << i << endl;
+                
+                if (gameObjects[i]->type != "GameObject"){
+                    phyWorld.removePhysicsObject((PhysicsObject*)gameObjects[i]);
+                }
+                //porque funciona com essas merda comentada?
+//                GameObject* obj = gameObjects[i]; // guarda referencia pra poder deletar
+                gameObjects.erase(gameObjects.begin()+i); // remove do vetor
+//                delete obj; // deleta
+            }
+        }
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
-		}
+        }
         phyWorld.updateWorld(dt);
         
 		
