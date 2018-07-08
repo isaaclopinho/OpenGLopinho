@@ -13,6 +13,14 @@ enum PhysicsShape{
     Cyllinder
 };
 
+enum PhysicsBitMask{
+    COL_NOTHING = 0,
+    COL_PLAYER = 1<<1, //primeiro bit ligado
+    COL_ENEMY = 1<<2, //segundo bit ligado
+    COL_WALL = 1<<3, //terceiro bit ligado...
+    COL_FLOOR = 1<<4
+};
+
 /*enum CollisionFlags
 {
     CF_STATIC_OBJECT= 1, // objeto statico

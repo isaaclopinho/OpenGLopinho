@@ -22,10 +22,11 @@ public:
     
     void debugDraw();
     void updateWorld(float dt);
-    void addPhysicsObject(PhysicsObject* obj);
-    void removePhysicsObject(PhysicsObject* obj);
-    void addRigidBody(btRigidBody* body);
-    void removeRigidBody(btRigidBody* body);
+    void addPhysicsObject(PhysicsObject *obj);
+    void addPhysicsObject(PhysicsObject *obj, PhysicsBitMask objBit, int collides = COL_WALL | COL_PLAYER | COL_ENEMY | COL_FLOOR);
+    void removePhysicsObject(PhysicsObject *obj);
+    void addRigidBody(btRigidBody *body);
+    void removeRigidBody(btRigidBody *body);
     
 private:
     BulletDebugDrawer*                      _debugDrawer;

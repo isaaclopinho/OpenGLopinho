@@ -12,6 +12,19 @@
 
 #include <stdio.h>
 
+struct YourOwnFilterCallback : public btOverlapFilterCallback
+{
+    // return true when pairs need collision
+    virtual bool    needBroadphaseCollision(btBroadphaseProxy* proxy0,btBroadphaseProxy* proxy1) const
+    {
+        bool collides = (proxy0->m_collisionFilterGroup & proxy1->m_collisionFilterMask) != 0;
+        collides = collides && (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
+        
+        //add some additional logic here that modified 'collides'
+        return collides;
+    }
+};
+
 PhysicsWorld::PhysicsWorld(){
     _broadphase = new btDbvtBroadphase();
     _collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -23,6 +36,8 @@ PhysicsWorld::PhysicsWorld(){
     _debugDrawer = new BulletDebugDrawer();
     _debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
     _world->setDebugDrawer(_debugDrawer);
+    btOverlapFilterCallback * filterCallback = new YourOwnFilterCallback();
+    _world->getPairCache()->setOverlapFilterCallback(filterCallback);
     
 }
 
@@ -36,7 +51,6 @@ PhysicsWorld::~PhysicsWorld(){
 }
 
 
-//passar dt?
 void PhysicsWorld::updateWorld(float dt){
     _world->stepSimulation(dt);
     
@@ -130,6 +144,20 @@ void PhysicsWorld::debugDraw(){
     _world->debugDrawWorld();
 }
 
+//! Adiciona Objeto com BitMask << USA ESSE MÉTODO!!!
+/*!
+ \param obj objeto a adicionar o corpo fisico;
+ \param objBit bit que representa o objeto.
+ \param collides bits que o objeto colide (tem de ser mútuo para ter colisão).
+ */
+void PhysicsWorld::addPhysicsObject(PhysicsObject *obj, PhysicsBitMask objBit, int collides){
+    _world->addRigidBody(obj->getPhysicsBody(), objBit, collides);
+}
+
+//! Adiciona Objeto (BIT MASK = 0);
+/*!
+ \param obj objeto a adicionar o corpo fisico;
+ */
 void PhysicsWorld::addPhysicsObject(PhysicsObject *obj){
     _world->addRigidBody(obj->getPhysicsBody());
 }
