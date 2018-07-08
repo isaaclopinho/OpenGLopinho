@@ -101,9 +101,10 @@ public:
 		PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 350), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
 
 		AddGameObject(ground);
+		
+			AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(0, 0, -74), glm::vec3(0, 0, 90), vec3(50, 100, 20), "", true)));
 
-
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -41), glm::vec3(0, 90, 0), 10.5f *vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -51), glm::vec3(0, 90, 0), 10.5f *vec3(1.35f, 1, 1), "", true)));
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 0), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 74), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
