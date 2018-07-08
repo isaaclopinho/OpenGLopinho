@@ -81,8 +81,8 @@ public:
 
 
 		for (int i = 1; i <= 60; i++) {
-			std::cout << "res/menu/icone/sp (" + to_string(i) + ").png" << endl;
-			GLuint g = Loader::LoadTexture("res/menu/icone/sp (" + to_string(i) + ").png");
+			std::cout << "res/menu/icone2/sp (" + to_string(i) + ").png" << endl;
+			GLuint g = Loader::LoadTexture("res/menu/icone2/sp (" + to_string(i) + ").png");
 			textureIcone.emplace_back(g);
 		}
 		float offset = 0.0f;
