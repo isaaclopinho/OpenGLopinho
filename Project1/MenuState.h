@@ -20,6 +20,7 @@
 #include "InputManager.h"
 #include "VideoState.h"
 #include "ParticleSystem.h"
+#include "AudioSource.h"
 #include <glm/gtx/compatibility.hpp>
 using namespace glm;
 using namespace std;
@@ -61,9 +62,10 @@ class MenuState : public State {
 
 	float timeFadeout = 0;
 
+	std::unique_ptr<AudioSource> fireSource, cicadaSource, forestSource;
 
 public:
-	MenuState()  {
+	MenuState() {
 
 		for (int i = 1; i <= frames; i++) {
 			std::cout << "res/menu/animation/sp (" + to_string(i) + ").png" << endl;
@@ -93,7 +95,10 @@ public:
 		guiMenu.emplace_back(GUITexture(textureExit[0], vec2(0.57f, -0.40 - offset), vec2(93.0f / 1280.0f, 83.0f / 720.0f)* 1.1f ));
 		guiMenu.emplace_back(GUITexture(textureIcone[0], vec2(0.57f, 0.35f - offset), vec2(277.0f / 1280.0f, 143.0f / 720.0f) * 1.5f));
 
-
+		fireSource = make_unique<AudioSource>("res/sounds/fireplace.wav", true); fireSource->SetGain(10);
+		cicadaSource = make_unique<AudioSource>("res/sounds/cicada.wav", true); cicadaSource->SetGain(10);
+		forestSource = make_unique<AudioSource>("res/sounds/forest.wav", true); forestSource->SetPosition(0, -10, 0);
+		fireSource->Play(); cicadaSource->Play(); forestSource->Play();
 	};
 
 	~MenuState() {
@@ -210,6 +215,10 @@ public:
 
 			float t = timeFadeout / 2.0f;
 
+			fireSource->SetGain((1 - t) * 10);
+			cicadaSource->SetGain((1 - t) * 10);
+			forestSource->SetGain((1-t));
+
 			for(int i=1; i<4; i++)
 				guiMenu[i].constant = lerp(1.0f, 0.0f, t);
 
@@ -220,8 +229,12 @@ public:
 				if (contador > frames - 1) {
 					contador = frames - 1;
 
-					if(t >= 1)
+					if (t >= 1) {
 						Game::GetInstance()->AddState(new VideoState());
+						fireSource->Stop();
+						cicadaSource->Stop();
+						forestSource->Stop();
+					}
 				}
 
 				guiMenu[0].textureID = texturesID[contador];

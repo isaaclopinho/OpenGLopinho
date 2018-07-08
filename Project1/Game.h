@@ -7,6 +7,7 @@
 #include <string>
 #include <stack>
 #include "State.h"
+#include "AudioSystem.h"
 #include <GL/glew.h>
 
 using namespace std;
