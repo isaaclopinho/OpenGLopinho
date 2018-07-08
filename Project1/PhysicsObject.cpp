@@ -136,7 +136,7 @@ void PhysicsObject::toggleGravity(bool flag){
 }
 
 btVector3 PhysicsObject::getWorldPosition(){
-    return _body->getWorldTransform().getOrigin();
+    return _body->getWorldTransform().getOrigin() ;
 }
 
 btVector3 PhysicsObject::getWorldRotation(){

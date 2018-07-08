@@ -2,7 +2,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 //(mass, shape, position, rotation, scale, inercia, entity);
-Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,10,0), btVector3(-90, 0, 0), btVector3(2,1.5,0), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
+Player::Player() : entity(Loader::LoadModel("res/Models/scultp-monster-55.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,1,0), btVector3(-90, 0, 0), btVector3(2,1.5f,0), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
 {
 	//Initialize Player Variables
 
@@ -18,6 +18,8 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans_mesh2.dae"), player
 	velocityStep = 0.5f;
     
     getPhysicsBody()->setFriction(0.8);
+	getPhysicsBody()->setAngularFactor(btVector3(0, 0, 0));
+
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     maxHP = hp = 100;
     type = "Player";
