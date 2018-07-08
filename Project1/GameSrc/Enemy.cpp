@@ -71,8 +71,8 @@ void Enemy::Update(float dt){
             
             attCD.Update(dt);
             if (!attCD.IsInCooldown()) {
-                btVector3 dir = Player::getInstance()->getWorldPosition() - getWorldPosition();
-                applyForce(dir*1000);
+                btVector3 dir = (Player::getInstance()->getWorldPosition() - getWorldPosition()).normalized();
+                applyForce(dir * 2000);
                 walkCD.SetCooldown(2);
                 currentState = EnemyStates::WALKING;
                 attCD.SetCooldown(3);
