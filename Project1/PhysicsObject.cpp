@@ -1,4 +1,5 @@
 #include "PhysicsObject.h"
+#include <glm/gtx/rotate_vector.hpp>
 
 //! Construtor de PhysicsObject
 /*!
@@ -163,6 +164,11 @@ void PhysicsObject::Render() {
 
 };
 
+glm::vec3 PhysicsObject::getForwardVector(){
+    vec3 forward = glm::rotate(vec3(0, 0, 1), radians(getRot().z), vec3(0, 1, 0));
+    forward = normalize(forward);
+    return forward;
+}
 
 /// brief: true = Ativa/false = Desativa Contato (i.e: corpo atravessa ou não os outros, mas colide);
 void PhysicsObject::toggleContact(bool flag){

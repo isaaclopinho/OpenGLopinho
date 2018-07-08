@@ -63,6 +63,9 @@ public:
     void toggleContact(bool flag);
     void SetRotation(btVector3 rotation);
 
+    glm::vec3 getForwardVector();
+    glm::vec3 getRot() { return entity->rotation; };
+    glm::vec3 getPos() { return entity->position; };
 private:
     
     btRigidBody* _body;
