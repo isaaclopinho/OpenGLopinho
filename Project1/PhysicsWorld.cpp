@@ -81,58 +81,35 @@ void PhysicsWorld::updateWorld(float dt){
                 if (physicsBodyB->Is("Floor")){
 //                    printf("colisão com chão");
                 }
-                
-                if(physicsBodyB->Is("Trigger")){
-                    //cout << "ACABOU1" << endl;
+                if (physicsBodyB->Is("Enemy")){
+                    Enemy *e = (Enemy*)bodyB->getUserPointer();
+//                    Player::getInstance();
                 }
                 
+            }else if(physicsBodyB->Is("Player"))
+            {
+                if (physicsBodyA->Is("Floor")){
+                    //                    printf("colisão com chão");
+                }
+                if (physicsBodyA->Is("Enemy")){
+                    Enemy *e = (Enemy*)bodyA->getUserPointer();
+                }
             }
             
             if(physicsBodyA->Is("Trigger")){
-                Player* p = Player::getInstance();
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X)){
                     
                     Enemy *e = (Enemy*)bodyB->getUserPointer();
                     e->RecieveDamage(10);
-                    
-                    btVector3 direcao = (e->getWorldPosition() - p->getWorldPosition()).normalized();
-                    
-                    cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
-                    
-                    direcao *= btVector3(1, 4, 1);
-                    
-                    e->applyForce(direcao * 3000);
-                    
-                    //                    cout << "gg" << endl;
                 }
-            }
-            
-            if(physicsBodyB->Is("Trigger")){
-                Player* p = Player::getInstance();
+            } else if(physicsBodyB->Is("Trigger")){
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X)){
-                    
                     Enemy *e = (Enemy*)bodyA->getUserPointer();
                     e->RecieveDamage(10);
-                    
-                    btVector3 direcao = (e->getWorldPosition() - p->getWorldPosition()).normalized();
-                    
-                    cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
-                    
-                    e->applyForce(direcao * 1000);
-                    
-//                    cout << "gg" << endl;
                 }
             }
             
-            if(physicsBodyB->Is("Player"))
-            {
-                if (physicsBodyA->Is("Floor")){
-//                    printf("colisão com chão");
-                }
-                if(physicsBodyA->Is("Trigger")){
-                    //cout << "ACABOU2" << endl;
-                }
-            }
+            
             
         }
         

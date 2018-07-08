@@ -137,31 +137,22 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 195), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 310), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 425), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-
         
-//        AddGameObject(PhysicsObject());
-        
-        phyWorld.addPhysicsObject(ground, COL_FLOOR, COL_PLAYER | COL_ENEMY);
+        phyWorld.addPhysicsObject(ground, COL_FLOOR);
 		player = Player::getInstance();
 		AddGameObject(player);
 		camera.distanceFromTarget = 30;
 		camera.pitch = 30;
 		camera.vDist = -50;
 		camera.angleAroundTarget = 180;
-        phyWorld.addPhysicsObject(player, PhysicsBitMask::COL_PLAYER, PhysicsBitMask::COL_FLOOR | PhysicsBitMask::COL_WALL);
+        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL);
         //(mass, shape, position, rotation, scale, inercia, entity);
         attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
 
-        phyWorld.addPhysicsObject(attackBoxPlayer);
+        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
         AddGameObject(attackBoxPlayer);
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
-        
-//        PhysicsObject* inimigo = new PhysicsObject(100, PhysicsShape::Box, btVector3(0, 2, -20), btVector3(-90, 0, 0), btVector3(1, 1, 1) * 4, btVector3(), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-//        inimigo->getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
-//        phyWorld.addPhysicsObject(inimigo); TODO
-//        AddGameObject(inimigo); TODO
-//        inimigo->type = "Enemy";
         
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
         phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL);
@@ -185,9 +176,6 @@ public:
 		float delta = dt;
         for (int i = gameObjects.size()-1; i >= 0; i--){
             if (gameObjects[i]->Remove() == true) {
-                
-                cout << "Removeu " << gameObjects[i]->type << " : i = " << i << endl;
-                
                 if (gameObjects[i]->type != "GameObject"){
                     phyWorld.removePhysicsObject((PhysicsObject*)gameObjects[i]);
                 }
