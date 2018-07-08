@@ -145,9 +145,8 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
         setVelocity(finalForce);
         entity.position = playerPos;
         entity.rotation = playerRot;
+        playerRot = vec3(playerRot.x, playerRot.y, playerRot.z + newRot);
     }
-
-	playerRot = vec3(playerRot.x, playerRot.y, playerRot.z + newRot);
 
 
 

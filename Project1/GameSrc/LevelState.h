@@ -207,10 +207,9 @@ public:
         attackBoxPlayer->toggleContact(false);
         attackBoxPlayer->type = "Trigger";
         
-        Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0, 2, -20), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-//        inimigo->toggleContact(false);
-        //phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
-        //AddGameObject(inimigo);
+        InstantiateEnemy(vec3(0, 10, 100));
+        InstantiateEnemy(vec3(-10, 10, 200));
+//        InstantiateEnemy(vec3(10, 10, 20));
 
         //HUD
         
@@ -287,6 +286,12 @@ public:
         
         GUITextures[1].scale = vec2((player->GetHP()<=0)?0:(float)(player->GetHP()) / (float)(player->GetMaxHP()) * MAXBARRA,(player->GetHP()<=0)?0:0.05);
         GUITextures[1].position = vec2(BARRAX - (MAXBARRA *(1 -((float)(player->GetHP()) / (float)(player->GetMaxHP())))),BARRAY);
+    }
+    
+    void InstantiateEnemy(vec3 pos){
+        Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
+        AddGameObject(inimigo);
     }
 
 	void Render() {
