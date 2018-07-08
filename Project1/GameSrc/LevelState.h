@@ -34,6 +34,7 @@
 #include "../PhysicsWorld.h"
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
+#include "Hitbox.h"
 using namespace glm;
 using namespace std;
 
@@ -74,10 +75,7 @@ class LevelState : public State {
 
 	
 	Player* player;
-    PhysicsObject* attackBoxPlayer;
 	vector<btRigidBody> rigidBodies;
-
-	ParticleSystem *  ps;
 
 
 public:
@@ -94,12 +92,7 @@ public:
 		MasterRenderer::GetInstance().usingShadow = true;
 
 
-		ParticleTexture*  pt = new ParticleTexture(Loader::LoadTexture("res/smoke.png"), 8, false);
-		ps = new ParticleSystem(*pt, 32, 15, 0, 4);
-
-		ps->type = 1;
 		//Initialize Physics
-//        gContactAddedCallback=callBackFunc; // seta o ponteiro para nosso callback de contato;
 		//temporary physics ground for testing purposes
         
         //(mass, shape, position, rotation, scale, inercia, entity);
@@ -206,12 +199,17 @@ public:
 		camera.angleAroundTarget = 180;
         phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
-        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3(), new Entity(NULL, glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true));
-
-        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
-        AddGameObject(attackBoxPlayer);
-        attackBoxPlayer->toggleContact(false);
-        attackBoxPlayer->type = "Trigger";
+        //BOX debugdraw
+        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+        playerHitbox->owner = player;
+//        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3());
+        phyWorld.addPhysicsObject(playerHitbox, COL_WALL, COL_ENEMY);
+        AddGameObject(playerHitbox);
+//        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
+//        AddGameObject(attackBoxPlayer);
+//        attackBoxPlayer->toggleContact(false);
+//        attackBoxPlayer->type = "Trigger";
         
         InstantiateEnemy(vec3(0, 10, 100));
         InstantiateEnemy(vec3(-10, 10, 200));
@@ -250,8 +248,8 @@ public:
 
         phyWorld.updateWorld(dt);
         
-		ps->Update(dt, vec3(0,2,50));
-		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
+
+
 		
 		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
 			remove = true;
@@ -259,7 +257,6 @@ public:
 
 		if (InputManager::GetInstance().KeyPress(SDLK_p)) {
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
-            std::cout << "newpos: " << attackBoxPlayer->getWorldPosition().getX() << " " << attackBoxPlayer->getWorldPosition().getY() << " " << attackBoxPlayer->getWorldPosition().getZ() << " " << std::endl;
 		}
         
 //        glm::vec3 newPos = glm::vec3(player->entity.position.x, player->entity.position.y + 10, player->entity.position.z + 7);
@@ -270,7 +267,7 @@ public:
         
 //        std::cout << "newrot: " << newRot.x << " " <<newRot.y << " " << newRot.z << endl;
         
-        attackBoxPlayer->setPosition((player->getWorldPosition()+btVector3(0,5,0)) + Maths::glmToBullet(player->getForwardVector()*10.0f));
+//        attackBoxPlayer->setPosition((player->getWorldPosition()+btVector3(0,5,0)) + Maths::glmToBullet(player->getForwardVector()*10.0f));
 //        attackBoxplayer->getWorldRotation().normalized();
 		//attackBoxPlayer->SetRotation(Maths::glmToBullet(newRot));
 		//attackBoxPlayer->SetRotation(player->getWorldRotation());
@@ -298,6 +295,13 @@ public:
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
         phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
         AddGameObject(inimigo);
+        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+        enemyHitbox->owner = inimigo;
+        phyWorld.addPhysicsObject(enemyHitbox, COL_ENEMY, COL_PLAYER);
+        AddGameObject(enemyHitbox);
+        
+        
     }
 
 	void Render() {
