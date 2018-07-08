@@ -9,7 +9,8 @@ class GUITexture
 public:
 	GLuint textureID;
 	vec2 position, scale;
-	GUITexture(GLuint textureID, vec2 pos, vec2 scale);
+	float constant;
+	GUITexture(GLuint textureID, vec2 pos, vec2 scale, float constant = 1);
 	~GUITexture();
 };
 

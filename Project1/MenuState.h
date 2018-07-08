@@ -20,6 +20,7 @@
 #include "InputManager.h"
 #include "VideoState.h"
 #include "ParticleSystem.h"
+#include <glm/gtx/compatibility.hpp>
 using namespace glm;
 using namespace std;
 
@@ -27,8 +28,11 @@ class MenuState : public State {
 
 
 	vector<GLuint> texturesID;
-	vector<GLuint> texturesButtonNormal;
-	vector<GLuint> texturesButtonSelected;
+	vector<GLuint> textureStart;
+	vector<GLuint> textureExit;
+	vector<GLuint> textureIcone;
+
+
 
 	vector<GUITexture> guiMenu;
 	GUIRenderer guirenderer = GUIRenderer();
@@ -37,12 +41,26 @@ class MenuState : public State {
 	float time2 = 0;
 	int contador = 0;
 	int contadorText = 0;
-	float frames = 8;
+	float frames = 1;
 
 	int op = 0;
 	int opMax = 2;
 
 	bool bloqueado = false;
+
+
+
+	float timeStartButton = 0;
+	int contadorFrameStartButton = 0;
+	int contadorFrameExitButton = 0;
+	int contadorIcone = 0;
+
+	float timeIcone = 0;
+
+	bool startButton = true;
+
+	float timeFadeout = 0;
+
 
 public:
 	MenuState()  {
@@ -53,17 +71,26 @@ public:
 			texturesID.emplace_back(g);
 		}
 
+		for (int i = 1; i <= 12; i++) {
+			std::cout << "res/menu/start/sp (" + to_string(i) + ").png" << endl;
+			GLuint g = Loader::LoadTexture("res/menu/start/sp (" + to_string(i) + ").png");
+			GLuint g2 = Loader::LoadTexture("res/menu/exit/sp (" + to_string(i) + ").png");
+			textureStart.emplace_back(g);
+			textureExit.emplace_back(g2);
+		}
 
-		texturesButtonNormal.emplace_back(Loader::LoadTexture("res/menu/start.png"));
-		texturesButtonNormal.emplace_back(Loader::LoadTexture("res/menu/exit.png"));
 
-		texturesButtonSelected.emplace_back(Loader::LoadTexture("res/menu/start2.png"));
-		texturesButtonSelected.emplace_back(Loader::LoadTexture("res/menu/exit2.png"));
+		for (int i = 1; i <= 5; i++) {
+			std::cout << "res/menu/icone/sp (" + to_string(i) + ").png" << endl;
+			GLuint g = Loader::LoadTexture("res/menu/icone/sp (" + to_string(i) + ").png");
+			textureIcone.emplace_back(g);
+		}
 
 
 		guiMenu.emplace_back(GUITexture(texturesID[0], vec2(0,0), vec2(1,1)));
-		guiMenu.emplace_back(GUITexture(texturesButtonNormal[0], vec2(0, -0.4), vec2(459.0f / 1280.0f, 80.0f/720.0f)));
-		guiMenu.emplace_back(GUITexture(texturesButtonNormal[1], vec2(0, -0.7), vec2(459.0f / 1280.0f, 80.0f / 720.0f)));
+		guiMenu.emplace_back(GUITexture(textureStart[0], vec2(0, -0.4), vec2(459.0f / 1280.0f, 80.0f/720.0f)));
+		guiMenu.emplace_back(GUITexture(textureExit[0], vec2(0, -0.7), vec2(459.0f / 1280.0f, 80.0f / 720.0f)));
+		guiMenu.emplace_back(GUITexture(textureIcone[0], vec2(0, 0), vec2(200.0f / 1280.0f, 80.0f / 720.0f)));
 
 
 	};
@@ -75,7 +102,7 @@ public:
 		if (!bloqueado) {
 			time += dt;
 
-
+			timeIcone += dt;
 
 
 			if (time >= 1.0f / (float)frames) {
@@ -105,8 +132,59 @@ public:
 					op = opMax - 1;
 			}
 
-			guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
-			guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
+			switch (op) {
+			case 0:
+				startButton = true;
+				break;
+			case 1:
+				startButton = false;
+				break;
+			}
+
+
+			if (startButton) {
+
+				timeStartButton += dt;
+
+				if (timeStartButton >= 0.5f/12.0f) {
+					guiMenu[1].textureID = textureStart[contadorFrameStartButton];
+					guiMenu[2].textureID = textureStart[contadorFrameExitButton];
+					timeStartButton = 0;
+					contadorFrameStartButton = glm::clamp(contadorFrameStartButton + 1, 0, 11);
+					contadorFrameExitButton = glm::clamp(contadorFrameExitButton - 1, 0, 11);
+	
+				}
+
+			} else {
+
+				timeStartButton += dt;
+
+				if (timeStartButton >= 0.5f/12.0f) {
+					guiMenu[1].textureID = textureStart[contadorFrameStartButton];
+					guiMenu[2].textureID = textureStart[contadorFrameExitButton];
+					timeStartButton = 0;
+					contadorFrameStartButton = glm::clamp(contadorFrameStartButton - 1, 0, 11);
+					contadorFrameExitButton = glm::clamp(contadorFrameExitButton + 1, 0, 11);
+				}
+
+			}
+			
+
+
+			if (timeIcone >= 2.0f / (float)textureIcone.size()) {
+				contadorIcone++;
+
+				if (contadorIcone >= textureIcone.size())
+					contadorIcone = 0;
+				
+				guiMenu[3].textureID = textureIcone[ contadorIcone];
+
+
+				timeIcone = 0;
+			}
+
+			// guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
+			//guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
 
 
 			if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
@@ -123,13 +201,22 @@ public:
 		}
 		else {
 			time += dt;
+			timeFadeout += dt;
+
+			float t = timeFadeout / 3.0f;
+
+			for(int i=1; i<4; i++)
+				guiMenu[i].constant = lerp(1.0f, 0.0f, t);
+
 
 			if (time >= 1.0f / (float)frames) {
 				contador++;
 
 				if (contador > frames - 1) {
 					contador = frames - 1;
-					Game::GetInstance()->AddState(new VideoState());
+
+					if(t >= 1)
+						Game::GetInstance()->AddState(new VideoState());
 				}
 
 				guiMenu[0].textureID = texturesID[contador];

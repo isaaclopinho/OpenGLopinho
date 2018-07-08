@@ -7,8 +7,8 @@
 //
 
 #include "PhysicsWorld.h"
-#include "Enemy.h"
-#include "Player.h"
+#include "GameSrc/Enemy.h"
+#include "GameSrc/Player.h"
 
 #include <stdio.h>
 

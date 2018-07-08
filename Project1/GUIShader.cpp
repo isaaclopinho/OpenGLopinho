@@ -19,11 +19,17 @@ void GUIShader::bindAttributes() {
 
 void GUIShader::getAllUniformLocations() {
 	location_transformationMatrix = ShaderProgram::getUniformLocation("transformationMatrix");
+	location_constant = ShaderProgram::getUniformLocation("constant");
 }
 
 void GUIShader::loadTransformationMatrix(mat4 matrix)
 {
 	ShaderProgram::loadMatrix(location_transformationMatrix, matrix);
+}
+
+void GUIShader::loadConstant(float constant)
+{
+	ShaderProgram::loadFloat(location_constant, constant);
 }
 
 
