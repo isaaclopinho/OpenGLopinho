@@ -24,7 +24,7 @@ void Enemy::Update(float dt){
         
         
         
-        float ang = angle( normalize(dir), vec3(0, 0, 1));
+        float ang = angle(normalize(dir), vec3(0, 0, 1));
         
         if(getWorldPosition().getX() >= Player::getInstance()->getWorldPosition().getX())
             ang = -angle( normalize(dir), vec3(0, 0, 1));
