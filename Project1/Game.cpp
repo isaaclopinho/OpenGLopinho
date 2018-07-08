@@ -68,6 +68,8 @@ Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks
 	ilutInit();
 	ilutEnable(ILUT_OPENGL_CONV);
 	ilutRenderer(ILUT_OPENGL);
+
+	AudioSystem::Instance().Init();
 }
 
 float Game::GetAspectRatio() {
@@ -75,6 +77,7 @@ float Game::GetAspectRatio() {
 }
 
 Game::~Game() {
+	AudioSystem::Instance().Shutdown();
 	aiDetachAllLogStreams();
 	// Delete our OpengL context
 	SDL_GL_DeleteContext(context);
@@ -104,7 +107,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new MenuState());
 
 
 
@@ -112,7 +115,7 @@ void Game::Run() {
 		CalculateDeltaTime();
 
 		InputManager::GetInstance().Update();
-		
+		AudioSystem::Instance().Update(dt);
 
 		if (InputManager::GetInstance().ControllerButtonPress(0))
 			std::cout << "Pau no cu do lg\n\a";
