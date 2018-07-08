@@ -104,7 +104,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new MenuState());
+	states.push(new LevelState());
 
 
 
