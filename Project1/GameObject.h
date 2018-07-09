@@ -9,10 +9,8 @@ using namespace std;
 
 class GameObject {
 
-protected:
-	bool remove = false;
-	
 public:
+	bool remove = false;
 	string type;
 	GameObject() { type = "GameObject"; };
 	~GameObject() {};
