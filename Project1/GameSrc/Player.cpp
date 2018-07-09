@@ -45,6 +45,9 @@ void Player::Update(float dt) {
     ataque.Update(dt);
     invulneravel.Update(dt);
     knockback.Update(dt);
+
+
+	AnimationController(dt);
     
     if(limitZ != vec2(0,0) && limitX != vec2(0,0)){
 
@@ -105,7 +108,6 @@ void Player::CheckInput()
 	PlayerMove(horizontalMovement, verticalMovement, newRot);
 
 	//ControlSpeed();
-	AnimationController();
 }
 
 void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) {
@@ -205,26 +207,49 @@ void Player::ControlSpeed() {
     setVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
 };
 
-void Player::AnimationController() {
+void Player::AnimationController(float dt) {
 
 
-	if ((velocity > 0) && (velocity < walkSpeed)) {
+	if (atacou) {
+		timeAtack += dt;
 
-		if (entity.currentAnimation != "Walk") {
-			entity.ChangeAnimation("Walk", true);
-		} 
-	}
+		if (timeAtack >= 25.0/24.0) {
+			timeAtack = 0;
+			atacou = false;
+		}
 
-	if (velocity < 0) {
-		if (entity.currentAnimation != "Walk") {
-			entity.ChangeAnimation("Walk", true);
+		if (entity.currentAnimation != "AtackDouble_Step.L") {
+			entity.ChangeAnimation("AtackDouble_Step.L", true);
 		}
 	}
+	else {
 
-	if ((velocity > walkSpeed) && (entity.currentAnimation != "Run")) {
 
-		entity.ChangeAnimation("Run", true);
 
+		if ((velocity > 0) && (velocity < walkSpeed)) {
+
+			if (entity.currentAnimation != "Walk") {
+				entity.ChangeAnimation("Walk", true);
+			}
+		}
+
+		if (velocity < 0) {
+			if (entity.currentAnimation != "Walk") {
+				entity.ChangeAnimation("Walk", true);
+			}
+		}
+
+		if (velocity == 0) {
+			if (entity.currentAnimation != "Idle") {
+				entity.ChangeAnimation("Idle", true);
+			}
+		}
+
+		if ((velocity > walkSpeed) && (entity.currentAnimation != "Run")) {
+
+			entity.ChangeAnimation("Run", true);
+
+		}
 	}
 
 };

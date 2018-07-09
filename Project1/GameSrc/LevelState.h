@@ -275,12 +275,7 @@ public:
 		}
 
 
-		if (InputManager::GetInstance().KeyPress(SDLK_l)) {
-			int r = rand() % 360;
-			cout << r << endl;
-			ground->entity->rotation = vec3(r,0, 0);
-		}
-
+		
 		if (InputManager::GetInstance().KeyPress(SDLK_o)) {
 
 			for (int i = gameObjects.size() - 1; i >= 0; i--) {

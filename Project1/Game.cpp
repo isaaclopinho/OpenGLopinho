@@ -3,6 +3,8 @@
 #include "GameSrc/LevelState.h"
 #include "GameSrc/BossState.h"
 #include "TestState.h"
+#include "VideoState2.h"
+
 #include "MenuState.h"
 
 #define FRAMETIME 1
@@ -108,7 +110,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new BossState());
+	states.push(new VideoState2());
 
 
 
