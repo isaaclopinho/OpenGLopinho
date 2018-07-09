@@ -35,7 +35,7 @@
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "Hitbox.h"
-#include "GameSrc/BossState.h"
+#include "../GameSrc/BossState.h"
 using namespace glm;
 using namespace std;
 
@@ -108,8 +108,10 @@ class LevelState : public State {
 	unique_ptr<AudioSource> combat_taikos[5];
 	unique_ptr<AudioSource> combat;
 	unique_ptr<AudioSource> combat_end;
+	bool firstUpdate;
 	bool enteredCombat, killedEveryone;
-	float elapsedTime;
+	float buildupCompassTimer;
+	float attackTaikoCompassTimer;
 	int currentTaiko;
 
 public:
@@ -290,8 +292,6 @@ public:
 			buildups[i] = make_unique<AudioSource>(buildupFile, true, false);
 			buildups[i]->SetGain(0);
 		}
-		for (int i = 0; i < 6; ++i)
-			buildups[i]->Play();
 		for (int i = 0; i < 5; ++i) {
 			char taikoFile[100];
 			sprintf(taikoFile, "res/music/combatTaiko%d.wav", i+1);
@@ -301,8 +301,10 @@ public:
 		combat = make_unique<AudioSource>("res/music/combat.wav", true, false);
 		combat_end = make_unique<AudioSource>("res/music/combatTaikoEnd.wav", false, false);
 		enteredCombat = killedEveryone = false;
-		elapsedTime = 0;
+		buildupCompassTimer = 0;
+		attackTaikoCompassTimer = 0;
 		currentTaiko = 0;
+		firstUpdate = true;
 	};
 
 	~LevelState() {}
@@ -313,6 +315,27 @@ public:
 
 		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
 
+		bool buildupCompassEnd = false;
+		bool taikoCompassEnd = false;
+		if (firstUpdate) {
+			buildupCompassTimer = 0;
+			attackTaikoCompassTimer = 0;
+			for (int i = 0; i < 6; ++i)
+				buildups[i]->Play();
+			firstUpdate = false;
+		}
+		else {
+			buildupCompassTimer += dt;
+			if (buildupCompassTimer > 1.844*2) {
+				buildupCompassTimer -= 1.844*2;
+				buildupCompassEnd = true;
+			}
+			attackTaikoCompassTimer += dt;
+			if (attackTaikoCompassTimer > 4.304) {
+				attackTaikoCompassTimer -= 4.304;
+				taikoCompassEnd = true;
+			}
+		}
 
 		street->Update(dt);
 		for (int i = 0; i < 6; ++i)
@@ -343,7 +366,7 @@ public:
 					}
 				}
 			}
-			else if (distanciaPerigo > 1 and distanciaPerigo < minDist / 2) {
+			else if (!firstUpdate and distanciaPerigo < minDist / 2 && buildupCompassEnd) {
 				enteredCombat = true;
 				street->FadeOut();
 				for (int i = 0; i < 6; ++i)
@@ -360,9 +383,9 @@ public:
 			int k = 4;
 			for (float i = 0.2; i <= 1; i+=0.2) {
 				if (enemyPercentage <= i) {
-					if (currentTaiko != k) {
-						combat_taikos[currentTaiko]->FadeOut();
-						combat_taikos[k]->FadeIn(1);
+					if (currentTaiko != k && taikoCompassEnd) {
+						combat_taikos[currentTaiko]->FadeOut(0.5);
+						combat_taikos[k]->FadeIn(1, 0.5);
 						currentTaiko = k;
 					}
 					break;
