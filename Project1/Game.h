@@ -29,6 +29,8 @@ private:
 public:
 	int WIDTH, HEIGHT;
 
+	float constant = 1;
+
 	SDL_Window * window;
 	SDL_Renderer* renderer;
 			
