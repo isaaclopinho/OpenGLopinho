@@ -106,8 +106,8 @@ public:
         //Initialize Physics
         //temporary physics ground for testing purposes
         
-        PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, -1, 350), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
-        
+        PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 0), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
+
         AddGameObject(ground);
         
 
@@ -128,7 +128,9 @@ public:
         playerHitbox->owner = player;
         phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
-        
+
+		player->limitZ = vec2(-700, 720);
+		player->limitX = vec2(-50, 50);
         
         
         boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*20.0f, "Walk", true));

@@ -62,6 +62,8 @@ class MenuState : public State {
 
 	float timeFadeout = 0;
 
+	int c = 0;
+
 	std::unique_ptr<AudioSource> fireSource, cicadaSource, forestSource;
 
 public:
@@ -98,14 +100,19 @@ public:
 		fireSource = make_unique<AudioSource>("res/sounds/fireplace.wav", true); fireSource->SetGain(10);
 		cicadaSource = make_unique<AudioSource>("res/sounds/cicada.wav", true); cicadaSource->SetGain(10);
 		forestSource = make_unique<AudioSource>("res/sounds/forest.wav", true); forestSource->SetPosition(0, -10, 0);
-		fireSource->Play(); cicadaSource->Play(); forestSource->Play();
+		
 	};
 
 	~MenuState() {
 	}
 
 	void Update(float dt) {
-
+		
+		if (c == 0) {
+			if (fireSource->IsPlaying())
+				fireSource->Play(); cicadaSource->Play(); forestSource->Play();
+			c++;
+		}
 
 		timeIcone += dt;
 		if (timeIcone >= 2.0f / (float)textureIcone.size()) {
@@ -121,6 +128,9 @@ public:
 		}
 
 		if (!bloqueado) {
+
+			
+
 			time += dt;
 
 
@@ -204,7 +214,7 @@ public:
 					bloqueado = true;
 					break;
 				case 1:
-					remove = true;
+					exit(1);
 					break;
 				}
 			}
