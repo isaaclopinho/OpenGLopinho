@@ -122,20 +122,22 @@ public:
         camera.pitch = 12;
         camera.vDist = -20;
         camera.angleAroundTarget = 180;
-        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
+        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY | COL_BOSS | COL_TRIGGER_ENEMY);
         //BOX debugdraw
-//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,8,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,8,5));
         playerHitbox->owner = player;
-        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
+        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY | COL_BOSS);
         AddGameObject(playerHitbox);
 
 		player->limitZ = vec2(-700, 720);
 		player->limitX = vec2(-50, 50);
         
         
-        boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/boss.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "Main", true));
-        phyWorld.addPhysicsObject(boss, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
+        boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/boss.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*32.0f, "Main", true));
+        boss->entity->scale/=8;
+        phyWorld.addPhysicsObject(boss, COL_BOSS, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER | COL_ENEMY);
+        
         AddGameObject(boss);
         
         //HUD
@@ -252,13 +254,13 @@ public:
     void Shoot(){
         
         btVector3 ownerPos = boss->getWorldPosition();
-        ownerPos.setY(ownerPos.getY()+20);
+        ownerPos.setY(ownerPos.getY()+10);
         
-        PhysicsObject *projectile = new PhysicsObject(10, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/cube.obj"), Maths::bulletToGlm(Maths::glmToBullet(boss->getForwardVector()) * 50.0f + ownerPos), glm::vec3(0, 0, 0), vec3(1, 1, 1) * 5.0f, "", true));
+        PhysicsObject *projectile = new PhysicsObject(10, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/cube.obj"), Maths::bulletToGlm(Maths::glmToBullet(boss->getForwardVector()) * 40.0f + ownerPos), glm::vec3(0, 0, 0), vec3(1, 1, 1) * 5.0f, "", true));
         projectile->type = "Projectile";
-        phyWorld.addPhysicsObject(projectile, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
+        phyWorld.addPhysicsObject(projectile, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER | COL_BOSS);
         AddGameObject(projectile);
-//        projectile->toggleContact(false);
+        projectile->toggleContact(false);
         projectile->toggleGravity(false);
         std::cout << "forward: " << boss->getForwardVector().x << " " << boss->getForwardVector().y << " " << boss->getForwardVector().z << endl;
         projectile->applyForce((player->getWorldPosition() - ownerPos).normalized() * 1000.0f);
