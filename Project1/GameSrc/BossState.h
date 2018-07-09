@@ -88,6 +88,7 @@ class BossState : public State {
     Player* player;
     vector<btRigidBody> rigidBodies;
     
+	unique_ptr<AudioSource> bossMusic;
     
 public:
     PhysicsWorld phyWorld;
@@ -151,9 +152,11 @@ public:
 		GLuint teste4 = Loader::LoadTexture("res/GUI/Gui_Boss.png");
 		GUITextures.emplace_back(GUITexture(teste4, vec2(0, -0.88), vec2(720.0 / 1280.0, 48.0 / 720.0)));
         
+		bossMusic = make_unique<AudioSource>("res/music/boss.wav", true, false);
+		bossMusic->Play();
     };
     
-    ~BossState();
+	~BossState() {}
     
     void Update(float dt) {
         float delta = dt;
