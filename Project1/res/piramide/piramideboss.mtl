@@ -1,0 +1,31 @@
+# Blender MTL File: 'piramideboss.blend'
+# Material Count: 2
+
+newmtl Material_001
+Ns 192.156863
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd D:\p\saddas.png
+map_Bump C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_001_Normal.png
+map_Ka C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_001_Emissive.png
+map_Ke C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_001_Emissive.png
+map_Ks C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_001_Specular.png
+
+newmtl Material_003
+Ns 94.117647
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd D:\p\Material_003 Diffuse Color.png
+map_Bump C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_003_Normal.png
+map_Ka C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_003_Emissive.png
+map_Ke C:\\Users\\lg\\Documents\\Allegorithmic\\Substance Painter\\export\\Cenario\\Piramide\\piramideboss_Material_003_Emissive.png
