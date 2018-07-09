@@ -64,7 +64,7 @@ public:
     void toggleGravity(bool flag);
     void toggleContact(bool flag);
     void SetRotation(btVector3 rotation);
-
+    btVector3 getScale();
     glm::vec3 getForwardVector();
     glm::vec3 getRot() { return entity->rotation; };
     glm::vec3 getPos() { return entity->position; };
@@ -76,6 +76,7 @@ private:
     btQuaternion _rotation;
     btDefaultMotionState* _motionState;
     
+    btVector3 _scale;
     btScalar _mass;
     btVector3 _inercia;
 	void CheckInput();
