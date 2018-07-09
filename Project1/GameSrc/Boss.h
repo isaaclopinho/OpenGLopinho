@@ -26,6 +26,9 @@ public:
     bool atira = false;
     int GetHP();
     int GetMaxHP();
+
+	vec2 limitX = vec2();
+	vec2 limitZ = vec2();
     
 private:
     int hp, maxHP;

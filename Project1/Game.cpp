@@ -109,8 +109,8 @@ Game* Game::GetInstance() {
 }
 
 void Game::Run() {
-	
-	states.push(new VideoState2());
+	//VideoState2 -> PS
+	states.push(new LevelState());
 
 
 
