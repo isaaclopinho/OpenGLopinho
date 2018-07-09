@@ -33,7 +33,7 @@ using namespace std;
 
 class TestState : public State {
 
-	PointLight pt[4] = {
+	vector<PointLight> pt = {
 		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1,1,1) * 0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(1, 0, -10),		13,		vec3(1, 1,1)*0.0f,	vec3(1,1,1) * 0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(0, -1, -10),	13,		vec3(1, 1,1)*0.0f,	vec3(1,1,1) * 0.0f,	vec3(1, 1,1)*0.0f),

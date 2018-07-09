@@ -14,7 +14,7 @@ void MasterRenderer::disableCulling()
 	glDisable(GL_CULL_FACE);
 }
 
-void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, DirectionalLight directionalLight, Camera camera)
+void MasterRenderer::render(SpotLight spotLight, vector<PointLight> pointLight, DirectionalLight directionalLight, Camera camera)
 {
 	
 	prepare();
@@ -28,9 +28,14 @@ void MasterRenderer::render(SpotLight spotLight, PointLight * pointLight, Direct
 	usingShadow ? animatedShader->usingShadow(1) : animatedShader->usingShadow(0);
 
 
-	for (int i = 0; i < 4; i++) {
-		animatedShader->SetPointLightProperties(i, pointLight[i].position, pointLight[i].ambient, pointLight[i].diffuse, pointLight[i].specular, pointLight[i].distance);
+	for (int i = 0; i < 24; i++) {
+		if (i < pointLight.size())
+			animatedShader->SetPointLightProperties(i, pointLight[i].position, pointLight[i].ambient, pointLight[i].diffuse, pointLight[i].specular, pointLight[i].distance);
+		else
+			animatedShader->SetPointLightProperties(i, vec3(0), vec3(0), vec3(0), vec3(0), 0);
+	
 	}
+
 
 	animatedShader->SetSpotLightProperties(spotLight.position, spotLight.direction, spotLight.ambient, spotLight.diffuse, spotLight.specular, spotLight.distance, spotLight.cutOff, spotLight.outerCutOff);
 
@@ -68,6 +73,14 @@ void MasterRenderer::cleanUp()
 void  MasterRenderer::createProjectionMatrix()
 {
 	projectionMatrix = Maths::createProjectionMatrix(FOV, NEAR_PLANE, FAR_PLANE);
+}
+
+
+void MasterRenderer::resetParticles() {
+	
+	particless.clear();
+
+
 }
 
 void MasterRenderer::updateAllParticles(float dt, Camera camera)

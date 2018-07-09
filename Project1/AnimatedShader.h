@@ -5,6 +5,8 @@
 #include "Maths.h"
 #include <vector>
 
+#define NLIGHT 24
+
 using namespace std;
 class AnimatedShader :
 	public ShaderProgram
@@ -38,15 +40,15 @@ private:
 	GLint location_spotLightDiffuse;
 	GLint location_spotLightSpecular;
 
-	GLint location_pointLightPosition[4];
+	GLint location_pointLightPosition[NLIGHT];
 
-	GLint location_pointLightConstant[4];
-	GLint location_pointLightLinear[4];
-	GLint location_pointLightQuadratic[4];
+	GLint location_pointLightConstant[NLIGHT];
+	GLint location_pointLightLinear[NLIGHT];
+	GLint location_pointLightQuadratic[NLIGHT];
 
-	GLint location_pointLightAmbient[4];
-	GLint location_pointLightDiffuse[4];
-	GLint location_pointLightSpecular[4];
+	GLint location_pointLightAmbient[NLIGHT];
+	GLint location_pointLightDiffuse[NLIGHT];
+	GLint location_pointLightSpecular[NLIGHT];
 
 	int lgBones[100];
 	int lAnimated;

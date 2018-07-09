@@ -42,7 +42,7 @@ class MenuState : public State {
 	float time2 = 0;
 	int contador = 0;
 	int contadorText = 0;
-	float frames = 1;
+	float frames = 166;
 
 	int op = 0;
 	int opMax = 2;
@@ -135,7 +135,7 @@ public:
 
 
 
-			if (time >= 1.0f / (float)frames) {
+			if (time >= 1.0/30.0) {
 				contador++;
 
 				if (contador > frames - 1)
@@ -233,7 +233,7 @@ public:
 				guiMenu[i].constant = lerp(1.0f, 0.0f, t);
 
 
-			if (time >= 1.0f / (float)frames) {
+			if (time >= 1.0f / (float)30) {
 				contador++;
 
 				if (contador > frames - 1) {

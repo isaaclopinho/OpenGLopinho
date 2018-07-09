@@ -11,7 +11,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 	maxSpeed = 50;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
-	walkSpeed = 15;
+	walkSpeed = 45;
 
 	maxVelocity = 50;
 	velocity = 0;
@@ -102,7 +102,7 @@ void Player::CheckInput()
         jump.Reset(); //start
         PlayerJump();
     }
-    if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(Inpu33tManager::GetInstance().KeyPress(SDLK_k)))){
+    if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(InputManager::GetInstance().KeyPress(SDLK_k)))){
         if (!atacou) atacou = true;
     }
 

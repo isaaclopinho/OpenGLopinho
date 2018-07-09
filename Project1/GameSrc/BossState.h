@@ -67,7 +67,7 @@ class BossState : public State {
     vector<GUITexture> GUITextures;
     GUIRenderer guirenderer = GUIRenderer();
     
-    PointLight pt[4] = {
+	vector<PointLight> pt = {
         PointLight(vec3(-4, 0, 20),        13,        vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f),
         PointLight(vec3(1, 0, -10),        13,        vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f),
         PointLight(vec3(0, -1, -10),    13,        vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f,    vec3(1, 1,1)*0.0f),
@@ -94,7 +94,7 @@ public:
     Boss* boss;
     
     BossState() : sfb(4096,4096), phyWorld(){
-        
+		MasterRenderer::GetInstance().resetParticles();
         //Shadows and PostProcessing
         fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
         output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);

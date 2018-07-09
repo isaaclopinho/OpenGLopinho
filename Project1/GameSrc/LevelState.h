@@ -35,6 +35,7 @@
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "Hitbox.h"
+#include "GameSrc/BossState.h"
 using namespace glm;
 using namespace std;
 
@@ -80,18 +81,13 @@ class LevelState : public State {
     vector<GUITexture> GUITextures;
     GUIRenderer guirenderer = GUIRenderer();
 
-	PointLight pt[4] = {
-		PointLight(vec3(50.5156,-0.235573 , -687.306),		100,		vec3(1, 0,0)*10.0f,	vec3(1, 0,0.1)*1.0f,	vec3(1, 0.1,0.1)*1.0f),
-		PointLight(vec3(1, 0, -10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
-		PointLight(vec3(0, -1, -10),	13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
-		PointLight(vec3(0, -2, 10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f)
-	};
+	vector<PointLight> pointLights;
 
 	ParticleSystem *ps;
 
 	vec3 pos = vec3(-2.0, 400.0, -1.0);
 
-	DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*1.0f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*0.6f);
+	DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*0.4f, vec3(1, 1, 1)*0.4f, vec3(1, 1, 1)*0.4f);
 
 	Camera camera = Camera();
 
@@ -120,7 +116,7 @@ public:
     PhysicsWorld phyWorld;
     
     
-	LevelState() : sfb(4096,4096), phyWorld(){
+	LevelState() : sfb(4096*3,4096*3), phyWorld(){
 		ParticleTexture *pt = new ParticleTexture(Loader::LoadTexture("res/smoke.png"), 8 , false);
 		ps = new ParticleSystem(*pt, 3, 12, 0.1f, 8);
 		ps->type = 1;
@@ -146,7 +142,7 @@ public:
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 0), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 74), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_quarto/casa_quarto.dae"), glm::vec3(86, -3, 153), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Models/casateste.dae"), glm::vec3(86, -3, 153), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
 		
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 221), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 288), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
@@ -171,15 +167,16 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(61, 0, 188.76), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 325.656), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 456.175), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 598.802), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-65, 0, 1.4), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 144.7), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 248.821), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-58, 0, 408.41), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+
+		
+
 
 		vec3 offset = vec3(0,0,680);
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(0, 0, -74) - offset, glm::vec3(0, 0, 90), vec3(50, 100, 20), "", true)));
@@ -216,6 +213,38 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/p/piramide.obj"), glm::vec3(0, 195, 850), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 2.0f, "", true)));
+
+		vec3 offset2 = vec3(24, 0, 0);
+
+		vector<vec3> posPostes = {
+			glm::vec3(65, 0, 29.95) - offset2,
+			glm::vec3(61, 0, 188.76) - offset2,
+			glm::vec3(60, 0, 325.656) - offset2,
+			glm::vec3(60, 0, 456.175) - offset2,
+			glm::vec3(65, 0, 598.802) - offset2,
+			glm::vec3(-65, 0, 1.4)+ offset2,
+			glm::vec3(-57, 0, 144.7)+ offset2,
+			glm::vec3(-57, 0, 248.821) + offset2,
+			glm::vec3(-58, 0, 408.41) + offset2,
+			glm::vec3(-63, 0, 536.892) + offset2,
+			glm::vec3(65, 0, 29.95) - offset - offset2,
+			glm::vec3(61, 0, 188.76) - offset -offset2,
+			glm::vec3(60, 0, 325.656) - offset - offset2,
+			glm::vec3(60, 0, 456.175) - offset - offset2,
+			glm::vec3(65, 0, 598.802) - offset - offset2,
+			glm::vec3(-65, 0, 1.4) - offset + offset2,
+			glm::vec3(-57, 0, 144.7) - offset + offset2,
+			glm::vec3(-57, 0, 248.821) - offset+ offset2,
+			glm::vec3(-58, 0, 408.41) - offset+ offset2,
+			glm::vec3(-63, 0, 536.892) - offset + offset2
+		};
+
+		for (int i = 0; i < posPostes.size(); i++) {	
+			
+				pointLights.emplace_back(PointLight(posPostes[i], 160, vec3(1, 0, 0) * 1.0f, vec3(1, 1, 1), vec3(1, 1, 1)));
+
+		}
+
 
 
         ground->type = "Floor";
@@ -355,7 +384,11 @@ public:
 		}
 		if(portal)
 			if (player->entity.position.z >= player->limitZ.y-10 && player->entity.position.x >= -10 && player->entity.position.x <= 10) {
-				cout << "entrou" << endl;
+				{
+					
+					phyWorld.removePhysicsObject(player);
+					Game::GetInstance()->AddState(new BossState()); //bug no boss
+				}
 
 			//chama proxima cena
 		}
@@ -468,7 +501,7 @@ public:
 //        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
-        MasterRenderer::GetInstance().render(sl, pt, direct, camera);
+        MasterRenderer::GetInstance().render(sl, pointLights, direct, camera);
         
 //        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
 //        fbo->resolveToFbo(*output); //comentar pra rodar no mac
