@@ -89,6 +89,9 @@ public:
 			GLuint g = Loader::LoadTexture("res/menu/icone2/sp (" + to_string(i) + ").png");
 			textureIcone.emplace_back(g);
 		}
+
+
+
 		float offset = 0.0f;
 
 
@@ -198,11 +201,8 @@ public:
 				}
 
 			}
-			
-
 
 			
-
 			// guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
 			//guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
 
