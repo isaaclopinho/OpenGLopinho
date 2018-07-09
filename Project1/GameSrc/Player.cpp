@@ -2,7 +2,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 Player* Player::instance = 0;
 //(mass, shape, position, rotation, scale, inercia, entity);
-Player::Player() : entity(Loader::LoadModel("res/Models/scultp-monster-55.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Capsule, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(2,1.5f,0), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
+
+Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Box, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(4,6,4), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
 {
 	//Initialize Player Variables
 
@@ -35,6 +36,8 @@ void Player::Update(float dt) {
 	CheckInput();
 	btTransform trans = getWorldTransForm();
 	entity.position = Maths::bulletToGlm(getWorldPosition());
+//    entity.position.y -= (getScale().getX()/2 + getScale().getY()/2); //ajusta a posição do player baseado no scale
+    entity.position.y -= 7.5;
 	//entity.rotation = Maths::bulletToGlm(getWorldRotation());
 	//entity.rotation.x -= 90;
 	entity.Update(dt);
@@ -43,19 +46,26 @@ void Player::Update(float dt) {
     invulneravel.Update(dt);
     knockback.Update(dt);
 
-	if (getWorldPosition().z() <= limitZ.x)
-		setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
 
+	AnimationController(dt);
+    
+    if(limitZ != vec2(0,0) && limitX != vec2(0,0)){
 
-	if (getWorldPosition().z() >= limitZ.y)
-		setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
-
-	if (getWorldPosition().x() <= limitX.x)
-		setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
-
-
-	if (getWorldPosition().x() >= limitX.y)
-		setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+        if (getWorldPosition().z() <= limitZ.x)
+            setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
+        
+        
+        if (getWorldPosition().z() >= limitZ.y)
+            setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
+        
+        if (getWorldPosition().x() <= limitX.x)
+            setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
+        
+        
+        if (getWorldPosition().x() >= limitX.y)
+            setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+        
+    }
 
 
 }
@@ -98,7 +108,6 @@ void Player::CheckInput()
 	PlayerMove(horizontalMovement, verticalMovement, newRot);
 
 	//ControlSpeed();
-	AnimationController();
 }
 
 void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) {
@@ -198,26 +207,49 @@ void Player::ControlSpeed() {
     setVelocity(btVector3(playerSpeedX, playerSpeedY, playerSpeedZ));
 };
 
-void Player::AnimationController() {
+void Player::AnimationController(float dt) {
 
 
-	if ((velocity > 0) && (velocity < walkSpeed)) {
+	if (atacou) {
+		timeAtack += dt;
 
-		if (entity.currentAnimation != "Walk") {
-			entity.ChangeAnimation("Walk", true);
-		} 
-	}
+		if (timeAtack >= 25.0/24.0) {
+			timeAtack = 0;
+			atacou = false;
+		}
 
-	if (velocity < 0) {
-		if (entity.currentAnimation != "Walk") {
-			entity.ChangeAnimation("Walk", true);
+		if (entity.currentAnimation != "AtackDouble_Step.L") {
+			entity.ChangeAnimation("AtackDouble_Step.L", true);
 		}
 	}
+	else {
 
-	if ((velocity > walkSpeed) && (entity.currentAnimation != "Run")) {
 
-		entity.ChangeAnimation("Run", true);
 
+		if ((velocity > 0) && (velocity < walkSpeed)) {
+
+			if (entity.currentAnimation != "Walk") {
+				entity.ChangeAnimation("Walk", true);
+			}
+		}
+
+		if (velocity < 0) {
+			if (entity.currentAnimation != "Walk") {
+				entity.ChangeAnimation("Walk", true);
+			}
+		}
+
+		if (velocity == 0) {
+			if (entity.currentAnimation != "Idle") {
+				entity.ChangeAnimation("Idle", true);
+			}
+		}
+
+		if ((velocity > walkSpeed) && (entity.currentAnimation != "Run")) {
+
+			entity.ChangeAnimation("Run", true);
+
+		}
 	}
 
 };
@@ -242,7 +274,7 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
         
         // onde o inimigo está - onde o player está = vetor que aponta do inimigo ao player;
         btVector3 direction = (getWorldPosition() - origin).normalized();
-        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
+//        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
         direction.setY(abs(direction.y()));
         direction.setX(direction.x());
         direction.setZ(direction.z());

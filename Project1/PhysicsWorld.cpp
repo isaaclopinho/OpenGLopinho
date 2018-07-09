@@ -9,7 +9,7 @@
 #include "PhysicsWorld.h"
 #include "GameSrc/Enemy.h"
 #include "GameSrc/Player.h"
-
+#include "GameSrc/Hitbox.h"
 #include <stdio.h>
 
 struct YourOwnFilterCallback : public btOverlapFilterCallback
@@ -75,7 +75,8 @@ void PhysicsWorld::updateWorld(float dt){
             //antes de fazer isso todos os corpos adicionados tem que ser PhysicsObject;
             PhysicsObject *physicsBodyA = (PhysicsObject*)bodyA->getUserPointer();
             PhysicsObject *physicsBodyB = (PhysicsObject*)bodyB->getUserPointer();
-
+            
+            //se player for a  ou b;
             if(physicsBodyA->Is("Player"))
             {
                 if (physicsBodyB->Is("Floor")){
@@ -86,7 +87,14 @@ void PhysicsWorld::updateWorld(float dt){
                     Enemy *e = (Enemy*)bodyB->getUserPointer(); //pegar dano com inimigo?
                     Player::getInstance()->LoseHP(10, e->getWorldPosition());
                 }
-                
+                //se tiver em cntato com ou colisor de inimigo e owner ativo;
+                if (physicsBodyB->Is("EnemyTrigger")){
+                    Hitbox* h = (Hitbox*) physicsBodyB;
+                    Enemy *e = (Enemy*)h->owner; //pegar dano com inimigo?
+                    if (e->entity->currentAnimation == "AttackDuplo"){
+                        Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
+                    }
+                }
             }else if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
@@ -96,11 +104,21 @@ void PhysicsWorld::updateWorld(float dt){
                     Enemy *e = (Enemy*)bodyA->getUserPointer(); //pegar dano com inimigo?
                     Player::getInstance()->LoseHP(10, e->getWorldPosition());
                 }
+                //se tiver em cntato com ou colisor de inimigo e owner ativo;
+                if (physicsBodyA->Is("EnemyTrigger")){
+                    Hitbox* h = (Hitbox*) physicsBodyA;
+                    Enemy *e = (Enemy*)h->owner; //pegar dano com inimigo?
+                    if (e->entity->currentAnimation == "AttackDuplo"){
+                        Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
+                    }
+                }
             }
             
+            // se A ou B for player trigger
             if(physicsBodyA->Is("Trigger")){
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
                     if (physicsBodyB->Is("Enemy")){
+						Player::getInstance()->atacou = true;
                         Enemy *e = (Enemy*)bodyB->getUserPointer();
                         e->RecieveDamage(10);
                     }
@@ -113,6 +131,19 @@ void PhysicsWorld::updateWorld(float dt){
                         e->RecieveDamage(10);
                     }
                 }
+            }
+            if (physicsBodyA->Is("Projectile")){
+                if (physicsBodyB->Is("Player")){
+                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+                }
+                physicsBodyA->RequestRemove();
+                
+                Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+            } else if (physicsBodyB->Is("Projectile")){
+                if (physicsBodyA->Is("Player")){
+                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+                }
+                physicsBodyB->RequestRemove();
             }
         }
         

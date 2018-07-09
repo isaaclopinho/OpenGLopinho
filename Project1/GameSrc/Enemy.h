@@ -21,6 +21,11 @@ public:
     Timer attCD;
     Timer atkAnimation;
     virtual void Update(float dt);
+    int damage = 10;
+
+	vec2 limitX = vec2();
+	vec2 limitZ = vec2();
+
 private:
     int health;
 };

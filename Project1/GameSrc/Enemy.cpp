@@ -12,6 +12,9 @@ Enemy::Enemy(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): Phys
     type = "Enemy";
     health = 100;
     
+	limitX = Player::getInstance()->limitX;
+	limitZ = Player::getInstance()->limitZ;
+
     currentState = EnemyStates::IDLE;
 }
 Enemy::~Enemy(){
@@ -104,6 +107,27 @@ void Enemy::Update(float dt){
              CHANGE ANIMATION AND MAKE ENEMY CHARGE AT PLAYER
              */
     }
+
+
+
+
+	if (limitZ != vec2(0, 0) && limitX != vec2(0, 0)) {
+
+		if (getWorldPosition().z() <= limitZ.x)
+			setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
+
+
+		if (getWorldPosition().z() >= limitZ.y)
+			setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
+
+		if (getWorldPosition().x() <= limitX.x)
+			setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
+
+
+		if (getWorldPosition().x() >= limitX.y)
+			setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+
+	}
 }
 
 bool Enemy::PlayerNearby(){

@@ -81,13 +81,13 @@ class LevelState : public State {
     GUIRenderer guirenderer = GUIRenderer();
 
 	PointLight pt[4] = {
-		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
+		PointLight(vec3(50.5156,-0.235573 , -687.306),		100,		vec3(1, 0,0)*10.0f,	vec3(1, 0,0.1)*1.0f,	vec3(1, 0.1,0.1)*1.0f),
 		PointLight(vec3(1, 0, -10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(0, -1, -10),	13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(0, -2, 10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f)
 	};
 
-
+	ParticleSystem *ps;
 
 	vec3 pos = vec3(-2.0, 400.0, -1.0);
 
@@ -121,7 +121,10 @@ public:
     
     
 	LevelState() : sfb(4096,4096), phyWorld(){
-		
+		ParticleTexture *pt = new ParticleTexture(Loader::LoadTexture("res/smoke.png"), 8 , false);
+		ps = new ParticleSystem(*pt, 3, 12, 0.1f, 8);
+		ps->type = 1;
+		//ps = new ParticleSystem()
 		//Shadows and PostProcessing
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
 		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
@@ -227,19 +230,14 @@ public:
 		camera.pitch = 12;
 		camera.vDist = -20;
 		camera.angleAroundTarget = 180;
-        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
+        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY | COL_TRIGGER_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
         //BOX debugdraw
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
         playerHitbox->owner = player;
-//        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3());
-        phyWorld.addPhysicsObject(playerHitbox, COL_WALL, COL_ENEMY);
+        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
-//        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
-//        AddGameObject(attackBoxPlayer);
-//        attackBoxPlayer->toggleContact(false);
-//        attackBoxPlayer->type = "Trigger";
         
 		for(int i=0; i < posEnemies.size(); i++)
 			InstantiateEnemy(posEnemies[i]);
@@ -282,6 +280,11 @@ public:
 	~LevelState() {}
 
 	void Update(float dt) {
+		if(portal)
+		ps->Update(dt, vec3(0, 0, player->limitZ.y - 10));
+
+		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
+
 
 		street->Update(dt);
 		for (int i = 0; i < 6; ++i)
@@ -358,12 +361,7 @@ public:
 		}
 
 
-		if (InputManager::GetInstance().KeyPress(SDLK_l)) {
-			int r = rand() % 360;
-			cout << r << endl;
-			ground->entity->rotation = vec3(r,0, 0);
-		}
-
+		
 		if (InputManager::GetInstance().KeyPress(SDLK_o)) {
 
 			for (int i = gameObjects.size() - 1; i >= 0; i--) {
@@ -442,14 +440,20 @@ public:
     
     void InstantiateEnemy(vec3 pos){
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
-        AddGameObject(inimigo);
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
+        		AddGameObject(inimigo);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+//        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8),box);
+        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8));
         enemyHitbox->owner = inimigo;
-        phyWorld.addPhysicsObject(enemyHitbox, COL_ENEMY, COL_PLAYER);
+        enemyHitbox->type = "EnemyTrigger";
+        enemyHitbox->dist = 15.0f;
+
+		
+
+
+        phyWorld.addPhysicsObject(enemyHitbox, COL_TRIGGER_ENEMY, COL_PLAYER);
         AddGameObject(enemyHitbox);
-        
         
     }
 
@@ -461,14 +465,14 @@ public:
         
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-        fbo->bindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
         MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
-        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-        fbo->resolveToFbo(*output); //comentar pra rodar no mac
-        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+//        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->resolveToFbo(*output); //comentar pra rodar no mac
+//        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
         guirenderer.render(GUITextures);
 	};

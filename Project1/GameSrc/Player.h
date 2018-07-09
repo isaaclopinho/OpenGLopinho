@@ -31,6 +31,8 @@ public:
 	vec2 limitX = vec2();
 	vec2 limitZ = vec2();
 
+	bool atacou = false;
+	float timeAtack = 0;
 
 private:
 
@@ -53,7 +55,7 @@ private:
 	float velocity, velocityStep, maxVelocity, minVelocity;
 
 	void ControlSpeed();
-	void AnimationController();
+	void AnimationController(float dt);
 
 	float dt;
 };

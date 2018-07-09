@@ -15,6 +15,7 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 inercia, 
     _rotation = btQuaternion();
     _rotation.setEulerZYX(rotation.getX(), rotation.getY(), rotation.getZ());
     btVector3 scale = Maths::glmToBullet(e->scale);
+    _scale = scale;
     switch (shape){
         case PhysicsShape::Box:
             //height, width, depth
@@ -65,7 +66,7 @@ PhysicsObject::PhysicsObject(float mass, PhysicsShape shape, btVector3 position,
     entity = e;
     _rotation = btQuaternion();
     _rotation.setEulerZYX(rotation.getX(), rotation.getY(), rotation.getZ());
-    
+    _scale = scale;
     switch (shape){
         case PhysicsShape::Box:
             //height, width, depth
@@ -130,14 +131,18 @@ btTransform PhysicsObject::getWorldTransForm(){
 
 void PhysicsObject::toggleGravity(bool flag){
     if (flag == true){
-        _body->setGravity(btVector3(0,0,-1));
+        _body->setGravity(btVector3(0,-98,0));
     } else {
-        _body->setGravity(btVector3());
+        _body->setGravity(btVector3(0,0,0));
     }
 }
 
 btVector3 PhysicsObject::getWorldPosition(){
     return _body->getWorldTransform().getOrigin() ;
+}
+
+btVector3 PhysicsObject::getScale(){
+    return _scale ;
 }
 
 btVector3 PhysicsObject::getWorldRotation(){
@@ -154,13 +159,13 @@ void PhysicsObject::Update(float dt)
 //        entity->rotation = Maths::bulletToGlm(getWorldRotation()); //corpo fisico do player nao e alterado no update. nao funfa.
 //        entity->rotation.x -= 90;
         entity->position = Maths::bulletToGlm(getWorldPosition());
+        entity->position.y -= getScale().getY()/2;
     }
 	
 }
 
 void PhysicsObject::Render() {
-
-	MasterRenderer::GetInstance().processEntity(entity);
+    if (entity != NULL) MasterRenderer::GetInstance().processEntity(entity);
 
 };
 

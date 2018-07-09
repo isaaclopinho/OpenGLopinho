@@ -108,7 +108,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
 
   	if(usingShadow == 1){
 		float shadow = ShadowCalculation(FragPosLightSpace);       
-    		vec3 lighting = (ambient + (1.0 - shadow) * (diff * lightColor)) * color; 
+    		vec3 lighting = (ambient + (0.5f - shadow) * (diff * lightColor)) * color; 
 
     		return lighting + specular;
 	}
