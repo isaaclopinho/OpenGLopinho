@@ -242,7 +242,17 @@ void Player::AnimationController(float dt) {
 
 
 	if (atacou) {
+
+		if (timeAtack == 0)
+			random = rand() % 5;
+
 		timeAtack += dt;
+
+		Game::GetInstance()->constant = 1;
+
+		if(timeAtack <= 0.2f && random <= 1)
+			Game::GetInstance()->constant = 0.15f;
+
 
 		if (timeAtack >= 1) {
 			timeAtack = 0;

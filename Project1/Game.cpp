@@ -110,7 +110,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	//VideoState2 -> PS
-	states.push(new MenuState());
+	states.push(new BossState());
 
 
 

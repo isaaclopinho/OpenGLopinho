@@ -466,11 +466,6 @@ public:
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
 		}
         
-        if (InputManager::GetInstance().KeyPress(SDLK_LSHIFT)) {
-            player->Dash();
-        }
-		
-
 
 //        glm::vec3 newPos = glm::vec3(player->entity.position.x, player->entity.position.y + 10, player->entity.position.z + 7);
         glm::vec3 newPos = Maths::bulletToGlm((player->getWorldRotation().normalized() * 3) + player->getWorldPosition());

@@ -34,6 +34,7 @@ public:
 
 	bool atacou = false;
 	float timeAtack = 0;
+	float random = 0;
 
 private:
 

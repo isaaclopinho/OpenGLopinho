@@ -197,9 +197,6 @@ public:
             Shoot();
         }
         
-        if (InputManager::GetInstance().KeyPress(SDLK_LSHIFT)) {
-            player->Dash();
-        }
         
         if (InputManager::GetInstance().KeyPress(SDLK_p)) {
             cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
