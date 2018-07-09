@@ -42,20 +42,24 @@ void Player::Update(float dt) {
     ataque.Update(dt);
     invulneravel.Update(dt);
     knockback.Update(dt);
+    
+    if(limitZ != vec2(0,0) && limitX != vec2(0,0)){
 
-	if (getWorldPosition().z() <= limitZ.x)
-		setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
-
-
-	if (getWorldPosition().z() >= limitZ.y)
-		setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
-
-	if (getWorldPosition().x() <= limitX.x)
-		setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
-
-
-	if (getWorldPosition().x() >= limitX.y)
-		setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+        if (getWorldPosition().z() <= limitZ.x)
+            setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
+        
+        
+        if (getWorldPosition().z() >= limitZ.y)
+            setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
+        
+        if (getWorldPosition().x() <= limitX.x)
+            setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
+        
+        
+        if (getWorldPosition().x() >= limitX.y)
+            setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+        
+    }
 
 
 }
