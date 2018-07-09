@@ -69,8 +69,8 @@ mat4 ShadowFrameBuffer::projectionViewMatrix() {
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
 	glm::vec3 lightPos = vec3(-2.0, 200.0, -1.0);
-	float near_plane = 1.0f, far_plane = 600.5f;
-	lightProjection = glm::ortho(-1000.0f, 1000.0f, -100.0f, 600.0f, near_plane, far_plane);
+	float near_plane = 1.0f, far_plane = 600.5f*3.4f;
+	lightProjection = glm::ortho(-1000.0f*2.5f, 1000.0f*3.4f, -100.0f*3.4f, 600.0f*3.4f, near_plane, far_plane);
 	lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
 	MasterRenderer::GetInstance().lightSpaceMatrix = lightSpaceMatrix;
