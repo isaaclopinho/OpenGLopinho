@@ -214,7 +214,7 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-58, 0, 408.41) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/p/piramide.obj"), glm::vec3(0, 195, 850), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 2.0f, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/Piramide/piramide.dae"), glm::vec3(0, 195, 850), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 2.0f, "", true)));
 
 		vec3 offset2 = vec3(24, 0, 0);
 
@@ -526,14 +526,14 @@ public:
         
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-//        fbo->bindFrameBuffer(); //comentar pra rodar no mac
+        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
         MasterRenderer::GetInstance().render(sl, pointLights, direct, camera);
         
-//        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-//        fbo->resolveToFbo(*output); //comentar pra rodar no mac
-//        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+        fbo->resolveToFbo(*output); //comentar pra rodar no mac
+        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
         guirenderer.render(GUITextures);
 	};

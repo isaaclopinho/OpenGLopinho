@@ -78,7 +78,7 @@ class BossState : public State {
     
     vec3 pos = vec3(-2.0, 400.0, -1.0);
     
-    DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*0.7f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*0.6f);
+    DirectionalLight direct = DirectionalLight(pos, vec3(1, 1, 1)*0.0f, vec3(1, 1, 1)*0.6f, vec3(1, 1, 1)*0.6f);
     
     Camera camera = Camera();
     
@@ -94,7 +94,7 @@ public:
     PhysicsWorld phyWorld;
     Boss* boss;
     
-    BossState() : sfb(4096*3,4096*3), phyWorld(){
+    BossState() : sfb(4096,4096), phyWorld(){
 		MasterRenderer::GetInstance().resetParticles();
         //Shadows and PostProcessing
         fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
@@ -273,13 +273,13 @@ public:
         
         sfb.renderSceneOnBuffer();
         sfb.bindShadowMap();
-        //fbo->bindFrameBuffer(); //comentar pra rodar no mac
+        fbo->bindFrameBuffer(); //comentar pra rodar no mac
         
         MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
-        // fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-        // fbo->resolveToFbo(*output); //comentar pra rodar no mac
-        // pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+         fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+         fbo->resolveToFbo(*output); //comentar pra rodar no mac
+         pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
         guirenderer.render(GUITextures);
     };

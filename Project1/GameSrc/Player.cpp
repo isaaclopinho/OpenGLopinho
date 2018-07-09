@@ -184,9 +184,6 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
         entity.rotation = playerRot;
         playerRot = vec3(playerRot.x, playerRot.y, playerRot.z + newRot);
     }
-    else{
-        cout << "aqui" << endl;
-    }
 
 
 
