@@ -35,7 +35,8 @@
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "Hitbox.h"
-#include "GameSrc/BossState.h"
+//#include "GameSrc/BossState.h"
+#include "BossState.h"
 using namespace glm;
 using namespace std;
 
@@ -350,6 +351,9 @@ public:
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
 		}
         
+        if (InputManager::GetInstance().KeyPress(SDLK_LSHIFT)) {
+            player->Dash();
+        }
 		
 
 
