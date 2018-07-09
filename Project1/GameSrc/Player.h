@@ -59,7 +59,7 @@ private:
 
 	float dt;
 	unique_ptr<AudioSource> attackScreams[10];
-	unique_ptr<AudioSource> swordSounds[12];
+	unique_ptr<AudioSource> swordSounds[6];
 	bool playSwordSound;
 	float elapsedTime;
 };
