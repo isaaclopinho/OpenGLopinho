@@ -3,7 +3,7 @@
 Player* Player::instance = 0;
 //(mass, shape, position, rotation, scale, inercia, entity);
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Box, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(4,6,4), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5)
+Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Box, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(4,6,4), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5), dash(0.5)
 {
 	//Initialize Player Variables
 
@@ -30,7 +30,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 		sprintf(file, "res/sounds/hansScreams/scream%d.wav", i + 1);
 		attackScreams[i] = make_unique<AudioSource>(file, false, false);
 	}
-	for (int i = 0; i < 12; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		char file[100];
 		sprintf(file, "res/sounds/sword/Espada %d.wav", i + 1);
 		swordSounds[i] = make_unique<AudioSource>(file, false, true);
@@ -58,7 +58,7 @@ void Player::Update(float dt) {
     ataque.Update(dt);
     invulneravel.Update(dt);
     knockback.Update(dt);
-
+    dash.Update(dt);
 
 	AnimationController(dt);
     
@@ -83,7 +83,8 @@ void Player::Update(float dt) {
 	if (playSwordSound) {
 		elapsedTime += dt;
 		if (elapsedTime > 0.5) {
-			swordSounds[rand() % 12]->Play();
+			swordSounds[rand() % 6]->Play();
+			attackScreams[rand() % 10]->Play();
 			playSwordSound = false;
 			elapsedTime = 0;
 		}
@@ -125,8 +126,8 @@ void Player::CheckInput()
     if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(InputManager::GetInstance().KeyPress(SDLK_k)))){
 		if (!atacou) {
 			atacou = true;
-			attackScreams[rand() % 10]->Play();
-			playSwordSound = true;
+			if (rand() % 3 == 1)
+				playSwordSound = true;
 		}
     }
 
@@ -177,11 +178,14 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 
     
     
-    if(!knockback.IsInCooldown()){
+    if(!knockback.IsInCooldown() && !dash.IsInCooldown()){
         setVelocity(finalForce);
         entity.position = playerPos;
         entity.rotation = playerRot;
         playerRot = vec3(playerRot.x, playerRot.y, playerRot.z + newRot);
+    }
+    else{
+        cout << "aqui" << endl;
     }
 
 
@@ -301,7 +305,7 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
         
         // onde o inimigo está - onde o player está = vetor que aponta do inimigo ao player;
         btVector3 direction = (getWorldPosition() - origin).normalized();
-//        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
+        printf("dir: %f, %f, %f \n", direction.x(), direction.y(), direction.z());
         direction.setY(abs(direction.y()));
         direction.setX(direction.x());
         direction.setZ(direction.z());
@@ -314,4 +318,12 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
         }
     }
     
+}
+
+void Player::Dash(){
+    if(!dash.IsInCooldown()){
+        applyForce(Maths::glmToBullet(getForwardVector() * 10000.0f));
+        std::cout << "forward: " << getForwardVector().x << " " << getForwardVector().y << " " << getForwardVector().z << endl;
+        dash.Reset();
+    }
 }

@@ -130,8 +130,8 @@ public:
         phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY | COL_BOSS);
         AddGameObject(playerHitbox);
 
-		player->limitZ = vec2(-700, 720);
-		player->limitX = vec2(-50, 50);
+//        player->limitZ = vec2(-700, 720);
+//        player->limitX = vec2(-50, 50);
         
         
         boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/boss.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*32.0f, "Main", true));
@@ -199,6 +199,10 @@ public:
             Shoot();
         }
         
+        if (InputManager::GetInstance().KeyPress(SDLK_LSHIFT)) {
+            player->Dash();
+        }
+        
         if (InputManager::GetInstance().KeyPress(SDLK_p)) {
             cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
         }
@@ -262,7 +266,7 @@ public:
         AddGameObject(projectile);
         projectile->toggleContact(false);
         projectile->toggleGravity(false);
-        std::cout << "forward: " << boss->getForwardVector().x << " " << boss->getForwardVector().y << " " << boss->getForwardVector().z << endl;
+//        std::cout << "forward: " << boss->getForwardVector().x << " " << boss->getForwardVector().y << " " << boss->getForwardVector().z << endl;
         projectile->applyForce((player->getWorldPosition() - ownerPos).normalized() * 1000.0f);
     }
     
