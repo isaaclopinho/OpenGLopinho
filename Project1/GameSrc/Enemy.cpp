@@ -122,7 +122,7 @@ void Enemy::RecieveDamage(int damage){
             printf("apanhou\n");
             btVector3 direcao = (getWorldPosition() - p->getWorldPosition()).normalized();
             
-            cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
+//            cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
             
             direcao *= btVector3(1, 4, 1);
             
