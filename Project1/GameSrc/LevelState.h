@@ -77,6 +77,10 @@ class LevelState : public State {
 	Player* player;
 	vector<btRigidBody> rigidBodies;
 
+	string musics[2] = {
+		"res/music/street.wav",
+		"res/music/combat.wav",
+	};
 
 public:
     PhysicsWorld phyWorld;
@@ -225,6 +229,10 @@ public:
         
         GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
         GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
+
+		AudioSystem::Instance().AddMusic(musics[0]);
+		AudioSystem::Instance().PlayAllOnMute();
+		AudioSystem::Instance().SetCurrent(musics[0]);
 	};
 
 	~LevelState();
