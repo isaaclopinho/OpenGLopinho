@@ -100,7 +100,13 @@ class LevelState : public State {
 	
 	Player* player;
 	vector<btRigidBody> rigidBodies;
+
 	PhysicsObject* ground;
+
+	string musics[2] = {
+		"res/music/street.wav",
+		"res/music/combat.wav",
+	};
 
 public:
     PhysicsWorld phyWorld;
@@ -222,9 +228,9 @@ public:
         phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
         
-		
 		for(int i=0; i < posEnemies.size(); i++)
 			InstantiateEnemy(posEnemies[i]);
+
 //        InstantiateEnemy(vec3(10, 10, 20));
 
         //HUD
@@ -237,6 +243,10 @@ public:
         
         GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
         GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
+
+		AudioSystem::Instance().AddMusic(musics[0]);
+		AudioSystem::Instance().PlayAllOnMute();
+		AudioSystem::Instance().SetCurrent(musics[0]);
 	};
 
 	~LevelState();
