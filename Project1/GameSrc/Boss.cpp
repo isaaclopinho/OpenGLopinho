@@ -18,6 +18,10 @@ Boss::Boss(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): Physic
     maxHP = 1000;
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     type = "Enemy";
+
+	limitX = Player::getInstance()->limitX;
+	limitZ = Player::getInstance()->limitZ;
+
 }
 
 Boss::~Boss(){
@@ -55,6 +59,25 @@ void Boss::Update(float dt){
         atira = false;
     }
     
+
+	if (limitZ != vec2(0, 0) && limitX != vec2(0, 0)) {
+
+		if (getWorldPosition().z() <= limitZ.x)
+			setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.x));
+
+
+		if (getWorldPosition().z() >= limitZ.y)
+			setPosition(btVector3(getWorldPosition().x(), getWorldPosition().y(), limitZ.y));
+
+		if (getWorldPosition().x() <= limitX.x)
+			setPosition(btVector3(limitX.x, getWorldPosition().y(), getWorldPosition().z()));
+
+
+		if (getWorldPosition().x() >= limitX.y)
+			setPosition(btVector3(limitX.y, getWorldPosition().y(), getWorldPosition().z()));
+
+	}
+
 }
 
 int Boss::GetHP(){

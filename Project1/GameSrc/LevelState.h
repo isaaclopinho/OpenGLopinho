@@ -81,7 +81,7 @@ class LevelState : public State {
     GUIRenderer guirenderer = GUIRenderer();
 
 	PointLight pt[4] = {
-		PointLight(vec3(-4, 0, 20),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
+		PointLight(vec3(50.5156,-0.235573 , -687.306),		100,		vec3(1, 0,0)*10.0f,	vec3(1, 0,0.1)*1.0f,	vec3(1, 0.1,0.1)*1.0f),
 		PointLight(vec3(1, 0, -10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(0, -1, -10),	13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f),
 		PointLight(vec3(0, -2, 10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f)
@@ -355,13 +355,17 @@ public:
     void InstantiateEnemy(vec3 pos){
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
         phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
-        AddGameObject(inimigo);
+        		AddGameObject(inimigo);
 //        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
 //        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8),box);
         Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8));
         enemyHitbox->owner = inimigo;
         enemyHitbox->type = "EnemyTrigger";
         enemyHitbox->dist = 15.0f;
+
+		
+
+
         phyWorld.addPhysicsObject(enemyHitbox, COL_TRIGGER_ENEMY, COL_PLAYER);
         AddGameObject(enemyHitbox);
         
