@@ -30,6 +30,13 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 		sprintf(file, "res/sounds/hansScreams/scream%d.wav", i + 1);
 		attackScreams[i] = make_unique<AudioSource>(file, false, false);
 	}
+	for (int i = 0; i < 12; ++i) {
+		char file[100];
+		sprintf(file, "res/sounds/sword/Espada %d.wav", i + 1);
+		swordSounds[i] = make_unique<AudioSource>(file, false, true);
+	}
+	elapsedTime = 0;
+	playSwordSound = false;
 }
 
 void Player::land(){
@@ -73,7 +80,14 @@ void Player::Update(float dt) {
         
     }
 
-
+	if (playSwordSound) {
+		elapsedTime += dt;
+		if (elapsedTime > 0.5) {
+			swordSounds[rand() % 12]->Play();
+			playSwordSound = false;
+			elapsedTime = 0;
+		}
+	}
 }
 
 
@@ -112,6 +126,7 @@ void Player::CheckInput()
 		if (!atacou) {
 			atacou = true;
 			attackScreams[rand() % 10]->Play();
+			playSwordSound = true;
 		}
     }
 
