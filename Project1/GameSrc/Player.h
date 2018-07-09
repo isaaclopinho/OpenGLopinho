@@ -27,6 +27,7 @@ public:
 	vec3 getForwardVector();
 //    btRigidBody* getRB() override {return playerRigidBody;};
 	static Player* getInstance();
+    void Dash();
 
 	vec2 limitX = vec2();
 	vec2 limitZ = vec2();
@@ -45,7 +46,7 @@ private:
 
 	bool canJump;
 //    float jumpCoolDown, jumpTimeStamp;
-    Timer jump, invulneravel, ataque, knockback;
+    Timer jump, invulneravel, ataque, knockback, dash;
     vec3 playerPos = vec3(0, 10, 0); //starting position
     vec3 playerRot = vec3(-90, 0, 0); //starting rotation?
 	int walkSpeed;
