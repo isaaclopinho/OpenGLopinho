@@ -265,9 +265,9 @@ public:
         //(mass, shape, position, rotation, scale, inercia, entity);
         //BOX debugdraw
 //        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,8,5));
         playerHitbox->owner = player;
-        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
+        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY | COL_BOSS);
         AddGameObject(playerHitbox);
         
 		for(int i=0; i < posEnemies.size(); i++)
@@ -465,7 +465,6 @@ public:
 		if (InputManager::GetInstance().KeyPress(SDLK_p)) {
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
 		}
-        
 
 //        glm::vec3 newPos = glm::vec3(player->entity.position.x, player->entity.position.y + 10, player->entity.position.z + 7);
         glm::vec3 newPos = Maths::bulletToGlm((player->getWorldRotation().normalized() * 3) + player->getWorldPosition());

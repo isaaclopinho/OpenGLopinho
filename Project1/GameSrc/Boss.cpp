@@ -37,7 +37,11 @@ void Boss::RecieveDamage(int damage){
 }
 
 void Boss::Update(float dt){
-    PhysicsObject::Update(dt);
+    if (entity != NULL) {
+        entity->Update(dt);
+        entity->position = Maths::bulletToGlm(getWorldPosition());
+        entity->position.y += getScale().getY()/4;
+    }
     cd.Update(dt);
     btVector3 position = Maths::glmToBullet(glm::lerp(Maths::bulletToGlm(getWorldPosition()), Maths::bulletToGlm(Player::getInstance()->getWorldPosition()), dt * 1));
     vec3 dir = Maths::bulletToGlm(Player::getInstance()->getWorldPosition() - getWorldPosition());
