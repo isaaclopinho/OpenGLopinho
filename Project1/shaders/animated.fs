@@ -51,7 +51,7 @@ in vec4 ShadowCoord;
 in vec4 FragPosLightSpace;
 
 uniform DirLight dirLight;
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 24
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight light;
 uniform int usingShadow;
@@ -105,14 +105,15 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
     	vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
    	vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
     	vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+    	
 
   	if(usingShadow == 1){
 		float shadow = ShadowCalculation(FragPosLightSpace);       
-    		vec3 lighting = (ambient + (0.5f - shadow) * (diff * lightColor)) * color; 
+    		vec3 lighting = (ambient + (0.4f - shadow) * (diff * lightColor)) * color; 
 
     		return lighting + specular;
 	}
-    	
+
 	return ambient+diffuse+specular;
 	
 }

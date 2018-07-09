@@ -11,7 +11,7 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
 	maxSpeed = 50;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
-	walkSpeed = 15;
+	walkSpeed = 45;
 
 	maxVelocity = 50;
 	velocity = 0;

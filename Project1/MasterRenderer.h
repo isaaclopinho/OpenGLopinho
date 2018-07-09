@@ -40,7 +40,7 @@ public:
 
 	static void enableCulling();
 	static void disableCulling();
-	void render(SpotLight sun, PointLight * point, DirectionalLight dl, Camera camera);
+	void render(SpotLight sun, vector<PointLight> point, DirectionalLight dl, Camera camera);
 	
 	void processEntity(Entity* go);
 	
@@ -52,6 +52,8 @@ public:
 		static MasterRenderer masterRenderer;
 		return masterRenderer;
 	}
+
+	void resetParticles();
 
 	void updateAllParticles(float dt, Camera camera);
 	

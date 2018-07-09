@@ -61,7 +61,7 @@ void AnimatedShader::getAllUniformLocations() {
 	location_dirLightDiffuse = ShaderProgram::getUniformLocation("dirLight.diffuse");
 	location_dirLightSpecular = ShaderProgram::getUniformLocation("dirLight.specular");
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < NLIGHT; i++) {
 
 		location_pointLightPosition[i] = ShaderProgram::getUniformLocation("pointLights[" + to_string(i) + "].position");
 
