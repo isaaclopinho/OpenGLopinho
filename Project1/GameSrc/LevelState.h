@@ -222,8 +222,8 @@ public:
         phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY | COL_TRIGGER_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
         //BOX debugdraw
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
         playerHitbox->owner = player;
         phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
@@ -353,8 +353,9 @@ public:
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
         phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
         AddGameObject(inimigo);
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+//        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8),box);
+        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8));
         enemyHitbox->owner = inimigo;
         enemyHitbox->type = "EnemyTrigger";
         enemyHitbox->dist = 15.0f;

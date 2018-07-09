@@ -106,101 +106,14 @@ public:
         //Initialize Physics
         //temporary physics ground for testing purposes
         
-        //(mass, shape, position, rotation, scale, inercia, entity);
-        //   PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,0,0), btVector3(0,0,0), btVector3(200,1,1000), btVector3(0,0,0), new Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0,1,0), glm::vec3(0,-90, 0), vec3(1, 1, 1) * 700.0f, "", true));
-        PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 350), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
+        PhysicsObject* ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, -1, 350), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
         
         AddGameObject(ground);
         
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(0, 0, -74), glm::vec3(0, 0, 90), vec3(50, 100, 20), "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -51), glm::vec3(0, 90, 0), 10.5f *vec3(1.35f, 1, 1), "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 0), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 74), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_quarto/casa_quarto.dae"), glm::vec3(86, -3, 153), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 221), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 288), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 356), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_quarto/casa_quarto.dae"), glm::vec3(86, -3, 418), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(69, 29.5f, 485), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 549), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(-71, 0, -37), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 30), glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_quarto/casa_quarto.dae"), glm::vec3(-86, -3, 110), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 175), glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(-73, -2, 226), glm::vec3(0, -90, 0), 10.5f *vec3(1.5f, 1, 1), "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(-71, 0, 292), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_quarto/casa_quarto.dae"), glm::vec3(-86, -3, 372), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 435), glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(-71, 0, 503.8f), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 568), glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 29.95), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(61, 0, 188.76), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 325.656), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 456.175), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 598.802), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-65, 0, 1.4), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 144.7), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 248.821), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-58, 0, 408.41), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-//        
-//        
-//        AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/p/piramide.obj"), glm::vec3(0, 60*4, 1050), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 4.0f, "", true)));
-        
-        
-        
-        //      AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/rua5.dae"), glm::vec3(0, 1, 0), glm::vec3(0, -90, 0), vec3(1,1,1) * 700.0f, "", true)));
-        //
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa degrau.dae"), glm::vec3(50, 26, 0), glm::vec3(0, -90, 0), vec3(1, 1, 1) *  26.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(50, -10, 62), glm::vec3(0, -90, 0), vec3(1, 1, 1) *  40.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa estrutura.dae"), glm::vec3(50, 0, 140), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(50, -10, 190), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 40.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa quarto.dae"), glm::vec3(65, 0, 240), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(50, -10, 320), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 40.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa simples.dae"), glm::vec3(40, 26, 380), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 27.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(50, -10, 420), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 40.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/brise.dae"), glm::vec3(20,-10, 520), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(35, 0, 60), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(35, 0, 195), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-        
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(35, 0, 310), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-        
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(35, 0, 425), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-        
-        
-        ////lado direito
-        
-        
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa degrau.dae"), glm::vec3(-50, 26, 20), glm::vec3(0, 90, 0), 26.0f *vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(-50, -10, 62), glm::vec3(0, 90, 0), 40.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa estrutura.dae"), glm::vec3(-50, 0, 140), glm::vec3(0, 90, 0), 13.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(-50, -10, 190), glm::vec3(0, 90, 0), 40.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa quarto.dae"), glm::vec3(-65, 0, 260), glm::vec3(0, 90, 0), 13.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(-50, -10, 320), glm::vec3(0, 90, 0), 40.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/casa simples.dae"), glm::vec3(-40, 26, 380), glm::vec3(0, 90, 0), 27.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(-50, -10, 420), glm::vec3(0, 90, 0), 40.0f * vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/brise.dae"), glm::vec3(-20, -10, 460), glm::vec3(0, 90, 0), 13.0f * vec3(1, 1, 1), "", true)));
-        //
-        //
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 60), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 195), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 310), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-        //AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-35, 0, 425), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-        //
+
         ground->type = "Floor";
         phyWorld.addPhysicsObject(ground, COL_FLOOR);
         player = Player::getInstance();
-//        player->limitZ = vec2(-68.43, 850);
-//        player->limitX = vec2(-50, 50);
         
         AddGameObject(player);
         
@@ -209,22 +122,13 @@ public:
         camera.vDist = -20;
         camera.angleAroundTarget = 180;
         phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
-        //(mass, shape, position, rotation, scale, inercia, entity);
         //BOX debugdraw
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
         playerHitbox->owner = player;
-        //        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3());
-        phyWorld.addPhysicsObject(playerHitbox, COL_WALL, COL_ENEMY);
+        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
-        //        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
-        //        AddGameObject(attackBoxPlayer);
-        //        attackBoxPlayer->toggleContact(false);
-        //        attackBoxPlayer->type = "Trigger";
         
-//        InstantiateEnemy(vec3(0, 10, 100));
-//        InstantiateEnemy(vec3(-10, 10, 200));
-        //        InstantiateEnemy(vec3(10, 10, 20));
         
         
         boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*20.0f, "Walk", true));
@@ -347,9 +251,9 @@ public:
         phyWorld.addPhysicsObject(projectile, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
         AddGameObject(projectile);
 //        projectile->toggleContact(false);
-//        projectile->toggleGravity(false);
+        projectile->toggleGravity(false);
         std::cout << "forward: " << boss->getForwardVector().x << " " << boss->getForwardVector().y << " " << boss->getForwardVector().z << endl;
-        projectile->applyForce(Maths::glmToBullet(boss->getForwardVector() * 1000.0f));
+        projectile->applyForce((player->getWorldPosition() - ownerPos).normalized() * 1000.0f);
     }
     
     void Render() {
@@ -361,7 +265,6 @@ public:
         sfb.renderSceneOnBuffer();
         sfb.bindShadowMap();
         //fbo->bindFrameBuffer(); //comentar pra rodar no mac
-        
         
         MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         

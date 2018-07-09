@@ -130,9 +130,9 @@ btTransform PhysicsObject::getWorldTransForm(){
 
 void PhysicsObject::toggleGravity(bool flag){
     if (flag == true){
-        _body->setGravity(btVector3(0,0,-1));
+        _body->setGravity(btVector3(0,-98,0));
     } else {
-        _body->setGravity(btVector3());
+        _body->setGravity(btVector3(0,0,0));
     }
 }
 
@@ -159,8 +159,7 @@ void PhysicsObject::Update(float dt)
 }
 
 void PhysicsObject::Render() {
-
-	MasterRenderer::GetInstance().processEntity(entity);
+    if (entity != NULL) MasterRenderer::GetInstance().processEntity(entity);
 
 };
 
