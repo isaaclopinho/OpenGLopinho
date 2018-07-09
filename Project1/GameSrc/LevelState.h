@@ -105,8 +105,16 @@ class LevelState : public State {
 
 	string musics[2] = {
 		"res/music/street.wav",
-		"res/music/combat.wav",
 	};
+
+	unique_ptr<AudioSource> street;
+	unique_ptr<AudioSource> buildups[6];
+	unique_ptr<AudioSource> combat_taikos[5];
+	unique_ptr<AudioSource> combat;
+	unique_ptr<AudioSource> combat_end;
+	bool enteredCombat, killedEveryone;
+	float elapsedTime;
+	int currentTaiko;
 
 public:
     PhysicsWorld phyWorld;
@@ -249,16 +257,94 @@ public:
         GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
         GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
 
-		AudioSystem::Instance().AddMusic(musics[0]);
-		AudioSystem::Instance().PlayAllOnMute();
-		AudioSystem::Instance().SetCurrent(musics[0]);
+		street = make_unique<AudioSource>("res/music/street.wav", true, false); street->SetGain(1); street->Play();
+		for (int i = 0; i < 6; ++i) {
+			char buildupFile[100];
+			sprintf(buildupFile, "res/music/buildup %d.wav", i+1);
+			buildups[i] = make_unique<AudioSource>(buildupFile, true, false);
+			buildups[i]->SetGain(0);
+		}
+		for (int i = 0; i < 6; ++i)
+			buildups[i]->Play();
+		for (int i = 0; i < 5; ++i) {
+			char taikoFile[100];
+			sprintf(taikoFile, "res/music/combatTaiko%d.wav", i+1);
+			combat_taikos[i] = make_unique<AudioSource>(taikoFile, true, false);
+			combat_taikos[i]->SetGain(0);
+		}
+		combat = make_unique<AudioSource>("res/music/combat.wav", true, false);
+		combat_end = make_unique<AudioSource>("res/music/combatTaikoEnd.wav", false, false);
+		enteredCombat = killedEveryone = false;
+		elapsedTime = 0;
+		currentTaiko = 0;
 	};
 
-	~LevelState();
+	~LevelState() {}
 
 	void Update(float dt) {
 
+		street->Update(dt);
+		for (int i = 0; i < 6; ++i)
+			buildups[i]->Update(dt);
+		for (int i = 0; i < 5; ++i)
+			combat_taikos[i]->Update(dt);
+		combat->Update(dt);
+		combat_end->Update(dt);
+
 		distanciaPerigo = clamp(posEnemies[0].z - player->entity.position.z, 0.0f, 700.0f);
+
+		if (!enteredCombat) {
+			float maxDist = 500, minDist = 100;
+			float percentage = 1 - (distanciaPerigo - minDist) / (maxDist - minDist);
+			if (distanciaPerigo > maxDist) {
+				street->SetGain(1);
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->SetGain(0);
+			}
+			else if (distanciaPerigo > minDist) {
+				street->SetGain((1 - percentage));
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->SetGain(0);
+				for (int i = 0; i < 6; ++i) {
+					if (percentage < (i+1) / 6.0) {
+						buildups[i]->SetGain(1);
+						break;
+					}
+				}
+			}
+			else if (distanciaPerigo > 1 and distanciaPerigo < minDist) {
+				enteredCombat = true;
+				street->FadeOut();
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->Stop();
+				for (int i = 0; i < 5; ++i)
+					combat_taikos[i]->Play();
+				combat->Play();
+				combat_taikos[0]->SetGain(1);
+				currentTaiko = 0;
+			}
+		}
+		else if (!killedEveryone) {
+			float enemyPercentage = enemiesCount / posEnemies.size();
+			int k = 4;
+			for (float i = 0.2; i <= 1; i+=0.2) {
+				if (enemyPercentage <= i) {
+					if (currentTaiko != k) {
+						combat_taikos[currentTaiko]->FadeOut();
+						combat_taikos[k]->FadeIn(1);
+						currentTaiko = k;
+					}
+					break;
+				}
+				--k;
+			}
+			if (enemiesCount <= 0) {
+				killedEveryone = true;
+				combat_taikos[currentTaiko]->FadeOut();
+				combat->FadeOut();
+				street->FadeIn(1);
+			}
+		}
 
 		if (enemiesCount <= 0 && !portal) {
 			portal = true;

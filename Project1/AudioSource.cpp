@@ -1,9 +1,9 @@
 #include "AudioSource.h"
 
-AudioSource::AudioSource(std::string path, bool loop) {
+AudioSource::AudioSource(std::string path, bool loop, bool mono) {
 	this->path = path;
 	alGenSources(1, &source);
-	alSourcei(source, AL_BUFFER, AudioBufferManager::GetBuffer(path));
+	alSourcei(source, AL_BUFFER, AudioBufferManager::GetBuffer(path, mono));
 	SetLooping(loop);
 	SetGain(1);
 	SetPitch(1);
@@ -53,4 +53,34 @@ void AudioSource::SetLooping(bool loop) {
 
 void AudioSource::SetPitch(float pitch) {
 	alSourcef(source, AL_PITCH, pitch);
+}
+
+void AudioSource::Update(float dt) {
+	if (fading) {
+		elapsedTime += dt;
+		if (elapsedTime > fadeTime) {
+			elapsedTime = fadeTime;
+			fading = false;
+		}
+		float percentage = elapsedTime / fadeTime;
+		SetGain((finalGain - initialGain) * percentage + initialGain);
+	}
+}
+
+void AudioSource::FadeIn(float targetGain, float time) {
+	if (!IsPlaying())
+		Play();
+	initialGain = 0;
+	finalGain = targetGain;
+	elapsedTime = 0;
+	fadeTime = time;
+	fading = true;
+}
+
+void AudioSource::FadeOut(float time) {
+	alGetSourcef(source, AL_GAIN, &initialGain);
+	finalGain = 0;
+	elapsedTime = 0;
+	fadeTime = time;
+	fading = true;
 }
