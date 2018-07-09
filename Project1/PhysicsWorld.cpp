@@ -100,19 +100,20 @@ void PhysicsWorld::updateWorld(float dt){
             
             if(physicsBodyA->Is("Trigger")){
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
+                    if (physicsBodyB->Is("Enemy")){
+                        Enemy *e = (Enemy*)bodyB->getUserPointer();
+                        e->RecieveDamage(10);
+                    }
                     
-                    Enemy *e = (Enemy*)bodyB->getUserPointer();
-                    e->RecieveDamage(10);
                 }
             } else if(physicsBodyB->Is("Trigger")){
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
-                    Enemy *e = (Enemy*)bodyA->getUserPointer();
-                    e->RecieveDamage(10);
+                    if (physicsBodyB->Is("Enemy")){
+                        Enemy *e = (Enemy*)bodyB->getUserPointer();
+                        e->RecieveDamage(10);
+                    }
                 }
             }
-            
-            
-            
         }
         
     }

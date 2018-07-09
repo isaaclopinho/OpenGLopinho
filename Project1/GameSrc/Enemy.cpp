@@ -87,8 +87,8 @@ void Enemy::Update(float dt){
 bool Enemy::PlayerNearby(){
     btScalar dist = (Player::getInstance()->getWorldPosition() - getWorldPosition()).norm();
     bool neara = (dist <= 100);
-    if (neara) printf("player por perto\n");
-    else printf("player nÃo por perto \n");
+//    if (neara) printf("player por perto\n");
+//    else printf("player nÃo por perto \n");
     return neara;
 }
 
@@ -100,7 +100,7 @@ void Enemy::RecieveDamage(int damage){
             printf("apanhou\n");
             btVector3 direcao = (getWorldPosition() - p->getWorldPosition()).normalized();
             
-            cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
+//            cout << "direcao: " << direcao.x() << " " << direcao.y() << " " << direcao.z() << endl;
             
             direcao *= btVector3(1, 4, 1);
             

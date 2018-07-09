@@ -18,7 +18,9 @@ enum PhysicsBitMask{
     COL_PLAYER = 1<<1, //primeiro bit ligado
     COL_ENEMY = 1<<2, //segundo bit ligado
     COL_WALL = 1<<3, //terceiro bit ligado...
-    COL_FLOOR = 1<<4
+    COL_FLOOR = 1<<4,
+    COL_TRIGGER_ENEMY = 1<<5,
+    COL_TRIGGER_PLAYER = 1<<6
 };
 
 /*enum CollisionFlags
