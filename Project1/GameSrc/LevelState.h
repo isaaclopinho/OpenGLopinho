@@ -35,7 +35,7 @@
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "Hitbox.h"
-#include "GameSrc/BossState.h"
+#include "../GameSrc/BossState.h"
 using namespace glm;
 using namespace std;
 
