@@ -10,7 +10,7 @@ Enemy::Enemy(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): Phys
     
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     type = "Enemy";
-    health = 100;
+    health = 20;
     
 	limitX = Player::getInstance()->limitX;
 	limitZ = Player::getInstance()->limitZ;
