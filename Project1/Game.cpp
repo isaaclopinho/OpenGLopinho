@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Debug.h"
 #include "GameSrc/LevelState.h"
+#include "GameSrc/BossState.h"
 #include "TestState.h"
 #include "MenuState.h"
 
@@ -107,7 +108,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	
-	states.push(new LevelState());
+	states.push(new BossState());
 
 
 

@@ -21,6 +21,7 @@ public:
     Timer attCD;
     Timer atkAnimation;
     virtual void Update(float dt);
+    int damage = 10;
 private:
     int health;
 };

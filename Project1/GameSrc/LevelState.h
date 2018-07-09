@@ -100,7 +100,13 @@ class LevelState : public State {
 	
 	Player* player;
 	vector<btRigidBody> rigidBodies;
+
 	PhysicsObject* ground;
+
+	string musics[2] = {
+		"res/music/street.wav",
+		"res/music/combat.wav",
+	};
 
 public:
     PhysicsWorld phyWorld;
@@ -216,23 +222,18 @@ public:
 		camera.pitch = 12;
 		camera.vDist = -20;
 		camera.angleAroundTarget = 180;
-        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY);
+        phyWorld.addPhysicsObject(player, COL_PLAYER, COL_FLOOR | COL_WALL | COL_ENEMY | COL_TRIGGER_ENEMY);
         //(mass, shape, position, rotation, scale, inercia, entity);
         //BOX debugdraw
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+        Hitbox* playerHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5));
         playerHitbox->owner = player;
-//        attackBoxPlayer = new PhysicsObject(0, PhysicsShape::Box, btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), btVector3());
-        phyWorld.addPhysicsObject(playerHitbox, COL_WALL, COL_ENEMY);
+        phyWorld.addPhysicsObject(playerHitbox, COL_TRIGGER_PLAYER, COL_ENEMY);
         AddGameObject(playerHitbox);
-//        phyWorld.addPhysicsObject(attackBoxPlayer, COL_WALL, COL_ENEMY);
-//        AddGameObject(attackBoxPlayer);
-//        attackBoxPlayer->toggleContact(false);
-//        attackBoxPlayer->type = "Trigger";
         
-		
 		for(int i=0; i < posEnemies.size(); i++)
 			InstantiateEnemy(posEnemies[i]);
+
 //        InstantiateEnemy(vec3(10, 10, 20));
 
         //HUD
@@ -245,6 +246,10 @@ public:
         
         GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
         GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
+
+		AudioSystem::Instance().AddMusic(musics[0]);
+		AudioSystem::Instance().PlayAllOnMute();
+		AudioSystem::Instance().SetCurrent(musics[0]);
 	};
 
 	~LevelState();
@@ -354,14 +359,16 @@ public:
     
     void InstantiateEnemy(vec3 pos){
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
-        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
+        phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
         AddGameObject(inimigo);
-        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
-        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(5,4,5), box);
+//        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);
+//        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8),box);
+        Hitbox* enemyHitbox = new Hitbox(btVector3(0,10,40), btVector3(0,0,0), btVector3(8,8,8));
         enemyHitbox->owner = inimigo;
-        phyWorld.addPhysicsObject(enemyHitbox, COL_ENEMY, COL_PLAYER);
+        enemyHitbox->type = "EnemyTrigger";
+        enemyHitbox->dist = 15.0f;
+        phyWorld.addPhysicsObject(enemyHitbox, COL_TRIGGER_ENEMY, COL_PLAYER);
         AddGameObject(enemyHitbox);
-        
         
     }
 
@@ -373,14 +380,14 @@ public:
         
 		sfb.renderSceneOnBuffer();
 		sfb.bindShadowMap();
-        fbo->bindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->bindFrameBuffer(); //comentar pra rodar no mac
 
         
         MasterRenderer::GetInstance().render(sl, pt, direct, camera);
         
-        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
-        fbo->resolveToFbo(*output); //comentar pra rodar no mac
-        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
+//        fbo->unbindFrameBuffer(); //comentar pra rodar no mac
+//        fbo->resolveToFbo(*output); //comentar pra rodar no mac
+//        pp->doPostProcessing(output->colourTexture); //comentar pra rodar no mac
         
         guirenderer.render(GUITextures);
 	};
