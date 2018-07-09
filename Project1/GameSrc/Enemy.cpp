@@ -5,7 +5,7 @@
 
 #define ATTCD 2
 
-Enemy::Enemy(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): PhysicsObject(mass, shape, inercia, e), invulneravel(1), walkCD(2), attCD(2)
+Enemy::Enemy(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): PhysicsObject(mass, shape, inercia, e), invulneravel(1), walkCD(2), attCD(2), atkAnimation(0)
 {
     
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
@@ -21,6 +21,13 @@ Enemy::~Enemy(){
 void Enemy::Update(float dt){
     PhysicsObject::Update(dt);
     invulneravel.Update(dt);
+    atkAnimation.Update(dt);
+    
+    if(!atkAnimation.IsInCooldown()){
+        if (entity->currentAnimation == "AttackDuplo") {
+            entity->ChangeAnimation("IdleRight", true);
+        }
+    }
     
     switch (currentState) {
         case EnemyStates::IDLE:
@@ -37,6 +44,16 @@ void Enemy::Update(float dt){
             }
             else if(!walkCD.IsInCooldown()){
                 attCD.Update(dt);
+//                if(!atkAnimation.IsInCooldown()){
+//                     if (entity->currentAnimation != "IdleRight") {
+//                         entity->ChangeAnimation("IdleRight", true);
+//                         cout << "alo" << endl;
+//                     }
+//
+//                }
+//                else{
+//                    atkAnimation.Update(dt);
+//                }
                 if (!attCD.IsInCooldown()) {
                     currentState = EnemyStates::ATTACKING;
                     attCD.SetCooldown(1);
@@ -54,7 +71,7 @@ void Enemy::Update(float dt){
                     entity->rotation = vec3(entity->rotation.x, entity->rotation.y, degrees(ang));
                     
                     btVector3 rotation = (Player::getInstance()->getWorldPosition() - getWorldPosition()).normalized();
-                    printf("%f, %f, %f\n", rotation.x(), rotation.y(), rotation.z());
+//                    printf("%f, %f, %f\n", rotation.x(), rotation.y(), rotation.z());
                     //        entity->rotation = Maths::bulletToGlm(rotation);
                     //        entity->rotation.x -= 90;
                     if (entity->currentAnimation != "Walk") {
@@ -64,13 +81,18 @@ void Enemy::Update(float dt){
                     this->setPosition(position);
                 }
             }
-            if (walkCD.IsInCooldown())
+            if (walkCD.IsInCooldown()){
                 walkCD.Update(dt);
+            }
             break;
         case EnemyStates::ATTACKING:
             
             attCD.Update(dt);
             if (!attCD.IsInCooldown()) {
+                entity->ChangeAnimation("AttackDuplo", false);
+                atkAnimation.SetCooldown(entity->mesh->animationMap["AttackDuplo"]->mDuration * entity->mesh->animationMap["AttackDuplo"]->mTicksPerSecond);
+                //                    cout << "Valor: " << entity->mesh->animationMap["AttackDuplo"]->mDuration * entity->mesh->animationMap["AttackDuplo"]->mTicksPerSecond << endl;
+                atkAnimation.Reset();
                 btVector3 dir = (Player::getInstance()->getWorldPosition() - getWorldPosition()).normalized();
                 applyForce(dir * 2000);
                 walkCD.SetCooldown(2);
@@ -87,8 +109,8 @@ void Enemy::Update(float dt){
 bool Enemy::PlayerNearby(){
     btScalar dist = (Player::getInstance()->getWorldPosition() - getWorldPosition()).norm();
     bool neara = (dist <= 100);
-    if (neara) printf("player por perto\n");
-    else printf("player nÃo por perto \n");
+//    if (neara) printf("player por perto\n");
+//    else printf("player nÃo por perto \n");
     return neara;
 }
 

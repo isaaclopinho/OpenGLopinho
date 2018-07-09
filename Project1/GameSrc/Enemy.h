@@ -19,6 +19,7 @@ public:
     Timer invulneravel;
     Timer walkCD;
     Timer attCD;
+    Timer atkAnimation;
     virtual void Update(float dt);
 private:
     int health;
