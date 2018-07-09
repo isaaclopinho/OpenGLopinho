@@ -18,4 +18,5 @@ public:
 	virtual void Render() = 0;
 	bool Remove() { return remove; };
 	bool Is(string str) { return str == type; };
+    void RequestRemove(){ remove = true;};
 };

@@ -95,10 +95,6 @@ void PhysicsWorld::updateWorld(float dt){
                         Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
                     }
                 }
-                if (physicsBodyB->Is("Projectile")){
-                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
-                }
-                
             }else if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
@@ -115,10 +111,6 @@ void PhysicsWorld::updateWorld(float dt){
                     if (e->entity->currentAnimation == "AttackDuplo"){
                         Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
                     }
-                }
-                if (physicsBodyA->Is("Projectile")){
-                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
-//                    physicsBodyA->en
                 }
             }
             
@@ -138,6 +130,19 @@ void PhysicsWorld::updateWorld(float dt){
                         e->RecieveDamage(10);
                     }
                 }
+            }
+            if (physicsBodyA->Is("Projectile")){
+                if (physicsBodyB->Is("Player")){
+                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+                }
+                physicsBodyA->RequestRemove();
+                
+                Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+            } else if (physicsBodyB->Is("Projectile")){
+                if (physicsBodyA->Is("Player")){
+                    Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
+                }
+                physicsBodyB->RequestRemove();
             }
         }
         
