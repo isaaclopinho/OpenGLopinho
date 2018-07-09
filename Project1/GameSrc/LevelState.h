@@ -1,6 +1,6 @@
 #define MAXBARRA 0.2
 #define BARRAX -0.5
-#define BARRAY 0.87
+#define BARRAY 0.6
 
 #pragma once
 #ifdef __APPLE__
@@ -35,8 +35,7 @@
 #include "Enemy.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "Hitbox.h"
-//#include "GameSrc/BossState.h"
-#include "BossState.h"
+#include "../GameSrc/BossState.h"
 using namespace glm;
 using namespace std;
 
@@ -102,8 +101,18 @@ class LevelState : public State {
 
 	string musics[2] = {
 		"res/music/street.wav",
-		"res/music/combat.wav",
 	};
+
+	unique_ptr<AudioSource> street;
+	unique_ptr<AudioSource> buildups[6];
+	unique_ptr<AudioSource> combat_taikos[5];
+	unique_ptr<AudioSource> combat;
+	unique_ptr<AudioSource> combat_end;
+	bool firstUpdate;
+	bool enteredCombat, killedEveryone;
+	float buildupCompassTimer;
+	float attackTaikoCompassTimer;
+	int currentTaiko;
 
 public:
     PhysicsWorld phyWorld;
@@ -126,10 +135,10 @@ public:
 		//temporary physics ground for testing purposes
         
         //(mass, shape, position, rotation, scale, inercia, entity);
-    	ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 0), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
-
-		AddGameObject(ground);
+    	ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 0), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Rua/rua.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
 		
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Rua/rua.dae"), glm::vec3(0, 0, 0), glm::vec3(-90, 0, 0), vec3(1500, 1500, 1500), "", true)));
+				
 		
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -51), glm::vec3(0, 90, 0), 10.5f *vec3(1.35f, 1, 1), "", true)));
 
@@ -267,22 +276,38 @@ public:
 //        InstantiateEnemy(vec3(10, 10, 20));
 
         //HUD
-        
-        GLuint teste2 = Loader::LoadTexture("res/GUI/barra_semEnergia.png");
-        GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.15)));
-        
-        GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
-        GUITextures.emplace_back(GUITexture(teste, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.04)));
-        
-        GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
-        GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
 
-		AudioSystem::Instance().AddMusic(musics[0]);
-		AudioSystem::Instance().PlayAllOnMute();
-		AudioSystem::Instance().SetCurrent(musics[0]);
+		GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
+		GUITextures.emplace_back(GUITexture(teste, vec2(-0.40, 0.77), vec2(450.0 / 1280.0, 28.0 / 720.0)));
+
+		GLuint teste2 = Loader::LoadTexture("res/GUI/Gui_Player.png");
+		GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX, 0.77), vec2(620.0 / 1280.0, 168.0 / 720.0)));
+     //   GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
+       // GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
+
+		street = make_unique<AudioSource>("res/music/street.wav", true, false); street->SetGain(1); street->Play();
+		for (int i = 0; i < 6; ++i) {
+			char buildupFile[100];
+			sprintf(buildupFile, "res/music/buildup %d.wav", i+1);
+			buildups[i] = make_unique<AudioSource>(buildupFile, true, false);
+			buildups[i]->SetGain(0);
+		}
+		for (int i = 0; i < 5; ++i) {
+			char taikoFile[100];
+			sprintf(taikoFile, "res/music/combatTaiko%d.wav", i+1);
+			combat_taikos[i] = make_unique<AudioSource>(taikoFile, true, false);
+			combat_taikos[i]->SetGain(0);
+		}
+		combat = make_unique<AudioSource>("res/music/combat.wav", true, false);
+		combat_end = make_unique<AudioSource>("res/music/combatTaikoEnd.wav", false, false);
+		enteredCombat = killedEveryone = false;
+		buildupCompassTimer = 0;
+		attackTaikoCompassTimer = 0;
+		currentTaiko = 0;
+		firstUpdate = true;
 	};
 
-	~LevelState();
+	~LevelState() {}
 
 	void Update(float dt) {
 		if(portal)
@@ -290,8 +315,91 @@ public:
 
 		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
 
+		bool buildupCompassEnd = false;
+		bool taikoCompassEnd = false;
+		if (firstUpdate) {
+			buildupCompassTimer = 0;
+			attackTaikoCompassTimer = 0;
+			for (int i = 0; i < 6; ++i)
+				buildups[i]->Play();
+			firstUpdate = false;
+		}
+		else {
+			buildupCompassTimer += dt;
+			if (buildupCompassTimer > 1.844*2) {
+				buildupCompassTimer -= 1.844*2;
+				buildupCompassEnd = true;
+			}
+			attackTaikoCompassTimer += dt;
+			if (attackTaikoCompassTimer > 4.304) {
+				attackTaikoCompassTimer -= 4.304;
+				taikoCompassEnd = true;
+			}
+		}
+
+		street->Update(dt);
+		for (int i = 0; i < 6; ++i)
+			buildups[i]->Update(dt);
+		for (int i = 0; i < 5; ++i)
+			combat_taikos[i]->Update(dt);
+		combat->Update(dt);
+		combat_end->Update(dt);
 
 		distanciaPerigo = clamp(posEnemies[0].z - player->entity.position.z, 0.0f, 700.0f);
+
+		if (!enteredCombat) {
+			float maxDist = 500, minDist = 200;
+			float percentage = 1 - (distanciaPerigo - minDist) / (maxDist - minDist);
+			if (distanciaPerigo > maxDist) {
+				street->SetGain(1);
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->SetGain(0);
+			}
+			else if (distanciaPerigo > minDist) {
+				street->SetGain((1 - percentage));
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->SetGain(0);
+				for (int i = 0; i < 6; ++i) {
+					if (percentage < (i+1) / 6.0) {
+						buildups[i]->SetGain(1);
+						break;
+					}
+				}
+			}
+			else if (!firstUpdate and distanciaPerigo < minDist / 2 && buildupCompassEnd) {
+				enteredCombat = true;
+				street->FadeOut();
+				for (int i = 0; i < 6; ++i)
+					buildups[i]->Stop();
+				for (int i = 0; i < 5; ++i)
+					combat_taikos[i]->Play();
+				combat->Play();
+				combat_taikos[0]->SetGain(1);
+				currentTaiko = 0;
+			}
+		}
+		else if (!killedEveryone) {
+			float enemyPercentage = enemiesCount / posEnemies.size();
+			int k = 4;
+			for (float i = 0.2; i <= 1; i+=0.2) {
+				if (enemyPercentage <= i) {
+					if (currentTaiko != k && taikoCompassEnd) {
+						combat_taikos[currentTaiko]->FadeOut(0.5);
+						combat_taikos[k]->FadeIn(1, 0.5);
+						currentTaiko = k;
+					}
+					break;
+				}
+				--k;
+			}
+			if (enemiesCount <= 0) {
+				killedEveryone = true;
+				combat_taikos[currentTaiko]->FadeOut();
+				combat->FadeOut();
+				street->FadeIn(1, 3);
+				combat_end->Play();
+			}
+		}
 
 		if (enemiesCount <= 0 && !portal) {
 			portal = true;
@@ -303,6 +411,13 @@ public:
 					
 					phyWorld.removePhysicsObject(player);
 					Game::GetInstance()->AddState(new BossState()); //bug no boss
+					street->Stop();
+					for (int i = 0; i < 6; ++i)
+						buildups[i]->Stop();
+					for (int i = 0; i < 5; ++i)
+						combat_taikos[i]->Stop();
+					combat->Stop();
+					combat_end->Stop();
 				}
 
 			//chama proxima cena
@@ -384,10 +499,10 @@ public:
 	};
     
     void UpdateHP(){
-        
-        GUITextures[1].scale = vec2((player->GetHP()<=0)?0:(float)(player->GetHP()) / (float)(player->GetMaxHP()) * MAXBARRA,(player->GetHP()<=0)?0:0.05);
-        GUITextures[1].position = vec2(BARRAX - (MAXBARRA *(1 -((float)(player->GetHP()) / (float)(player->GetMaxHP())))),BARRAY);
-    }
+
+		GUITextures[0].scale = vec2((player->GetHP() <= 0) ? 0 : (float)(player->GetHP()) / (float)(player->GetMaxHP()) * (450.0 / 1280.0), 28.0 / 720.0);
+		GUITextures[0].position = vec2(-0.40 - ((450.0 / 1280.0)*(1 - ((float)(player->GetHP()) / (float)(player->GetMaxHP())))), 0.77);
+	}
     
     void InstantiateEnemy(vec3 pos){
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));

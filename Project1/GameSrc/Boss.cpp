@@ -17,7 +17,7 @@ Boss::Boss(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): Physic
     hp = 500;
     maxHP = 1000;
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
-    type = "Enemy";
+    type = "Boss";
 
 	limitX = Player::getInstance()->limitX;
 	limitZ = Player::getInstance()->limitZ;

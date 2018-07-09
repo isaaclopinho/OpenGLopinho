@@ -10,6 +10,7 @@
 #include "GameSrc/Enemy.h"
 #include "GameSrc/Player.h"
 #include "GameSrc/Hitbox.h"
+#include "GameSrc/Boss.h"
 #include <stdio.h>
 
 struct YourOwnFilterCallback : public btOverlapFilterCallback
@@ -95,6 +96,10 @@ void PhysicsWorld::updateWorld(float dt){
                         Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
                     }
                 }
+                if (physicsBodyB->Is("Boss")){
+                    Boss *e = (Boss*)bodyB->getUserPointer(); //pegar dano com inimigo?
+                    Player::getInstance()->LoseHP(10, e->getWorldPosition());
+                }
             }else if(physicsBodyB->Is("Player"))
             {
                 if (physicsBodyA->Is("Floor")){
@@ -112,6 +117,10 @@ void PhysicsWorld::updateWorld(float dt){
                         Player::getInstance()->LoseHP(e->damage, e->getWorldPosition());
                     }
                 }
+                if (physicsBodyA->Is("Boss")){
+                    Boss *e = (Boss*)bodyA->getUserPointer(); //pegar dano com inimigo?
+                    Player::getInstance()->LoseHP(10, e->getWorldPosition());
+                }
             }
             
             // se A ou B for player trigger
@@ -122,12 +131,20 @@ void PhysicsWorld::updateWorld(float dt){
                         Enemy *e = (Enemy*)bodyB->getUserPointer();
                         e->RecieveDamage(10);
                     }
+                    if (physicsBodyB->Is("Boss")){
+                        Boss *e = (Boss*)bodyB->getUserPointer();
+                        e->RecieveDamage(10);
+                    }
                     
                 }
             } else if(physicsBodyB->Is("Trigger")){
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
-                    if (physicsBodyB->Is("Enemy")){
+                    if (physicsBodyA->Is("Enemy")){
                         Enemy *e = (Enemy*)bodyB->getUserPointer();
+                        e->RecieveDamage(10);
+                    }
+                    if (physicsBodyA->Is("Boss")){
+                        Boss *e = (Boss*)bodyA->getUserPointer();
                         e->RecieveDamage(10);
                     }
                 }

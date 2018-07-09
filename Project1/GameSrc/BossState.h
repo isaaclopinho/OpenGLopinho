@@ -88,12 +88,13 @@ class BossState : public State {
     Player* player;
     vector<btRigidBody> rigidBodies;
     
+	unique_ptr<AudioSource> bossMusic;
     
 public:
     PhysicsWorld phyWorld;
     Boss* boss;
     
-    BossState() : sfb(4096,4096), phyWorld(){
+    BossState() : sfb(4096*3,4096*3), phyWorld(){
 		MasterRenderer::GetInstance().resetParticles();
         //Shadows and PostProcessing
         fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
@@ -133,29 +134,29 @@ public:
 //        player->limitX = vec2(-50, 50);
         
         
-        boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*20.0f, "Walk", true));
-        phyWorld.addPhysicsObject(boss, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER);
+        boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/boss.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "Main", true));
+        phyWorld.addPhysicsObject(boss, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
         AddGameObject(boss);
         
         //HUD
         
-        GLuint teste2 = Loader::LoadTexture("res/GUI/barra_semEnergia.png");
-        GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.15)));
+		GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
+		GUITextures.emplace_back(GUITexture(teste, vec2(-0.40, 0.77), vec2(450.0 / 1280.0, 28.0 / 720.0)));
+
+		GLuint teste2 = Loader::LoadTexture("res/GUI/Gui_Player.png");
+		GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX, 0.77), vec2(620.0 / 1280.0, 168.0 / 720.0)));
+
+		GLuint teste3 = Loader::LoadTexture("res/GUI/barra_energia_boss.png");
+		GUITextures.emplace_back(GUITexture(teste3, vec2(0, -0.88), vec2(682.0 / 1280.0, 26.0 / 720.0)));
+
+		GLuint teste4 = Loader::LoadTexture("res/GUI/Gui_Boss.png");
+		GUITextures.emplace_back(GUITexture(teste4, vec2(0, -0.88), vec2(720.0 / 1280.0, 48.0 / 720.0)));
         
-        GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
-        GUITextures.emplace_back(GUITexture(teste, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.04)));
-        
-        GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
-        GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
-        
-        GLuint bossGUI = Loader::LoadTexture("res/GUI/barra_semEnergia.png");
-        GUITextures.emplace_back(GUITexture(teste2, vec2(BARRABOSSX,BARRABOSSY), vec2(MAXBARRA,0.15)));
-        
-        GLuint bossGUI2 = Loader::LoadTexture("res/GUI/barra_energia.png");
-        GUITextures.emplace_back(GUITexture(teste, vec2(BARRABOSSX,BARRABOSSY), vec2(MAXBARRA,0.04)));
+		bossMusic = make_unique<AudioSource>("res/music/boss.wav", true, false);
+		bossMusic->Play();
     };
     
-    ~BossState();
+	~BossState() {}
     
     void Update(float dt) {
         float delta = dt;
@@ -185,6 +186,11 @@ public:
         
         if (InputManager::GetInstance().KeyPress(SDLK_m)) {
             Shoot();
+        }
+        
+        if (InputManager::GetInstance().KeyPress(SDLK_o)){
+            //mata o boss
+            boss->RecieveDamage(100);
         }
         
         if(boss->atira){
@@ -226,12 +232,12 @@ public:
     };
     
     void UpdateHP(){
-        
-        GUITextures[1].scale = vec2((player->GetHP()<=0)?0:(float)(player->GetHP()) / (float)(player->GetMaxHP()) * MAXBARRA,(player->GetHP()<=0)?0:0.05);
-        GUITextures[1].position = vec2(BARRAX - (MAXBARRA *(1 -((float)(player->GetHP()) / (float)(player->GetMaxHP())))),BARRAY);
-        
-        GUITextures[4].scale = vec2((boss->GetHP()<=0)?0:(float)(boss->GetHP()) / (float)(boss->GetMaxHP()) * MAXBARRA,(boss->GetHP()<=0)?0:0.05);
-        GUITextures[4].position = vec2(BARRABOSSX - (MAXBARRA *(1 -((float)(boss->GetHP()) / (float)(boss->GetMaxHP())))),BARRABOSSY);
+		GUITextures[0].scale = vec2((player->GetHP() <= 0) ? 0 : (float)(player->GetHP()) / (float)(player->GetMaxHP()) * (450.0 / 1280.0), 28.0 / 720.0);
+		GUITextures[0].position = vec2(-0.40 - ((450.0 / 1280.0)*(1 - ((float)(player->GetHP()) / (float)(player->GetMaxHP())))), 0.77);
+
+		GUITextures[2].scale = vec2((boss->GetHP() <= 0) ? 0 : (float)(boss->GetHP()) / (float)(boss->GetMaxHP()) * (682.0 / 1280.0), 26.0 / 720.0);
+		GUITextures[2].position = vec2( ((682.0 / 1280.0)*(1 - ((float)(boss->GetHP()) / (float)(boss->GetMaxHP())))), -0.88);
+
     }
     
     void InstantiateEnemy(vec3 pos){

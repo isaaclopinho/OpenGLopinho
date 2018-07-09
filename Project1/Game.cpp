@@ -7,7 +7,7 @@
 
 #include "MenuState.h"
 
-#define FRAMETIME 1
+#define FRAMETIME 16
 
 Game* Game::instance = NULL;
 
@@ -110,7 +110,7 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	//VideoState2 -> PS
-	states.push(new LevelState());
+	states.push(new BossState());
 
 
 
@@ -158,6 +158,7 @@ void Game::Run() {
 
 void Game::CalculateDeltaTime() {
 	dt = (float)(SDL_GetTicks() - frameStart) / 1000;
+	dt *= constant;
 	frameStart = SDL_GetTicks();
 }
 
