@@ -87,7 +87,7 @@ class LevelState : public State {
 		PointLight(vec3(0, -2, 10),		13,		vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f,	vec3(1, 1,1)*0.0f)
 	};
 
-
+	ParticleSystem *ps;
 
 	vec3 pos = vec3(-2.0, 400.0, -1.0);
 
@@ -107,7 +107,10 @@ public:
     
     
 	LevelState() : sfb(4096,4096), phyWorld(){
-		
+		ParticleTexture *pt = new ParticleTexture(Loader::LoadTexture("res/smoke.png"), 8 , false);
+		ps = new ParticleSystem(*pt, 3, 12, 0.1f, 8);
+		ps->type = 1;
+		//ps = new ParticleSystem()
 		//Shadows and PostProcessing
 		fbo = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT);
 		output = new Fbo(Game::GetInstance()->WIDTH, Game::GetInstance()->HEIGHT, 1);
@@ -247,6 +250,11 @@ public:
 	~LevelState();
 
 	void Update(float dt) {
+		if(portal)
+		ps->Update(dt, vec3(0, 0, player->limitZ.y - 10));
+
+		MasterRenderer::GetInstance().updateAllParticles(dt, camera);
+
 
 		distanciaPerigo = clamp(posEnemies[0].z - player->entity.position.z, 0.0f, 700.0f);
 
