@@ -24,6 +24,12 @@ Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, p
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     maxHP = hp = 100;
     type = "Player";
+
+	for (int i = 0; i < 10; ++i) {
+		char file[100];
+		sprintf(file, "res/sounds/hansScreams/scream%d.wav", i + 1);
+		attackScreams[i] = make_unique<AudioSource>(file, false, false);
+	}
 }
 
 void Player::land(){
@@ -103,7 +109,10 @@ void Player::CheckInput()
         PlayerJump();
     }
     if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(InputManager::GetInstance().KeyPress(SDLK_k)))){
-        if (!atacou) atacou = true;
+		if (!atacou) {
+			atacou = true;
+			attackScreams[rand() % 10]->Play();
+		}
     }
 
 	//cout << playerRigidBody->getLinearVelocity().length() << endl;

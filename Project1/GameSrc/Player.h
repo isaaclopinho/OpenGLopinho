@@ -58,4 +58,5 @@ private:
 	void AnimationController(float dt);
 
 	float dt;
+	unique_ptr<AudioSource> attackScreams[10];
 };
