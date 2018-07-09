@@ -114,7 +114,7 @@ public:
         ground->type = "Floor";
         phyWorld.addPhysicsObject(ground, COL_FLOOR);
         player = Player::getInstance();
-        
+        player->setPosition(btVector3(0,1,0));
         AddGameObject(player);
         
         camera.distanceFromTarget = 20;
