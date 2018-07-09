@@ -40,7 +40,7 @@ void Player::Update(float dt) {
     entity.position.y -= 7.5;
 	//entity.rotation = Maths::bulletToGlm(getWorldRotation());
 	//entity.rotation.x -= 90;
-	entity.Update(dt);
+	entity.Update(2*dt);
     jump.Update(dt);
     ataque.Update(dt);
     invulneravel.Update(dt);
@@ -216,13 +216,13 @@ void Player::AnimationController(float dt) {
 	if (atacou) {
 		timeAtack += dt;
 
-		if (timeAtack >= 25.0/24.0) {
+		if (timeAtack >= 1) {
 			timeAtack = 0;
 			atacou = false;
 		}
 
-		if (entity.currentAnimation != "AtackDouble_Step.L") {
-			entity.ChangeAnimation("AtackDouble_Step.L", true);
+		if (entity.currentAnimation != "AtackDouble") {
+			entity.ChangeAnimation("AtackDouble", true);
 		}
 	}
 	else {

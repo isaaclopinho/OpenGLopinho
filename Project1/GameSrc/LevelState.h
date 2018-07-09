@@ -1,6 +1,6 @@
 #define MAXBARRA 0.2
 #define BARRAX -0.5
-#define BARRAY 0.87
+#define BARRAY 0.6
 
 #pragma once
 #ifdef __APPLE__
@@ -125,10 +125,10 @@ public:
 		//temporary physics ground for testing purposes
         
         //(mass, shape, position, rotation, scale, inercia, entity);
-    	ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 0), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Models/plane.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
-
-		AddGameObject(ground);
+    	ground = new PhysicsObject(0, PhysicsShape::Box, btVector3(0, 0, 0), btVector3(0, 0, 0), btVector3(200, 1, 1000), btVector3(0, 0, 0), new Entity(Loader::LoadModel("res/Rua/rua.dae"), glm::vec3(0, 1, 0), glm::vec3(-90, 0, 0), vec3(1, 1, 1) * 900.0f, "", true));
 		
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Rua/rua.dae"), glm::vec3(0, 0, 0), glm::vec3(-90, 0, 0), vec3(1500, 1500, 1500), "", true)));
+				
 		
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -51), glm::vec3(0, 90, 0), 10.5f *vec3(1.35f, 1, 1), "", true)));
 
@@ -266,15 +266,14 @@ public:
 //        InstantiateEnemy(vec3(10, 10, 20));
 
         //HUD
-        
-        GLuint teste2 = Loader::LoadTexture("res/GUI/barra_semEnergia.png");
-        GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.15)));
-        
-        GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
-        GUITextures.emplace_back(GUITexture(teste, vec2(BARRAX,BARRAY), vec2(MAXBARRA,0.04)));
-        
-        GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
-        GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
+
+		GLuint teste = Loader::LoadTexture("res/GUI/barra_energia.png");
+		GUITextures.emplace_back(GUITexture(teste, vec2(-0.40, 0.77), vec2(450.0 / 1280.0, 28.0 / 720.0)));
+
+		GLuint teste2 = Loader::LoadTexture("res/GUI/Gui_Player.png");
+		GUITextures.emplace_back(GUITexture(teste2, vec2(BARRAX, 0.77), vec2(620.0 / 1280.0, 168.0 / 720.0)));
+     //   GLuint teste3 = Loader::LoadTexture("res/GUI/lg3.png");
+       // GUITextures.emplace_back(GUITexture(teste3, vec2(-0.85,0.8), vec2(0.15,0.2)));
 
 		AudioSystem::Instance().AddMusic(musics[0]);
 		AudioSystem::Instance().PlayAllOnMute();
@@ -380,10 +379,10 @@ public:
 	};
     
     void UpdateHP(){
-        
-        GUITextures[1].scale = vec2((player->GetHP()<=0)?0:(float)(player->GetHP()) / (float)(player->GetMaxHP()) * MAXBARRA,(player->GetHP()<=0)?0:0.05);
-        GUITextures[1].position = vec2(BARRAX - (MAXBARRA *(1 -((float)(player->GetHP()) / (float)(player->GetMaxHP())))),BARRAY);
-    }
+
+		GUITextures[0].scale = vec2((player->GetHP() <= 0) ? 0 : (float)(player->GetHP()) / (float)(player->GetMaxHP()) * (450.0 / 1280.0), 28.0 / 720.0);
+		GUITextures[0].position = vec2(-0.40 - ((450.0 / 1280.0)*(1 - ((float)(player->GetHP()) / (float)(player->GetMaxHP())))), 0.77);
+	}
     
     void InstantiateEnemy(vec3 pos){
         Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
