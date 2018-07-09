@@ -102,7 +102,7 @@ void Player::CheckInput()
         jump.Reset(); //start
         PlayerJump();
     }
-    if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(Inpu33tManager::GetInstance().KeyPress(SDLK_k)))){
+    if ((InputManager::GetInstance().ControllerButtonPress(X360_X)||(InputManager::GetInstance().KeyPress(SDLK_k)))){
         if (!atacou) atacou = true;
     }
 
