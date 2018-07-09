@@ -36,7 +36,7 @@ void Player::Update(float dt) {
 	CheckInput();
 	btTransform trans = getWorldTransForm();
 	entity.position = Maths::bulletToGlm(getWorldPosition());
-    entity.position.y -= 3.2;
+    entity.position.y -= (getScale().getX() + getScale().getY()); //ajusta a posição do player baseado no scale
 	//entity.rotation = Maths::bulletToGlm(getWorldRotation());
 	//entity.rotation.x -= 90;
 	entity.Update(dt);
@@ -248,7 +248,7 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
         
         // onde o inimigo está - onde o player está = vetor que aponta do inimigo ao player;
         btVector3 direction = (getWorldPosition() - origin).normalized();
-        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
+//        printf("%f, %f, %f \n", direction.x(), direction.y(), direction.z());
         direction.setY(abs(direction.y()));
         direction.setX(direction.x());
         direction.setZ(direction.z());
