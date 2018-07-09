@@ -42,7 +42,7 @@ class MenuState : public State {
 	float time2 = 0;
 	int contador = 0;
 	int contadorText = 0;
-	float frames = 166;
+	float frames = 201;
 
 	int op = 0;
 	int opMax = 2;
