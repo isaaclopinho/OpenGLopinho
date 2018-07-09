@@ -326,7 +326,7 @@ public:
 		distanciaPerigo = clamp(posEnemies[0].z - player->entity.position.z, 0.0f, 700.0f);
 
 		if (!enteredCombat) {
-			float maxDist = 500, minDist = 100;
+			float maxDist = 500, minDist = 200;
 			float percentage = 1 - (distanciaPerigo - minDist) / (maxDist - minDist);
 			if (distanciaPerigo > maxDist) {
 				street->SetGain(1);
@@ -344,7 +344,7 @@ public:
 					}
 				}
 			}
-			else if (distanciaPerigo > 1 and distanciaPerigo < minDist) {
+			else if (distanciaPerigo > 1 and distanciaPerigo < minDist / 2) {
 				enteredCombat = true;
 				street->FadeOut();
 				for (int i = 0; i < 6; ++i)
@@ -374,7 +374,8 @@ public:
 				killedEveryone = true;
 				combat_taikos[currentTaiko]->FadeOut();
 				combat->FadeOut();
-				street->FadeIn(1);
+				street->FadeIn(1, 3);
+				combat_end->Play();
 			}
 		}
 
@@ -388,6 +389,13 @@ public:
 					
 					phyWorld.removePhysicsObject(player);
 					Game::GetInstance()->AddState(new BossState()); //bug no boss
+					street->Stop();
+					for (int i = 0; i < 6; ++i)
+						buildups[i]->Stop();
+					for (int i = 0; i < 5; ++i)
+						combat_taikos[i]->Stop();
+					combat->Stop();
+					combat_end->Stop();
 				}
 
 			//chama proxima cena
