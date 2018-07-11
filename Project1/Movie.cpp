@@ -181,10 +181,13 @@ void Movie::playfile(const char *fname, SDL_Window *screen, SDL_Renderer* render
 			while (screen && SDL_PollEvent(&event)) {
 				switch (event.type) {
 
+				case SDL_QUIT:
+						exit(1);
+						break;
+
 				case SDL_KEYDOWN:
 					if (event.key.keysym.sym == SDLK_ESCAPE)
-						quit = 1;
-						//quit = 1;
+						//quit = 1; //DESCOMENTAR PARA PULAR VIDEO COM TECLA ESCAPE
 					break;
 				}
 			}

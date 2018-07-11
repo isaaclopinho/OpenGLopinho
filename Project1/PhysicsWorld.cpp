@@ -126,7 +126,7 @@ void PhysicsWorld::updateWorld(float dt){
             // se A ou B for player trigger
             if(physicsBodyA->Is("Trigger")){
                 if (physicsBodyB->Is("Projectile")){
-                    printf("bora refletir\n");
+                    
                     if (Player::getInstance()->entity.currentAnimation == "AtackDouble"){
                         physicsBodyB->setVelocity(physicsBodyB->getVelocity()*(-1));
                         physicsBodyB->type = "Reflect";
@@ -140,13 +140,13 @@ void PhysicsWorld::updateWorld(float dt){
                     }
                     if (physicsBodyB->Is("Boss")){
                         Boss *e = (Boss*)bodyB->getUserPointer();
-                        e->RecieveDamage(10);
+                        e->RecieveDamage(200);
                     }
                     
                 }
             } else if(physicsBodyB->Is("Trigger")){
                 if (physicsBodyA->Is("Projectile")){
-                    printf("bora refletir\n");
+                   
                     if (Player::getInstance()->entity.currentAnimation == "AtackDouble"){
                         physicsBodyA->setVelocity(physicsBodyA->getVelocity()*(-1));
                         physicsBodyA->type = "Reflect";
@@ -159,7 +159,7 @@ void PhysicsWorld::updateWorld(float dt){
                     }
                     if (physicsBodyA->Is("Boss")){
                         Boss *e = (Boss*)bodyA->getUserPointer();
-                        e->RecieveDamage(10);
+                        e->RecieveDamage(200);
                     }
                     
                 }
@@ -179,17 +179,17 @@ void PhysicsWorld::updateWorld(float dt){
             }
             
             if (physicsBodyA->Is("Reflect")){
-                printf("projetil refletido colidiu");
+               // printf("projetil refletido colidiu");
                 if (physicsBodyB->Is("Boss")){
                     Boss* b = (Boss *)physicsBodyB;
-                    b->RecieveDamage(10);
+                    b->RecieveDamage(250);
                     physicsBodyA->RequestRemove();
                 }
             } else if (physicsBodyB->Is("Reflect")){
-                printf("projetil refletido colidiu");
+              //  printf("projetil refletido colidiu");
                 if (physicsBodyA->Is("Boss")){
                     Boss* b = (Boss *)physicsBodyA;
-                    b->RecieveDamage(10);
+                    b->RecieveDamage(250);
                     physicsBodyB->RequestRemove();
                 }
             }

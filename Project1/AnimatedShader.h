@@ -50,6 +50,7 @@ private:
 	GLint location_pointLightDiffuse[NLIGHT];
 	GLint location_pointLightSpecular[NLIGHT];
 
+	GLint location_it;
 	int lgBones[100];
 	int lAnimated;
 
@@ -68,6 +69,7 @@ public:
 	void loadProjectionMatrix(mat4 matrix);
 	void loadViewMatrix(Camera camera);
 	void usingShadow(int us);
+	void loadit(float it);
 
 	void LoadBoneMatrices(std::vector<glm::mat4> matrices);
 	void LoadBoolAnimated(int value);

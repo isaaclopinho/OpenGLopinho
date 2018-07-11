@@ -3,20 +3,20 @@
 Player* Player::instance = 0;
 //(mass, shape, position, rotation, scale, inercia, entity);
 
-Player::Player() : entity(Loader::LoadModel("res/Models/hans.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Box, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(4,6,4), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5), dash(0.5)
+Player::Player() : entity(Loader::LoadModel("res/hans/hans.dae"), playerPos, playerRot, vec3(1, 1, 1), "Walk", true), PhysicsObject(100, PhysicsShape::Box, btVector3(0,1, -700), btVector3(-90, 0, 0), btVector3(4,6,4), btVector3(), &entity), jump(0.2), invulneravel(1), ataque(1), knockback(0.5), dash(0.5)
 {
 	//Initialize Player Variables
 
 	canJump = true;
-	maxSpeed = 50;
+	maxSpeed = 500;
 	maxMoveForce = 5;
 	turnAngle = 0.0;
-	walkSpeed = 45;
+	walkSpeed = 2600;
 
-	maxVelocity = 50;
+	maxVelocity = 3000;
 	velocity = 0;
 	minVelocity = 0;
-	velocityStep = 0.5f;
+	velocityStep = 30;
     
     getPhysicsBody()->setFriction(0.8);
 	getPhysicsBody()->setAngularFactor(btVector3(0, 0, 0));
@@ -46,7 +46,7 @@ void Player::land(){
 
 void Player::Update(float dt) {
 
-	CheckInput();
+	CheckInput(dt);
 	btTransform trans = getWorldTransForm();
 	entity.position = Maths::bulletToGlm(getWorldPosition());
 //    entity.position.y -= (getScale().getX()/2 + getScale().getY()/2); //ajusta a posição do player baseado no scale
@@ -96,7 +96,7 @@ void Player::Render() {
 	MasterRenderer::GetInstance().processEntity(&entity);
 };
 
-void Player::CheckInput()
+void Player::CheckInput(float dt)
 {
 
 	float horizontalMovement = 0, verticalMovement = 0;
@@ -133,12 +133,12 @@ void Player::CheckInput()
 
 	//cout << playerRigidBody->getLinearVelocity().length() << endl;
 
-	PlayerMove(horizontalMovement, verticalMovement, newRot);
+	PlayerMove(horizontalMovement, verticalMovement, newRot, dt);
 
 	//ControlSpeed();
 }
 
-void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) {
+void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot, float dt) {
 
 	//btTransform transform;
 	//playerRigidBody->getMotionState()->getWorldTransform(transform);
@@ -174,7 +174,7 @@ void Player::PlayerMove(float horizontalInput, float verticalInput, int newRot) 
 	vec3 forward = glm::rotate( vec3(0, 0, 1), radians(getPlayerRot().z), vec3(0,1,0));
 	forward = normalize(forward);
 
-	btVector3 finalForce = btVector3(forward.x * zForce, getVelocity().getY() +  forward.y, forward.z * zForce);
+	btVector3 finalForce = btVector3(forward.x * zForce *dt , getVelocity().getY() , forward.z * zForce *dt);
 
     
     
@@ -245,10 +245,6 @@ void Player::AnimationController(float dt) {
 
 		timeAtack += dt;
 
-		Game::GetInstance()->constant = 1;
-
-		if(timeAtack <= 0.2f && random <= 1)
-			Game::GetInstance()->constant = 0.15f;
 
 
 		if (timeAtack >= 1) {
@@ -321,7 +317,7 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
         hp -= hpLoss;
         if(hp <= 0){
             hp = 0;
-            cout << "DEAD" << endl;
+            //cout << "DEAD" << endl;
         }
     }
     
@@ -330,7 +326,7 @@ void Player::LoseHP(int hpLoss, btVector3 origin){
 void Player::Dash(){
     if(!dash.IsInCooldown()){
         applyForce(Maths::glmToBullet(getForwardVector() * 10000.0f));
-        std::cout << "forward: " << getForwardVector().x << " " << getForwardVector().y << " " << getForwardVector().z << endl;
+       // std::cout << "forward: " << getForwardVector().x << " " << getForwardVector().y << " " << getForwardVector().z << endl;
         dash.Reset();
     }
 }

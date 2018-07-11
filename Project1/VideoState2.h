@@ -37,6 +37,7 @@ public:
 	void Update(float dt) {
 		Movie::playfile("res/videos/a.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
 		Game::GetInstance()->AddState(new MenuState());
+		
 	};
 
 	void Render() {

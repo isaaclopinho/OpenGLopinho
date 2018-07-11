@@ -41,9 +41,9 @@ private:
 	static Player* instance;
 	float turnAngle, maxSpeed, maxMoveForce;
 	void CheckCoolDowns();
-	void CheckInput();
+	void CheckInput(float dt);
 	void PlayerJump();
-	void PlayerMove(float horizontalInput, float verticalInput, int newRot);
+	void PlayerMove(float horizontalInput, float verticalInput, int newRot, float dt);
 
 	bool canJump;
 //    float jumpCoolDown, jumpTimeStamp;

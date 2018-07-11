@@ -129,6 +129,7 @@ public:
 		pp = new PostProcessing();
 		pp->init();
 		MasterRenderer::GetInstance().usingShadow = true;
+		MasterRenderer::GetInstance().it = 0.4f;
 
 
 		//Initialize Physics
@@ -144,7 +145,7 @@ public:
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 0), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 74), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Models/casateste.dae"), glm::vec3(86, -3, 153), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 153), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
 		
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 221), glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(71, 0, 288), glm::vec3(0, 90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
@@ -165,23 +166,23 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(-71, 0, 503.8f), glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 568), glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
 
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 29.95), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(61, 0, 188.76), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 325.656), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 456.175), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 598.802), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(65, 0, 29.95), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(61, 0, 188.76), glm::vec3(-90, 0, -90), vec3(1, 1, 1) , "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(60, 0, 325.656), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(60, 0, 456.175), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(65, 0, 598.802), glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
 
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-65, 0, 1.4), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 144.7), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 248.821), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-58, 0, 408.41), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-65, 0, 1.4), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-57, 0, 144.7), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-57, 0, 248.821), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-58, 0, 408.41), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-63, 0, 536.892), glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 
 		
 
 
 		vec3 offset = vec3(0,0,680);
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/muro2.dae"), glm::vec3(0, 0, -74) - offset, glm::vec3(0, 0, 90), vec3(50, 100, 20), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/muro/muro.dae"), glm::vec3(0, 0, -120) - offset, glm::vec3(0, 0, 90), vec3(50, 100, 20), "", true)));
 
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_degrau/casa_degrau.dae"), glm::vec3(73, -2, -51)-offset, glm::vec3(0, 90, 0), 10.5f *vec3(1.35f, 1, 1), "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(70, 29.5f, 0) - offset, glm::vec3(0, -90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
@@ -203,18 +204,18 @@ public:
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 435) - offset, glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) *  26.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_estrutura/casa_estrutura.dae"), glm::vec3(-71, 0, 503.8f) - offset, glm::vec3(0, -90, 0), vec3(1, 1, 1) * 13.0f, "", true)));
 		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casa_01/casa-01.dae"), glm::vec3(-70, 29.5f, 568) - offset, glm::vec3(0, 90, 0), vec3(1, 1.4f, 1) * 26.0f, "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 29.95) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(61, 0, 188.76) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 325.656) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(60, 0, 456.175) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(65, 0, 598.802) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-65, 0, 1.4) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 144.7) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-57, 0, 248.821) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-58, 0, 408.41) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/poste.dae"), glm::vec3(-63, 0, 536.892) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(65, 0, 29.95) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(61, 0, 188.76) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(60, 0, 325.656) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(60, 0, 456.175) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(65, 0, 598.802) - offset, glm::vec3(-90, 0, -90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-65, 0, 1.4) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-57, 0, 144.7) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-57, 0, 248.821) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-58, 0, 408.41) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Poste/poste.dae"), glm::vec3(-63, 0, 536.892) - offset, glm::vec3(-90, 0, 90), vec3(1, 1, 1), "", true)));
 
-		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/casas/Piramide/piramide.dae"), glm::vec3(0, 195, 850), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 2.0f, "", true)));
+		AddGameObject(new GameObjectTest(Entity(Loader::LoadModel("res/Piramide/piramide.dae"), glm::vec3(0, 195, 850), glm::vec3(0, 180, 0), vec3(1, 1, 1) * 2.0f, "", true)));
 
 		vec3 offset2 = vec3(24, 0, 0);
 
@@ -403,13 +404,14 @@ public:
 
 		if (enemiesCount <= 0 && !portal) {
 			portal = true;
-			cout << "ativaPortal" << endl;
+			//cout << "ativaPortal" << endl;
 		}
 		if(portal)
 			if (player->entity.position.z >= player->limitZ.y-10 && player->entity.position.x >= -10 && player->entity.position.x <= 10) {
 				{
 					
 					phyWorld.removePhysicsObject(player);
+					InputManager::GetInstance().ResetState();
 					Game::GetInstance()->AddState(new BossState()); //bug no boss
 					street->Stop();
 					for (int i = 0; i < 6; ++i)
@@ -457,11 +459,6 @@ public:
         
 
 
-		
-		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
-			remove = true;
-		}
-
 		if (InputManager::GetInstance().KeyPress(SDLK_p)) {
 			cout << player->entity.position.x <<" " << player->entity.position.y << " " << player->entity.position.z << endl;
 		}
@@ -499,7 +496,7 @@ public:
 	}
     
     void InstantiateEnemy(vec3 pos){
-        Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
+        Enemy *inimigo = new Enemy(100, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/pet-01/pet-01.dae"), pos, glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "IdleRight", true));
         phyWorld.addPhysicsObject(inimigo, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
         		AddGameObject(inimigo);
 //        Entity* box = new Entity(Loader::LoadModel("res/Models/cube.obj"), glm::vec3(0, 10, 40), glm::vec3(0, 0, 0), vec3(5,4,5), "", true);

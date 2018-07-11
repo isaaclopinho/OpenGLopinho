@@ -24,9 +24,14 @@ void MasterRenderer::render(SpotLight spotLight, vector<PointLight> pointLight, 
 	animatedShader->materialProperties(5);
 	animatedShader->SetDirectionalLightProperties(directionalLight.direction, directionalLight.ambient, directionalLight.diffuse, directionalLight.specular);
 	animatedShader->lightSpace(lightSpaceMatrix);
-
-	usingShadow ? animatedShader->usingShadow(1) : animatedShader->usingShadow(0);
-
+	
+	if (usingShadow) {
+		animatedShader->usingShadow(1);
+		animatedShader->loadit(it);
+	}
+	else {
+		animatedShader->usingShadow(0);
+	}
 
 	for (int i = 0; i < 24; i++) {
 		if (i < pointLight.size())

@@ -29,7 +29,7 @@ Boss::~Boss(){
 }
 
 void Boss::RecieveDamage(int damage){
-    hp -= 90;
+    hp -= damage;
     if(hp <= 0){
 		morto = true;
     }
