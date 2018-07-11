@@ -30,6 +30,7 @@ public:
 	vec2 limitX = vec2();
 	vec2 limitZ = vec2();
     
+	bool morto=false;
 private:
     int hp, maxHP;
     Timer cd;

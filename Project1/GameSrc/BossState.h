@@ -177,6 +177,11 @@ public:
         for (unsigned int i = 0; i < gameObjects.size(); i++) {
             gameObjects[i]->Update(dt);
         }
+
+		if (boss->morto) {
+			bossMusic->Stop();
+			Movie::playfile("res/videos/final.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
+		}
         
         phyWorld.updateWorld(dt);
         

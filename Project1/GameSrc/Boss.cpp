@@ -11,10 +11,10 @@
 #include "Player.h"
 #include <glm/gtx/compatibility.hpp>
 #include <glm/gtx/vector_angle.hpp>
-
+#include "../Movie.h"
 
 Boss::Boss(float mass, PhysicsShape shape, btVector3 inercia, Entity* e): PhysicsObject(mass, shape, inercia, e), cd(5){
-    hp = 500;
+    hp = 1000;
     maxHP = 1000;
     getPhysicsBody()->forceActivationState(DISABLE_DEACTIVATION);
     type = "Boss";
@@ -29,10 +29,9 @@ Boss::~Boss(){
 }
 
 void Boss::RecieveDamage(int damage){
-    hp -= damage;
+    hp -= 90;
     if(hp <= 0){
-        cout << "BOSS MORREU" << endl;
-        this->remove = true;
+		morto = true;
     }
 }
 
