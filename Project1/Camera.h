@@ -42,5 +42,10 @@ public:
 	Camera();	
 	Camera(vec3 position);
 	~Camera();
+    
+    void ApplyShake(vec2 noise, vec3 pos);
+    void EnableShake();
+    void DisableShake();
+    vec2 PerlinShake();
 };
 

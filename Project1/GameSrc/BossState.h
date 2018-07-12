@@ -135,6 +135,7 @@ public:
         
         
         boss = new Boss(0, PhysicsShape::Box, btVector3(0,0,0), new Entity(Loader::LoadModel("res/Models/boss.dae"), glm::vec3(0,10,200), glm::vec3(-90, 0, 0), vec3(1, 1, 1)*4.0f, "Main", true));
+        
         phyWorld.addPhysicsObject(boss, COL_ENEMY, COL_FLOOR | COL_WALL | COL_PLAYER | COL_TRIGGER_PLAYER);
         AddGameObject(boss);
         
@@ -199,6 +200,13 @@ public:
         
         if (InputManager::GetInstance().KeyPress(SDLK_LSHIFT)) {
             player->Dash();
+        }
+        
+        if (InputManager::GetInstance().KeyPress(SDLK_v)){
+            camera.EnableShake();
+        }
+        if (InputManager::GetInstance().KeyPress(SDLK_b)){
+            camera.DisableShake();
         }
         
         if (InputManager::GetInstance().KeyPress(SDLK_p)) {
