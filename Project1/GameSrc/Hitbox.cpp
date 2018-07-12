@@ -15,7 +15,7 @@ Hitbox::Hitbox(btVector3 position, btVector3 rotation, btVector3 scale, Entity* 
     entity = e;
     toggleContact(false);// desativa contato
     type = "Trigger"; // tag = trigger;
-    dist = 8.0f; //distancia a frente que a hitbox deve ficar;
+    dist = 12.0f; //distancia a frente que a hitbox deve ficar;
 }
 
 void Hitbox::Update(float dt){

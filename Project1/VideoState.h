@@ -33,7 +33,7 @@ public:
 	~VideoState() {}
 
 	void Update(float dt) {		
-		Movie::playfile("res/videos/video2.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
+		Movie::playfile("res/videos/inicio.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);
 		InputManager::GetInstance().ResetState();
 		Game::GetInstance()->AddState(new LevelState());
 	};

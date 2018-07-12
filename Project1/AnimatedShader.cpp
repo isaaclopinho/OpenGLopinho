@@ -24,6 +24,8 @@ void AnimatedShader::bindAttributes() {
 }
 
 void AnimatedShader::getAllUniformLocations() {
+	location_it = ShaderProgram::getUniformLocation("it");
+
 	location_transformationMatrix = ShaderProgram::getUniformLocation("model");
 	location_projectionMatrix = ShaderProgram::getUniformLocation("projection");
 	location_viewMatrix = ShaderProgram::getUniformLocation("view");
@@ -191,6 +193,11 @@ void AnimatedShader::loadViewMatrix(Camera camera)
 void AnimatedShader::usingShadow(int us)
 {
 	ShaderProgram::loadInt(location_usingShadow, us);
+}
+
+void AnimatedShader::loadit(float it)
+{
+	ShaderProgram::loadFloat(location_it, it);
 }
 
 

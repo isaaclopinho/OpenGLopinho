@@ -125,6 +125,13 @@ void PhysicsWorld::updateWorld(float dt){
             
             // se A ou B for player trigger
             if(physicsBodyA->Is("Trigger")){
+                if (physicsBodyB->Is("Projectile")){
+                    
+                    if (Player::getInstance()->entity.currentAnimation == "AtackDouble"){
+                        physicsBodyB->setVelocity(physicsBodyB->getVelocity()*(-1));
+                        physicsBodyB->type = "Reflect";
+                    }
+                }
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
                     if (physicsBodyB->Is("Enemy")){
 						Player::getInstance()->atacou = true;
@@ -133,11 +140,18 @@ void PhysicsWorld::updateWorld(float dt){
                     }
                     if (physicsBodyB->Is("Boss")){
                         Boss *e = (Boss*)bodyB->getUserPointer();
-                        e->RecieveDamage(10);
+                        e->RecieveDamage(200);
                     }
                     
                 }
             } else if(physicsBodyB->Is("Trigger")){
+                if (physicsBodyA->Is("Projectile")){
+                   
+                    if (Player::getInstance()->entity.currentAnimation == "AtackDouble"){
+                        physicsBodyA->setVelocity(physicsBodyA->getVelocity()*(-1));
+                        physicsBodyA->type = "Reflect";
+                    }
+                }
                 if (InputManager::GetInstance().ControllerButtonPress(X360_X) || (InputManager::GetInstance().KeyPress(SDLK_k))){
                     if (physicsBodyA->Is("Enemy")){
                         Enemy *e = (Enemy*)bodyB->getUserPointer();
@@ -145,23 +159,41 @@ void PhysicsWorld::updateWorld(float dt){
                     }
                     if (physicsBodyA->Is("Boss")){
                         Boss *e = (Boss*)bodyA->getUserPointer();
-                        e->RecieveDamage(10);
+                        e->RecieveDamage(200);
                     }
+                    
                 }
             }
             if (physicsBodyA->Is("Projectile")){
                 if (physicsBodyB->Is("Player")){
                     Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
                 }
-                physicsBodyA->RequestRemove();
+                if (!physicsBodyB->Is("Trigger")) physicsBodyA->RequestRemove();
                 
                 Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
             } else if (physicsBodyB->Is("Projectile")){
                 if (physicsBodyA->Is("Player")){
                     Player::getInstance()->LoseHP(10, Maths::glmToBullet(Player::getInstance()->getForwardVector()));
                 }
-                physicsBodyB->RequestRemove();
+                if (!physicsBodyA->Is("Trigger")) physicsBodyB->RequestRemove();
             }
+            
+            if (physicsBodyA->Is("Reflect")){
+               // printf("projetil refletido colidiu");
+                if (physicsBodyB->Is("Boss")){
+                    Boss* b = (Boss *)physicsBodyB;
+                    b->RecieveDamage(250);
+                    physicsBodyA->RequestRemove();
+                }
+            } else if (physicsBodyB->Is("Reflect")){
+              //  printf("projetil refletido colidiu");
+                if (physicsBodyA->Is("Boss")){
+                    Boss* b = (Boss *)physicsBodyA;
+                    b->RecieveDamage(250);
+                    physicsBodyB->RequestRemove();
+                }
+            }
+            
         }
         
     }

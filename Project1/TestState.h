@@ -132,12 +132,8 @@ public:
 		for (unsigned int i = 0; i < gameObjects.size(); i++) {
 			gameObjects[i]->Update(dt);
 		}
-
-		if (InputManager::GetInstance().IsKeyDown(SDLK_ESCAPE)) {
-			remove = true;
-		}
-
 		
+
 		
 		if (InputManager::GetInstance().KeyPress(SDLK_SPACE)) {
 			Movie::playfile("res/videos/video.ogv", Game::GetInstance()->window, Game::GetInstance()->renderer);

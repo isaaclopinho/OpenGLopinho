@@ -34,15 +34,16 @@ public:
 
 	bool atacou = false;
 	float timeAtack = 0;
+	float random = 0;
 
 private:
 
 	static Player* instance;
 	float turnAngle, maxSpeed, maxMoveForce;
 	void CheckCoolDowns();
-	void CheckInput();
+	void CheckInput(float dt);
 	void PlayerJump();
-	void PlayerMove(float horizontalInput, float verticalInput, int newRot);
+	void PlayerMove(float horizontalInput, float verticalInput, int newRot, float dt);
 
 	bool canJump;
 //    float jumpCoolDown, jumpTimeStamp;
@@ -60,7 +61,7 @@ private:
 
 	float dt;
 	unique_ptr<AudioSource> attackScreams[10];
-	unique_ptr<AudioSource> swordSounds[12];
+	unique_ptr<AudioSource> swordSounds[6];
 	bool playSwordSound;
 	float elapsedTime;
 };

@@ -8,7 +8,6 @@
 #include "MenuState.h"
 
 #define FRAMETIME 16
-
 Game* Game::instance = NULL;
 
 Game::Game(string title, int width, int height) : dt(0), frameStart(SDL_GetTicks()) , WIDTH(width), HEIGHT(height) {
@@ -110,23 +109,16 @@ Game* Game::GetInstance() {
 
 void Game::Run() {
 	//VideoState2 -> PS
-	states.push(new BossState());
+	states.push(new VideoState2());
 
 
 
-	while (!states.empty()) {
+	while (!states.empty() && !InputManager::GetInstance().QuitRequested()) {
 		CalculateDeltaTime();
 
 		InputManager::GetInstance().Update();
 		AudioSystem::Instance().Update(dt);
-
-		if (InputManager::GetInstance().ControllerButtonPress(0))
-//            std::cout << "Pau no cu do  lg\n\a";
-
-		if (InputManager::GetInstance().KeyPress(SDLK_F1)) {
-			//"FPS", 1 / dt);
-		}
-
+		
 		states.top()->Update(dt);
 		
 

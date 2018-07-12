@@ -290,8 +290,6 @@ bool Mesh::InitMaterials(const aiScene * pScene, const std::string filename)
 
 	bool ret = true;
 
-	std::cout << "numMat: " << pScene->mNumMaterials << std::endl;
-
 	for (unsigned int i = 0; i < pScene->mNumMaterials; i++) {
 		const aiMaterial* pMaterial = pScene->mMaterials[i];
 
@@ -303,7 +301,7 @@ bool Mesh::InitMaterials(const aiScene * pScene, const std::string filename)
 		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			aiString path;
 
-			std::cout << "diffuse " << i << std::endl;
+			//std::cout << "diffuse " << i << std::endl;
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
 				std::string fullpath = Dir + "/" + path.data;
 
@@ -334,7 +332,7 @@ bool Mesh::InitMaterials(const aiScene * pScene, const std::string filename)
 
 		}
 		if (pMaterial->GetTextureCount(aiTextureType_SHININESS) > 0) {
-			std::cout << "Here!";
+			//std::cout << "Here!";
 		}
 
 		if (pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0) {

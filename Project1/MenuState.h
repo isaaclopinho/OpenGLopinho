@@ -42,7 +42,7 @@ class MenuState : public State {
 	float time2 = 0;
 	int contador = 0;
 	int contadorText = 0;
-	float frames = 166;
+	float frames = 1;
 
 	int op = 0;
 	int opMax = 2;
@@ -70,13 +70,13 @@ public:
 	MenuState() {
 
 		for (int i = 1; i <= frames; i++) {
-			std::cout << "res/menu/animation/sp (" + to_string(i) + ").png" << endl;
+			//std::cout << "res/menu/animation/sp (" + to_string(i) + ").png" << endl;
 			GLuint g = Loader::LoadTexture("res/menu/animation/sp (" + to_string(i) + ").png");
 			texturesID.emplace_back(g);
 		}
 
 		for (int i = 1; i <= 12; i++) {
-			std::cout << "res/menu/start/sp (" + to_string(i) + ").png" << endl;
+			//std::cout << "res/menu/start/sp (" + to_string(i) + ").png" << endl;
 			GLuint g = Loader::LoadTexture("res/menu/start/sp (" + to_string(i) + ").png");
 			GLuint g2 = Loader::LoadTexture("res/menu/exit/sp (" + to_string(i) + ").png");
 			textureStart.emplace_back(g);
@@ -85,10 +85,13 @@ public:
 
 
 		for (int i = 1; i <= 60; i++) {
-			std::cout << "res/menu/icone2/sp (" + to_string(i) + ").png" << endl;
+			//std::cout << "res/menu/icone2/sp (" + to_string(i) + ").png" << endl;
 			GLuint g = Loader::LoadTexture("res/menu/icone2/sp (" + to_string(i) + ").png");
 			textureIcone.emplace_back(g);
 		}
+
+
+
 		float offset = 0.0f;
 
 
@@ -96,6 +99,7 @@ public:
 		guiMenu.emplace_back(GUITexture(textureStart[0], vec2(0.57f, -0.10 - offset), vec2(125.0f / 1280.0f, 88.0f/720.0f)*1.1f ));
 		guiMenu.emplace_back(GUITexture(textureExit[0], vec2(0.57f, -0.40 - offset), vec2(93.0f / 1280.0f, 83.0f / 720.0f)* 1.1f ));
 		guiMenu.emplace_back(GUITexture(textureIcone[0], vec2(0.57f, 0.35f - offset), vec2(277.0f / 1280.0f, 143.0f / 720.0f) * 1.5f));
+		guiMenu.emplace_back(Loader::LoadTexture("res/menu/desc.png"), vec2(0, 0.9f), vec2(1, 50.0f/ 720.0f));
 
 		fireSource = make_unique<AudioSource>("res/sounds/fireplace.wav", true); fireSource->SetGain(10);
 		cicadaSource = make_unique<AudioSource>("res/sounds/cicada.wav", true); cicadaSource->SetGain(10);
@@ -198,11 +202,8 @@ public:
 				}
 
 			}
-			
-
 
 			
-
 			// guiMenu[1].textureID = op == 0 ? texturesButtonNormal[0] : texturesButtonSelected[0];
 			//guiMenu[2].textureID = op == 1 ? texturesButtonNormal[1] : texturesButtonSelected[1];
 
@@ -229,7 +230,7 @@ public:
 			cicadaSource->SetGain((1 - t) * 10);
 			forestSource->SetGain((1-t));
 
-			for(int i=1; i<4; i++)
+			for(int i=1; i<guiMenu.size(); i++)
 				guiMenu[i].constant = lerp(1.0f, 0.0f, t);
 
 

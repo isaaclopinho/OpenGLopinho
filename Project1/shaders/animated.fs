@@ -61,6 +61,8 @@ uniform Material material;
 uniform sampler2D normalMap;
 uniform sampler2D shadowMap;
 
+uniform float it;
+
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -109,7 +111,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
 
   	if(usingShadow == 1){
 		float shadow = ShadowCalculation(FragPosLightSpace);       
-    		vec3 lighting = (ambient + (0.4f - shadow) * (diff * lightColor)) * color; 
+    		vec3 lighting = (ambient + (it - shadow) * (diff * lightColor)) * color; 
 
     		return lighting + specular;
 	}

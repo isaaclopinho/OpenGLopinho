@@ -27,6 +27,8 @@ public:
 	void createProjectionMatrix();
 	vector<Entity*> entities;
 
+	float it = 1.0f;
+
 	bool usingShadow;
 
 	unordered_map<ParticleTexture, vector<Particle>> particless;
